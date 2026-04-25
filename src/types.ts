@@ -14,6 +14,7 @@ export interface Recipe {
   steps: string[];
   method: string;
   category?: string;
+  mealTime?: string;
 }
 
 export interface ShoppingItem extends Recipe {

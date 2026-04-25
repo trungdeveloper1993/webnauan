@@ -101,9 +101,16 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipe, onClose, onE
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-8">
-              <span className="text-orange-400 text-sm font-bold uppercase tracking-widest mb-2">
-                {recipe.category || 'Công thức'}
-              </span>
+              <div className="flex flex-wrap items-center gap-2 mb-2">
+                <span className="text-orange-400 text-sm font-bold uppercase tracking-widest">
+                  {recipe.category || 'Công thức'}
+                </span>
+                {recipe.mealTime && (
+                  <span className="text-xs font-bold uppercase tracking-widest text-white/90 bg-white/15 backdrop-blur-md px-2 py-0.5 rounded-md border border-white/20">
+                    {recipe.mealTime}
+                  </span>
+                )}
+              </div>
               <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
                 {recipe.name}
               </h2>

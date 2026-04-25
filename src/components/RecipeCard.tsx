@@ -33,16 +33,23 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onClick }) => {
       </div>
 
       <div className="p-4">
-        <div className="flex justify-between items-start mb-2">
-          <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 bg-orange-50 px-2 py-1 rounded-md">
-            {recipe.category || 'Phổ biến'}
-          </span>
-          <button 
+        <div className="flex justify-between items-start mb-2 gap-2">
+          <div className="flex flex-wrap gap-1">
+            <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 bg-orange-50 px-2 py-1 rounded-md">
+              {recipe.category || 'Phổ biến'}
+            </span>
+            {recipe.mealTime && (
+              <span className="text-xs font-semibold uppercase tracking-wider text-neutral-600 bg-neutral-100 px-2 py-1 rounded-md">
+                {recipe.mealTime}
+              </span>
+            )}
+          </div>
+          <button
             onClick={(e) => {
               e.stopPropagation();
               addToShopping(recipe);
             }}
-            className="p-2 bg-neutral-900 text-white rounded-full hover:bg-orange-600 transition-colors shadow-lg"
+            className="p-2 bg-neutral-900 text-white rounded-full hover:bg-orange-600 transition-colors shadow-lg shrink-0"
             title="Thêm vào thực đơn hôm nay"
           >
             <Plus size={16} />
