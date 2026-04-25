@@ -6,11 +6,11 @@ import { RecipeForm } from './components/RecipeForm';
 import { ShoppingList } from './components/ShoppingList';
 import { Recipe } from './types';
 import { motion, AnimatePresence } from 'motion/react';
-import { Search, Plus, Utensils, ShoppingBasket, ChefHat } from 'lucide-react';
+import { Search, Plus, Utensils, ShoppingBasket, ChefHat, Download, RefreshCw } from 'lucide-react';
 import { removeAccents } from './lib/utils';
 
 function AppContent() {
-  const { recipes, shoppingList } = useRecipes();
+  const { recipes, shoppingList, exportRecipes, reloadFromSource, hasLocalChanges, isLoading } = useRecipes();
   const [activeTab, setActiveTab] = useState<'recipes' | 'shopping'>('recipes');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('Tất cả');
@@ -208,20 +208,59 @@ function AppContent() {
 
       {/* Footer */}
       <footer className="bg-white border-t border-neutral-100 py-12 mt-20">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-neutral-900 rounded-lg flex items-center justify-center text-white">
-              <ChefHat size={18} />
+        <div className="max-w-7xl mx-auto px-4 space-y-8">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-neutral-900 rounded-lg flex items-center justify-center text-white">
+                <ChefHat size={18} />
+              </div>
+              <span className="font-black tracking-tight uppercase">Tôi Thích Nấu Ăn</span>
             </div>
-            <span className="font-black tracking-tight uppercase">Tôi Thích Nấu Ăn</span>
+            <p className="text-neutral-400 text-sm">
+              &copy; 2026 Tôi Thích Nấu Ăn - Nấu ăn là niềm hạnh phúc.
+            </p>
+            <div className="flex gap-6 text-sm font-bold text-neutral-600">
+              <a href="#" className="hover:text-orange-600 transition-colors">Facebook</a>
+              <a href="#" className="hover:text-orange-600 transition-colors">Instagram</a>
+              <a href="#" className="hover:text-orange-600 transition-colors">TikTok</a>
+            </div>
           </div>
-          <p className="text-neutral-400 text-sm">
-            &copy; 2026 Tôi Thích Nấu Ăn - Nấu ăn là niềm hạnh phúc.
-          </p>
-          <div className="flex gap-6 text-sm font-bold text-neutral-600">
-            <a href="#" className="hover:text-orange-600 transition-colors">Facebook</a>
-            <a href="#" className="hover:text-orange-600 transition-colors">Instagram</a>
-            <a href="#" className="hover:text-orange-600 transition-colors">TikTok</a>
+
+          {/* Admin / Data sync controls */}
+          <div className="border-t border-neutral-100 pt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="text-xs text-neutral-400">
+              <span className="font-bold uppercase tracking-widest">Quản trị dữ liệu</span>
+              {hasLocalChanges && (
+                <span className="ml-3 inline-flex items-center gap-1 text-orange-600 font-bold">
+                  <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+                  Có thay đổi chưa lưu lên repo
+                </span>
+              )}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={exportRecipes}
+                className="flex items-center gap-2 px-4 py-2 bg-neutral-900 hover:bg-black text-white rounded-xl text-xs font-bold transition-all active:scale-95"
+                title="Tải file recipes.json để commit lên GitHub repo"
+              >
+                <Download size={14} />
+                <span>Tải recipes.json</span>
+              </button>
+              <button
+                onClick={() => {
+                  if (hasLocalChanges && !confirm('Bạn có thay đổi chưa export. Đồng bộ từ server sẽ ghi đè lên thay đổi này. Tiếp tục?')) {
+                    return;
+                  }
+                  reloadFromSource();
+                }}
+                disabled={isLoading}
+                className="flex items-center gap-2 px-4 py-2 bg-neutral-100 hover:bg-neutral-200 text-neutral-900 rounded-xl text-xs font-bold transition-all active:scale-95 disabled:opacity-50"
+                title="Tải lại dữ liệu mới nhất từ recipes.json trên repo"
+              >
+                <RefreshCw size={14} className={isLoading ? 'animate-spin' : ''} />
+                <span>Đồng bộ từ server</span>
+              </button>
+            </div>
           </div>
         </div>
       </footer>

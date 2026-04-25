@@ -20,3 +20,8 @@ export interface ShoppingItem extends Recipe {
   shoppingId: string;
   addedAt: number;
 }
+
+export interface RecipeData {
+  updatedAt: number;
+  recipes: Recipe[];
+}
