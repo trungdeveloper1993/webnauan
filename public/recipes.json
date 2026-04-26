@@ -6,7 +6,7 @@
       "name": "Trứng cút lộn xào me",
       "thumbnail": "https://bepxua.vn/wp-content/uploads/2020/10/cut-lon-xao-me-fb-1-rotated.jpg.webp",
       "description": "Trứng cút lộn xào với me chín tạo nên hương vị chua ngọt hài hòa, hấp dẫn và bổ dưỡng.",
-      "category": "mon-khac",
+      "category": "Món nước",
       "servings": 3,
       "ingredients": [
         { "name": "Trứng cút lộn", "amount": 30, "unit": "quả" },
@@ -49,7 +49,7 @@
       "name": "Trứng kho quẹt",
       "thumbnail": "https://bepxua.vn/wp-content/uploads/2024/10/imshYdnU6QE-HD.jpg",
       "description": "Trứng kho quẹt là biến tấu của món kho quẹt truyền thống miền Nam, kết hợp vị mặn ngọt đậm đà của nước mắm với vị béo của trứng, ăn cực hao cơm.",
-      "category": "mon-man",
+     "category": "Món nước",
       "servings": 4,
       "cookTime": 15,
       "ingredients": [
@@ -94,7 +94,7 @@
       "name": "Canh chua cá diêu hồng",
       "thumbnail": "https://bepxua.vn/wp-content/uploads/2024/10/bhP9n1ee9I-HD.jpg",
       "description": "Canh chua cá diêu hồng có vị chua thanh từ me, kết hợp với vị ngọt tự nhiên của cá và rau củ, tạo nên món ăn đậm đà, thanh mát, rất đưa cơm.",
-      "category": "mon-canh",
+     "category": "Món nước",
       "servings": 4,
       "cookTime": 40,
       "ingredients": [
