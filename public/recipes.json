@@ -1,258 +1,154 @@
 {
-  "updatedAt": 1777096756725,
+  "updatedAt": 1777096756726,
   "recipes": [
     {
-      "id": "1",
-      "name": "Phở Bò Hà Nội",
-      "thumbnail": "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=800&q=80",
-      "description": "Món ăn quốc hồn quốc túy của Việt Nam với nước dùng ngọt thanh từ xương bò.",
-      "ingredients": [
-        {
-          "name": "Xương ống bò",
-          "amount": "1",
-          "unit": "kg"
-        },
-        {
-          "name": "Thịt bò chín (nạm, gầu)",
-          "amount": "500",
-          "unit": "g"
-        },
-        {
-          "name": "Bánh phở tươi",
-          "amount": "1",
-          "unit": "kg"
-        },
-        {
-          "name": "Hành tây, hành tím, gừng",
-          "amount": "100",
-          "unit": "g"
-        },
-        {
-          "name": "Quế, hồi, thảo quả",
-          "amount": "1",
-          "unit": "bộ"
-        },
-        {
-          "name": "Rau thơm (ngò gai, húng quế)",
-          "amount": "1",
-          "unit": "bó"
-        }
-      ],
-      "method": "Nấu nước dùng trong 8-10 tiếng, nướng gừng hành để tạo mùi thơm đặc trưng.",
-      "steps": [
-        "Rửa sạch xương bò, chần qua nước sôi để khử mùi.",
-        "Nướng hành tây, gừng, hành tím cho thơm rồi rửa sạch lớp cháy.",
-        "Hầm xương với nước lạnh, cho các gia vị nướng vào.",
-        "Rang thơm quế, hồi, thảo quả rồi cho vào túi lọc bỏ vào nồi nước dùng.",
-        "Nêm nếm gia vị vừa ăn (nước mắm, muối, đường phèn).",
-        "Thái thịt bò mỏng, trần phở, xếp thịt lên trên và chan nước dùng nóng hổi."
-      ],
-      "category": "Món nước"
-    },
-    {
-      "id": "2",
-      "name": "Bún Chả Hà Nội",
-      "thumbnail": "https://images.unsplash.com/photo-1546039907-7fa05f864c02?w=800&q=80",
-      "description": "Thịt nướng thơm lừng ăn kèm nước chấm chua ngọt và bún tươi.",
-      "ingredients": [
-        {
-          "name": "Thịt nạc vai băm",
-          "amount": "300",
-          "unit": "g"
-        },
-        {
-          "name": "Thịt ba chỉ thái miếng",
-          "amount": "300",
-          "unit": "g"
-        },
-        {
-          "name": "Bún tươi",
-          "amount": "1",
-          "unit": "kg"
-        },
-        {
-          "name": "Đu đủ xanh, cà rốt",
-          "amount": "1",
-          "unit": "quả"
-        },
-        {
-          "name": "Nước mắm, đường, dấm",
-          "amount": "1",
-          "unit": "bộ"
-        },
-        {
-          "name": "Rau sống (xà lách, tía tô)",
-          "amount": "1",
-          "unit": "bó"
-        }
-      ],
-      "method": "Thịt được ướp gia vị đậm đà và nướng trên than hoa.",
-      "steps": [
-        "Ướp thịt băm và thịt miếng với hành khô, nước mắm, đường, nước hàng.",
-        "Để thịt ngấm gia vị trong ít nhất 30 phút.",
-        "Làm dưa góp từ đu đủ và cà rốt với muối và dấm.",
-        "Pha nước chấm theo tỷ lệ mắm, đường, nước lọc, chanh tỏi ớt.",
-        "Nướng thịt trên than hoa cho đến khi vàng đều và thơm lừng.",
-        "Bày bún, rau sống và thịt nướng ra đĩa, ăn kèm nước chấm."
-      ],
-      "category": "Món nướng"
-    },
-    {
-      "id": "3",
-      "name": "Cơm Tấm Sườn Bì Chả",
-      "thumbnail": "https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?w=800&q=80",
-      "description": "Đặc sản miền Nam với hạt cơm tấm dẻo thơm và sườn nướng mật ong.",
-      "ingredients": [
-        {
-          "name": "Gạo tấm",
-          "amount": "500",
-          "unit": "g"
-        },
-        {
-          "name": "Sườn cốt lết",
-          "amount": "3",
-          "unit": "miếng"
-        },
-        {
-          "name": "Thính, da heo (làm bì)",
-          "amount": "200",
-          "unit": "g"
-        },
-        {
-          "name": "Trứng gà, thịt băm (làm chả)",
-          "amount": "200",
-          "unit": "g"
-        },
-        {
-          "name": "Dưa leo, cà chua",
-          "amount": "1",
-          "unit": "bộ"
-        }
-      ],
-      "method": "Nấu cơm tấm bằng phương pháp hấp để hạt cơm tơi xốp.",
-      "steps": [
-        "Ướp sườn với mật ong, dầu hào, hành tỏi băm.",
-        "Nấu cơm tấm trong xửng hấp cho đến khi chín dẻo.",
-        "Làm chả trứng bằng cách trộn thịt băm, mộc nhĩ, trứng rồi hấp chín.",
-        "Trộn bì heo với thính gạo thơm.",
-        "Nướng sườn trên lửa vừa cho đến khi chín vàng hai mặt.",
-        "Trình bày cơm ra đĩa với sườn, bì, chả, đồ chua và nước mắm kẹo."
-      ],
-      "category": "Món cơm"
-    },
-    {
-      "id": "4",
-      "name": "Lẩu Thả Phan Thiết",
-      "thumbnail": "https://images.unsplash.com/photo-1555126634-323283e090fa?w=800&q=80",
-      "description": "Món lẩu đặc sản vùng biển với cá mai rạng rỡ và nhiều loại rau củ tươi mát.",
-      "ingredients": [
-        {
-          "name": "Cá mai tươi",
-          "amount": "500",
-          "unit": "g"
-        },
-        {
-          "name": "Bún tươi",
-          "amount": "500",
-          "unit": "g"
-        },
-        {
-          "name": "Trứng gà (chiên sợi)",
-          "amount": "2",
-          "unit": "quả"
-        },
-        {
-          "name": "Thịt ba chỉ (luộc thái sợi)",
-          "amount": "200",
-          "unit": "g"
-        },
-        {
-          "name": "Dưa leo, xoài non, khế",
-          "amount": "1",
-          "unit": "bộ"
-        },
-        {
-          "name": "Xương ống cá",
-          "amount": "500",
-          "unit": "g"
-        }
-      ],
-      "method": "Cá mai được tái trong nước chanh trước khi nhúng lẩu.",
-      "steps": [
-        "Nấu nước dùng từ xương cá và tôm khô cho ngọt thanh.",
-        "Lọc cá mai lấy fillet, ướp với nước cốt chanh và gừng.",
-        "Chiên trứng vàng mỏng rồi thái sợi nhỏ.",
-        "Thái sợi thịt ba chỉ luộc, dưa leo, xoài non.",
-        "Bày biện các nguyên liệu quanh đĩa cá mai như cánh hoa.",
-        "Khi ăn nhúng cá và rau vào nồi nước dùng đang sôi."
-      ],
-      "category": "Món lẩu"
-    },
-    {
+      "id": "cut-lon-xao-me",
       "name": "Trứng cút lộn xào me",
       "thumbnail": "https://bepxua.vn/wp-content/uploads/2020/10/cut-lon-xao-me-fb-1-rotated.jpg.webp",
-      "description": "Cút lộn khi xào với me chín tạo nên hương vị đặc trưng chua chua, ngọt ngọt nhìn đẹp mắt mà không kém phần bổ dưỡng.",
-      "method": "Vậy là đã xong, chỉ cần cho ra dĩa trang trí thêm chút rau răm, rải lên bề mặt một ít đậu phộng rang để tăng thêm vị ngon cho món ăn. Quá nhanh quá đơn giản đúng không nào, giờ thì mời các “cạ cứng” hoặc người thân cùng nhâm nhi thưởng thức món “trứng cút lộn xào me” và “khoe” tài nấu ăn của bản thân thôi!",
-      "category": "Món khác",
+      "description": "Trứng cút lộn xào với me chín tạo nên hương vị chua ngọt hài hòa, hấp dẫn và bổ dưỡng.",
+      "category": "mon-khac",
+      "servings": 3,
       "ingredients": [
-        {
-          "name": "Trứng cút lộn",
-          "amount": "30",
-          "unit": "Quả"
-        },
-        {
-          "name": "Me chín",
-          "amount": "100",
-          "unit": "Gram"
-        },
-        {
-          "name": "Tỏi",
-          "amount": "3",
-          "unit": "Tép"
-        },
-        {
-          "name": "Hành Tím",
-          "amount": "20",
-          "unit": "Gram"
-        },
-        {
-          "name": "Đậu phộng rang, ớt, rau răm theo lượng tùy thích",
-          "amount": "1",
-          "unit": "nắm"
-        },
-        {
-          "name": "Đường",
-          "amount": "4",
-          "unit": "Muỗng canh"
-        },
-        {
-          "name": "Nước mắm",
-          "amount": "2",
-          "unit": "Muỗng canh"
-        },
-        {
-          "name": "Bột năng",
-          "amount": "1",
-          "unit": "Thìa"
-        },
-        {
-          "name": "Muối",
-          "amount": "1 ",
-          "unit": "Muỗng cà phê"
-        },
-        {
-          "name": "Dầu ăn",
-          "amount": "1 ",
-          "unit": "Muỗng canh"
-        }
+        { "name": "Trứng cút lộn", "amount": 30, "unit": "quả" },
+        { "name": "Me chín", "amount": 100, "unit": "g" },
+        { "name": "Tỏi", "amount": 3, "unit": "tép" },
+        { "name": "Hành tím", "amount": 20, "unit": "g" },
+        { "name": "Đậu phộng rang", "amount": null, "unit": "tùy thích" },
+        { "name": "Ớt", "amount": null, "unit": "tùy thích" },
+        { "name": "Rau răm", "amount": null, "unit": "tùy thích" },
+        { "name": "Đường", "amount": 4, "unit": "muỗng canh" },
+        { "name": "Nước mắm", "amount": 2, "unit": "muỗng canh" },
+        { "name": "Bột năng", "amount": 1, "unit": "muỗng canh" },
+        { "name": "Muối", "amount": 1, "unit": "muỗng cà phê" },
+        { "name": "Dầu ăn", "amount": 1, "unit": "muỗng canh" }
       ],
       "steps": [
-        "Sơ chế nguyên liệu\nCho 30gr me chín vào chén với khoảng 100ml nước nóng, dùng muỗng nghiền me sao cho hòa tan với nước, để lấy nước cốt me.\n\nTỏi bóc bỏ vỏ sau đó băm nhỏ. Rau răm nhặt bỏ lá già, rửa sạch để ráo nước.\n\nCho 1 muỗng canh bột năng vào chén nhỏ với 2 muỗng canh nước ấm, dùng muỗng hòa tan bột năng vào nước.",
-        "Luộc trứng\nCho 30 cái trứng cút lộn vào nồi, cho nước vào ngập hết trứng cút. Bật lửa lớn, cho 1 muỗng cà phê muối vào nồi nước. Luộc trứng cút lộn trong khoảng 15 phút thì tắt bếp, vớt trứng ra ngoài để nguội bớt.\n\nTiến hành lột bỏ lớp vỏ trứng đi. Nhớ nhẹ tay để trứng cút không bị bể nát. Lần lượt bóc vỏ hết số trứng.",
-        "Làm trứng cút lộn sốt me\nBắc chảo lên bếp, bật lửa vừa và cho 1 muỗng canh dầu ăn vào chảo. Dầu nóng thì cho hết số tỏi băm vào phi thơm, thấy tỏi vàng thì cho hết số nước me vào, thêm 1/2 chén nước lọc (chén ăn cơm), đun cho sôi lăn tăn.\n\nNêm nếm với 2 muỗng canh nước mắm, 4 muỗng canh đường khuấy đều tay cho gia vị hòa tan. Nêm nếm lại cho vừa khẩu vị gia đình, cảm thấy có vị chua, mặn, ngọt hài hòa là được, cho tiếp bột năng đã khuấy tan vào chảo.\n\nCho hết số trứng cút lộn đã sơ chế vào, tiếp tục đun ở lửa vừa và khuấy đều tay cho đến khi thấy sốt sệt lại, rút hết vào trứng cút thì tắt bếp.",
-        "Thành phẩm\nTrứng cút lộn xào me có mùi thơm và màu sắc hấp dẫn, cho tất cả ra dĩa cùng 1 ít rau răm. Vị chua chua ngọt ngọt của me và đường hòa với vị đậm đà vừa phải của nước mắm, đảm bảo ăn một lần là mê ngay.\n\nSốt me sền sệt quyện vào trứng cút lộn, tất cả tạo nên một hương vị tuyệt vời, vào bếp thử ngay nào!"
+        {
+          "title": "Sơ chế nguyên liệu",
+          "content": "Cho me chín vào chén với khoảng 100ml nước nóng, nghiền để lấy nước cốt. Tỏi bóc vỏ, băm nhỏ. Rau răm rửa sạch, để ráo. Hòa tan bột năng với 2 muỗng canh nước ấm."
+        },
+        {
+          "title": "Luộc trứng",
+          "content": "Cho trứng cút lộn vào nồi, thêm nước ngập trứng và 1 muỗng cà phê muối. Luộc khoảng 15 phút, vớt ra để nguội rồi bóc vỏ nhẹ tay."
+        },
+        {
+          "title": "Làm sốt me",
+          "content": "Phi thơm tỏi với dầu ăn. Cho nước me và 1/2 chén nước lọc vào, đun sôi. Nêm nước mắm, đường cho vừa khẩu vị. Thêm bột năng đã hòa tan để tạo độ sệt."
+        },
+        {
+          "title": "Xào trứng",
+          "content": "Cho trứng vào chảo, đảo đều trên lửa vừa đến khi sốt sệt và bám đều vào trứng thì tắt bếp."
+        },
+        {
+          "title": "Hoàn thành",
+          "content": "Cho ra đĩa, rắc đậu phộng rang, thêm rau răm và ớt. Dùng nóng."
+        }
+      ]
+    },{
+      "id": "trung-kho-quet",
+      "name": "Trứng kho quẹt",
+      "thumbnail": "https://bepxua.vn/wp-content/uploads/2024/10/imshYdnU6QE-HD.jpg",
+      "description": "Trứng kho quẹt là biến tấu của món kho quẹt truyền thống miền Nam, kết hợp vị mặn ngọt đậm đà của nước mắm với vị béo của trứng, ăn cực hao cơm.",
+      "category": "mon-man",
+      "servings": 4,
+      "cookTime": 15,
+      "ingredients": [
+        { "name": "Tôm khô", "amount": 50, "unit": "g" },
+        { "name": "Trứng gà", "amount": 2, "unit": "quả" },
+        { "name": "Hành tím", "amount": null, "unit": "tùy thích" },
+        { "name": "Hành lá", "amount": null, "unit": "tùy thích" },
+        { "name": "Ớt", "amount": null, "unit": "tùy thích" },
+        { "name": "Đường", "amount": 60, "unit": "g" },
+        { "name": "Nước mắm", "amount": 100, "unit": "ml" },
+        { "name": "Bột ngọt", "amount": 0.5, "unit": "muỗng cà phê" },
+        { "name": "Tóp mỡ", "amount": 1, "unit": "muỗng canh" },
+        { "name": "Tương ớt", "amount": 1, "unit": "muỗng canh" },
+        { "name": "Mỡ heo", "amount": 2, "unit": "muỗng canh" },
+        { "name": "Tiêu xay", "amount": null, "unit": "tùy thích" }
       ],
-      "id": "cu86tuni8"
+      "steps": [
+        {
+          "title": "Phi thơm gia vị",
+          "content": "Cho mỡ heo vào chảo đun nóng, thêm hành tím và gốc hành lá vào phi thơm."
+        },
+        {
+          "title": "Làm nước kho",
+          "content": "Cho nước mắm và đường vào, đun đến khi đường tan hoàn toàn."
+        },
+        {
+          "title": "Kho tôm",
+          "content": "Thêm tương ớt, bột ngọt và tôm khô đã ngâm mềm vào, kho lửa vừa khoảng 2–3 phút."
+        },
+        {
+          "title": "Cho trứng",
+          "content": "Khi nước kho sôi, đập trứng vào chảo, để lửa nhỏ và canh độ chín theo ý thích."
+        },
+        {
+          "title": "Hoàn thành",
+          "content": "Thêm tóp mỡ, hành lá, ớt và tiêu. Tắt bếp và dùng với cơm nóng hoặc rau luộc."
+        }
+      ],
+      "tags": ["kho quẹt", "món mặn", "ăn cơm", "miền Nam"]
+    },{
+      "id": "canh-chua-ca-dieu-hong",
+      "name": "Canh chua cá diêu hồng",
+      "thumbnail": "https://bepxua.vn/wp-content/uploads/2024/10/bhP9n1ee9I-HD.jpg",
+      "description": "Canh chua cá diêu hồng có vị chua thanh từ me, kết hợp với vị ngọt tự nhiên của cá và rau củ, tạo nên món ăn đậm đà, thanh mát, rất đưa cơm.",
+      "category": "mon-canh",
+      "servings": 4,
+      "cookTime": 40,
+      "ingredients": [
+        { "name": "Cá diêu hồng", "amount": 800, "unit": "g" },
+        { "name": "Me chín", "amount": 70, "unit": "g" },
+        { "name": "Tỏi", "amount": 20, "unit": "g" },
+        { "name": "Bạc hà", "amount": 1, "unit": "cây" },
+        { "name": "Thơm (dứa)", "amount": 0.5, "unit": "trái" },
+        { "name": "Cà chua", "amount": 3, "unit": "trái" },
+        { "name": "Đậu bắp", "amount": 8, "unit": "trái" },
+        { "name": "Giá đỗ", "amount": null, "unit": "tùy thích" },
+        { "name": "Ngò om", "amount": null, "unit": "tùy thích" },
+        { "name": "Ngò gai", "amount": null, "unit": "tùy thích" },
+        { "name": "Lá quế", "amount": null, "unit": "tùy thích" },
+        { "name": "Ớt", "amount": null, "unit": "tùy thích" },
+    
+        { "name": "Muối", "amount": 1, "unit": "muỗng cà phê" },
+        { "name": "Hạt nêm", "amount": 1, "unit": "muỗng cà phê" },
+        { "name": "Đường", "amount": 4, "unit": "muỗng canh" },
+        { "name": "Nước mắm", "amount": 1, "unit": "muỗng canh" },
+        { "name": "Dầu ăn", "amount": 2, "unit": "muỗng canh" }
+      ],
+      "steps": [
+        {
+          "title": "Sơ chế nguyên liệu",
+          "content": "Cá diêu hồng làm sạch với muối và chanh để khử tanh, rửa lại và cắt khúc. Rau củ rửa sạch: bạc hà, thơm, cà chua, đậu bắp cắt vừa ăn; rau nêm thái nhỏ."
+        },
+        {
+          "title": "Phi tỏi và xào sơ",
+          "content": "Phi thơm tỏi với dầu ăn. Cho thơm và cà chua vào xào cùng đường và hạt nêm khoảng 1–2 phút."
+        },
+        {
+          "title": "Chiên sơ cá",
+          "content": "Cho cá vào chảo chiên sơ để thịt cá săn lại, giúp không bị nát khi nấu."
+        },
+        {
+          "title": "Nấu canh",
+          "content": "Đun sôi khoảng 1.7 lít nước, cho cá vào nấu với muối và đường. Thêm nước cốt me, nấu khoảng 10 phút cho cá chín."
+        },
+        {
+          "title": "Cho rau củ",
+          "content": "Cho thơm, cà chua, đậu bắp vào nấu trước, sau đó thêm bạc hà, giá đỗ và nước mắm. Đảo nhẹ tay."
+        },
+        {
+          "title": "Hoàn thành",
+          "content": "Cho cá trở lại nồi, thêm rau nêm, ớt và tỏi phi. Tắt bếp và dùng nóng."
+        }
+      ],
+      "tags": ["canh", "chua ngọt", "miền nam", "cá"],
+      "tips": [
+        "Chiên sơ cá giúp thịt cá không bị nát khi nấu.",
+        "Nêm vị chua – ngọt – mặn cân bằng là yếu tố quan trọng nhất.",
+        "Cho rau nêm sau cùng để giữ mùi thơm."
+      ]
     }
   ]
 }
