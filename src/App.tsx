@@ -6,7 +6,7 @@ import { RecipeForm } from './components/RecipeForm';
 import { ShoppingList } from './components/ShoppingList';
 import { Recipe } from './types';
 import { motion, AnimatePresence } from 'motion/react';
-import { Search, Plus, Utensils, ShoppingBasket, ChefHat, Download, RefreshCw } from 'lucide-react';
+import { Search, Plus, Utensils, ShoppingBasket, ChefHat, Download, RefreshCw, Heart } from 'lucide-react';
 import { removeAccents } from './lib/utils';
 
 function AppContent() {
@@ -261,6 +261,16 @@ function AppContent() {
                 <span>Đồng bộ từ server</span>
               </button>
             </div>
+          </div>
+
+          {/* Personal thank-you note */}
+          <div className="border-t border-neutral-100 pt-8 text-center">
+            <p className="max-w-2xl mx-auto text-neutral-600 leading-relaxed">
+              Xin chào{' '}
+              <Heart size={16} className="inline-block text-orange-600 fill-orange-600 -mt-1" />
+              {' '}Tôi là Trung, tôi đang học nấu ăn và thấy việc lưu trữ công thức nấu ăn rất phù hợp.
+              Nếu bạn thấy hợp với bạn hãy thoải mái sử dụng nhé.
+            </p>
           </div>
         </div>
       </footer>
