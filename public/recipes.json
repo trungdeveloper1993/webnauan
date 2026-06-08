@@ -1,5 +1,5 @@
 {
-  "updatedAt": 1780910058230,
+  "updatedAt": 1780910739841,
   "recipes": [
     {
       "id": "1",
@@ -404,6 +404,361 @@
         "Trình bày và thưởng thức\nXếp bún tươi và các loại rau thơm xuống đáy tô, gắp đồ chua ngâm vào một góc, xếp thịt nướng vàng ươm lên trên.\nRưới đều phần nước sốt mắm nêm bơ lạc sánh mịn lên toàn bộ tô bún, rắc thêm một chút lạc rang giã nhỏ lên trên cùng, trộn đều và thưởng thức."
       ],
       "category": "Món nướng"
+    },
+    {
+      "id": "g4cm9p2vt",
+      "name": "Gà Chiên Mắm Chua Ngọt",
+      "thumbnail": "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=800&q=80",
+      "description": "Gà chiên giòn rụm áo lớp sốt mắm chua ngọt bóng bẩy, dậy mùi sả, lá chanh và chút mắm ruốc đậm đà.",
+      "ingredients": [
+        {
+          "name": "Thịt gà non (chặt miếng vừa ăn)",
+          "amount": "500",
+          "unit": "g"
+        },
+        {
+          "name": "Lá chanh (thái sợi để ướp và rắc)",
+          "amount": "10",
+          "unit": "lá"
+        },
+        {
+          "name": "Bột nghệ khô (ướp, tạo màu vàng)",
+          "amount": "1",
+          "unit": "xíu"
+        },
+        {
+          "name": "Hạt nêm (ướp)",
+          "amount": "1",
+          "unit": "xíu"
+        },
+        {
+          "name": "Bột chiên giòn / bột bắp / bột mì đa dụng (áo ngoài)",
+          "amount": "3",
+          "unit": "thìa"
+        },
+        {
+          "name": "Sả non (đập dập, băm nhỏ)",
+          "amount": "2",
+          "unit": "cây"
+        },
+        {
+          "name": "Tỏi băm",
+          "amount": "1",
+          "unit": "thìa"
+        },
+        {
+          "name": "Ớt cay",
+          "amount": "2",
+          "unit": "quả"
+        },
+        {
+          "name": "Ớt sừng (cắt lát, trang trí)",
+          "amount": "1",
+          "unit": "quả"
+        },
+        {
+          "name": "Nước mắm",
+          "amount": "1",
+          "unit": "thìa canh"
+        },
+        {
+          "name": "Nước cốt chanh (hoặc quất/tắc)",
+          "amount": "1/2",
+          "unit": "thìa canh"
+        },
+        {
+          "name": "Tiêu vỡ (giã dối)",
+          "amount": "1/3",
+          "unit": "thìa canh"
+        },
+        {
+          "name": "Tương ớt (loại cay bình thường)",
+          "amount": "1",
+          "unit": "thìa canh"
+        },
+        {
+          "name": "Bột ngọt (mì chính)",
+          "amount": "1",
+          "unit": "xíu"
+        },
+        {
+          "name": "Mắm ruốc (bí quyết tạo độ đậm đà)",
+          "amount": "1",
+          "unit": "thìa cà phê"
+        },
+        {
+          "name": "Dầu ăn (để chiên ngập gà)",
+          "amount": "1",
+          "unit": "vừa đủ"
+        }
+      ],
+      "method": "Chọn gà non để thịt mềm không bị dai. Bí quyết tạo nên hương vị xuất sắc là cho hơn 1 thìa cà phê mắm ruốc vào sốt, và dùng tiêu giã dối (không xay quá mịn). Chiên gà 2 lần: lần đầu lửa vừa cho chín bên trong, lần hai dầu nóng già ~180°C cho da giòn rụm và ép bớt dầu thừa.",
+      "steps": [
+        "Sơ chế và ướp gà\nGà chặt miếng vừa ăn, cho vào tô. Thêm một chút lá chanh thái sợi, một chút bột nghệ khô và một xíu hạt nêm, trộn đều.\nĐể thịt gà tẩm ướp khoảng 30 phút cho ngấm đều gia vị.",
+        "Làm nước sốt mắm chua ngọt\nCho vào bát: nước mắm, nước cốt chanh/quất, bột ngọt, tiêu vỡ, tương ớt và mắm ruốc. Khuấy thật đều cho các nguyên liệu hòa quyện và tan hết.",
+        "Chiên gà (2 lần)\nSau khi gà ướp đủ thời gian, rắc một lớp bột mỏng (bột chiên/bột bắp/bột mì) bám nhẹ ngoài da gà, không phủ quá dày.\nChiên lần 1: đun dầu nóng vừa, thả gà vào chiên ngập dầu, om lửa vừa khoảng 5 phút cho gà vừa chín bên trong rồi vớt ra để ráo.\nChiên lần 2: đun dầu nóng già khoảng 180°C, thả gà vào chiên nhanh lần hai để ép bớt dầu thừa, da gà vàng đẹp và giòn rụm. Vớt ra để riêng.",
+        "Xào sốt và hoàn thành\nBắc chảo với một ít dầu, cho sả, tỏi, ớt cay vào phi vàng thơm.\nĐổ toàn bộ phần sốt mắm chua ngọt vào, hạ nhỏ lửa đun cho sốt sôi lăn tăn và hơi sệt lại.\nTrút gà đã chiên giòn vào, đảo đều tay trên lửa nhỏ để sốt áo đều một lớp mỏng bóng bẩy quanh từng miếng gà.\nRắc thêm lá chanh và ớt sừng cắt lát, đảo lại một lượt rồi tắt bếp, bày ra đĩa và thưởng thức."
+      ],
+      "category": "Món khác"
+    },
+    {
+      "id": "t3b8c1qrm",
+      "name": "Thịt Ba Chỉ Chiên Tỏi Ớt",
+      "thumbnail": "https://images.unsplash.com/photo-1432139555190-58524dae6a55?w=800&q=80",
+      "description": "Ba chỉ chiên giòn rụm bên ngoài, mềm ẩm bên trong, áo sốt tỏi ớt sả thơm lừng cùng tỏi phi vàng, ăn không ngấy.",
+      "ingredients": [
+        {
+          "name": "Thịt ba chỉ (ba rọi, cắt khúc vuông vừa ăn, bỏ bì nếu không thích dai)",
+          "amount": "600",
+          "unit": "g"
+        },
+        {
+          "name": "Bột chiên giòn / bột bắp / bột mì đa dụng (áo ngoài)",
+          "amount": "3",
+          "unit": "thìa"
+        },
+        {
+          "name": "Tỏi (băm nhỏ hoặc xay nhuyễn)",
+          "amount": "100",
+          "unit": "g"
+        },
+        {
+          "name": "Sả non (thái lát mỏng)",
+          "amount": "2",
+          "unit": "cây"
+        },
+        {
+          "name": "Ớt cay (băm nhỏ)",
+          "amount": "4",
+          "unit": "quả"
+        },
+        {
+          "name": "Lá chanh (vò sơ cho dậy mùi)",
+          "amount": "1",
+          "unit": "nắm"
+        },
+        {
+          "name": "Dầu hào (ướp, giúp thịt mềm)",
+          "amount": "1/2",
+          "unit": "thìa canh"
+        },
+        {
+          "name": "Mật ong (ướp, có thể thay bằng chút đường)",
+          "amount": "1/4",
+          "unit": "thìa canh"
+        },
+        {
+          "name": "Nước mắm (làm sốt)",
+          "amount": "1/2",
+          "unit": "thìa canh"
+        },
+        {
+          "name": "Đường (làm sốt)",
+          "amount": "1/2",
+          "unit": "thìa canh"
+        },
+        {
+          "name": "Nước cốt chanh (hoặc quất/tắc, làm sốt)",
+          "amount": "1/2",
+          "unit": "thìa canh"
+        },
+        {
+          "name": "Dầu ăn (để chiên và xào)",
+          "amount": "1",
+          "unit": "vừa đủ"
+        }
+      ],
+      "method": "Có thể lọc bỏ phần bì nếu không thích ăn dai. Ướp với dầu hào và mật ong giúp thịt mềm và lên màu đẹp. Chiên 2 lửa là mấu chốt: lần 1 lửa vừa cho chín vàng và quay bớt tóp mỡ, lần 2 dầu nóng già hơn để ép bớt dầu thừa, miếng ba chỉ giòn rụm ngoài, mềm ẩm trong và không bị ngấy.",
+      "steps": [
+        "Làm tỏi phi\nBắc chảo với một lượng dầu vừa phải, cho toàn bộ tỏi băm/xay vào chiên lửa vừa đến khi tỏi vàng giòn, dậy mùi thơm thì vớt ra để riêng cho ráo dầu.",
+        "Ướp thịt ba chỉ\nCho thịt ba chỉ đã cắt khúc vào tô, thêm 1/2 thìa canh dầu hào và 1/4 thìa canh mật ong, bóp trộn thật đều.\nĐể thịt nghỉ thấm gia vị khoảng 15-20 phút (có thời gian thì ướp 30 phút là tốt nhất).",
+        "Chiên thịt ba chỉ (2 lửa)\nTrước khi chiên, rắc một lớp bột khô thật mỏng (bột bắp/bột chiên giòn) phủ đều ngoài miếng thịt, chỉ áo mỏng vừa đủ bám, không phủ quá dày.\nChiên lần 1: chảo sâu lòng, đun dầu nóng, thả thịt chiên ngập dầu ở lửa vừa cho chín vàng đều và quay bớt tóp mỡ.\nChiên lần 2: vớt thịt ra, tăng nhiệt cho dầu nóng già hơn, thả thịt chiên nhanh lần hai để ép bớt dầu thừa, giòn rụm bên ngoài, mềm ẩm bên trong. Vớt ra để ráo dầu.",
+        "Xào sốt và hoàn thành\nCho 1-2 thìa canh dầu vào chảo, trút sả non và ớt băm vào xào thật vàng thơm, rồi cho lá chanh vò sơ vào đảo nhanh tay cho dậy mùi.\nCho nước mắm, đường và nước cốt chanh vào, hạ lửa thật nhỏ, đảo đều cho đường tan và sốt hơi keo nhẹ lại.\nTrút thịt ba chỉ chiên giòn cùng tỏi phi vàng vào, sóc và đảo đều tay trên lửa nhỏ để sốt tỏi ớt sả bám đều quanh miếng thịt.\nCho ra đĩa, ăn kèm rau thơm và chấm cùng nước mắm chua ngọt."
+      ],
+      "category": "Món khác"
+    },
+    {
+      "id": "l5rc7k9wd",
+      "name": "Lẩu Riêu Cua Bắp Bò",
+      "thumbnail": "https://images.unsplash.com/photo-1555126634-323283e090fa?w=800&q=80",
+      "description": "Lẩu riêu cua đồng chuẩn vị Bắc, nước dùng ngọt thanh, chua dịu từ mẻ và bỗng rượu nếp, gạch cua đóng bánh béo ngậy, nhúng cùng bắp bò và rau tươi.",
+      "ingredients": [
+        {
+          "name": "Cua đồng (giã/xay lấy nước, tách mai lấy gạch)",
+          "amount": "600",
+          "unit": "g"
+        },
+        {
+          "name": "Thịt bắp bò (thái mỏng để nhúng lẩu)",
+          "amount": "300",
+          "unit": "g"
+        },
+        {
+          "name": "Rau nhúng lẩu các loại",
+          "amount": "1",
+          "unit": "mớ"
+        },
+        {
+          "name": "Bún tươi hoặc bánh đa",
+          "amount": "1",
+          "unit": "kg"
+        },
+        {
+          "name": "Hành khô (hành tím, thái lát)",
+          "amount": "4",
+          "unit": "thìa canh"
+        },
+        {
+          "name": "Cà chua (bổ múi cau)",
+          "amount": "250",
+          "unit": "g"
+        },
+        {
+          "name": "Bột nghệ khô (hoặc nghệ tươi băm)",
+          "amount": "1",
+          "unit": "thìa cà phê"
+        },
+        {
+          "name": "Dầu ăn (hoặc mỡ lợn)",
+          "amount": "2",
+          "unit": "thìa canh"
+        },
+        {
+          "name": "Muối hạt (xay/giã cùng cua)",
+          "amount": "1",
+          "unit": "ít"
+        },
+        {
+          "name": "Mắm tôm",
+          "amount": "1",
+          "unit": "thìa cà phê"
+        },
+        {
+          "name": "Nước mắm",
+          "amount": "1",
+          "unit": "ít"
+        },
+        {
+          "name": "Cơm mẻ chua (tạo chua)",
+          "amount": "1",
+          "unit": "thìa canh"
+        },
+        {
+          "name": "Bỗng rượu nếp (tạo chua)",
+          "amount": "3",
+          "unit": "thìa canh"
+        },
+        {
+          "name": "Hạt nêm",
+          "amount": "1",
+          "unit": "thìa canh"
+        },
+        {
+          "name": "Mì chính (bột ngọt)",
+          "amount": "1/3",
+          "unit": "thìa canh"
+        },
+        {
+          "name": "Đường mía",
+          "amount": "1/3",
+          "unit": "thìa canh"
+        }
+      ],
+      "method": "Cho vài hạt muối hạt khi xay/giã cua giúp gạch cua khi nấu đóng bánh chắc và đậm vị. Khuấy mắm tôm vào nước cua lúc còn nguội để nước riêu thơm. Khi nấu khuấy nhẹ đều tay dưới đáy nồi để gạch không sát đáy, gạch nổi lên thì ngừng khuấy. Chưng gạch cua (màu cua) phải hạ nhỏ lửa hoặc tắt bếp vì rất dễ cháy mất mùi thơm. Tạo vị chua tự nhiên bằng cơm mẻ và bỗng rượu nếp; nêm cuối cùng và nếm lại cho vừa khẩu vị vì đã có muối và mắm tôm từ đầu. Định lượng cho nồi lẩu khoảng 2 lít nước.",
+      "steps": [
+        "Xay và lọc nước cốt cua\nCho cua đồng đã sơ chế vào cối, thêm vài hạt muối hạt rồi xay/giã nhuyễn (muối giúp gạch cua đóng bánh chắc và đậm vị hơn).\nCho nước vào phần cua xay, khuấy đều, dùng rây lọc lấy nước cốt, bỏ bã. Lọc lại 2-3 lần để lấy đủ khoảng 2 lít nước nấu lẩu.",
+        "Nấu riêu cua (đóng bánh gạch cua)\nCho 1 thìa cà phê mắm tôm vào nồi nước cua còn nguội (chưa bật bếp), khuấy tan đều.\nBật bếp, dùng muôi khuấy nhẹ đều tay dưới đáy nồi để gạch cua không sát đáy.\nKhi gạch tụ lại và nổi hết lên mặt nước thì ngừng khuấy. Dùng muôi thủng vớt gạch cua đóng bánh ra đĩa riêng, ấn nhẹ cho róc nước để gạch chắc bánh hơn.",
+        "Chưng gạch cua (màu cua) và phi hành\nBắc chảo, cho 1 thìa canh dầu ăn (hoặc mỡ lợn) đun nóng, cho 2 thìa canh hành khô thái lát vào phi vàng thơm.\nKhi hành vàng hẳn, nêm một chút xíu nước mắm cho dậy mùi.\nTrút phần màu cua (gạch khều từ mai) vào, hạ nhỏ lửa hoặc tắt bếp ngay vì gạch rất dễ cháy. Đảo đều rồi múc một xíu nước cua vừa nấu đổ vào cho loãng ra.\nRưới đều hỗn hợp hành phi chưng gạch cua béo ngậy lên trên đĩa gạch cua đóng bánh đã vớt ở bước 2.",
+        "Xào cà chua và tạo vị chua cho nước lẩu\nCho 1 thìa canh dầu vào chảo, phi vàng thơm phần hành khô còn lại.\nCho 1 thìa cà phê bột nghệ khô vào đảo đều cho lên màu vàng đẹp.\nTrút 250g cà chua bổ múi cau vào xào đều.\nThêm 1 thìa canh cơm mẻ chua và 3 thìa canh bỗng rượu nếp, đảo đều và đun sôi bùng cho dậy mùi thơm.",
+        "Hoàn thiện nồi nước lẩu\nĐổ toàn bộ hỗn hợp cà chua, mẻ và bỗng rượu vừa xào vào nồi nước dùng cua.\nNêm 1 thìa canh hạt nêm, 1/3 thìa canh mì chính và 1/3 thìa canh đường, đun sôi cho tan. Nếm lại để gia giảm chua, mặn, ngọt cho vừa khẩu vị (lưu ý đã có muối hạt và mắm tôm từ đầu).\nKhi ăn, chuyển nước lẩu ra bếp lẩu, trút đĩa gạch cua chưng hành vào nồi. Bày bắp bò, rau nhúng, bún hoặc bánh đa xung quanh và thưởng thức."
+      ],
+      "category": "Món lẩu"
+    },
+    {
+      "id": "gh3td8zmk",
+      "name": "Giò Heo Hầm Táo Đỏ Thuốc Bắc",
+      "thumbnail": "https://images.unsplash.com/photo-1547928576-b822bc410bdf?w=800&q=80",
+      "description": "Giò heo chiên vàng rồi hầm liu riu với táo đỏ, nấm hương và thảo mộc, thịt mềm tan, bì béo ngậy, nước sốt ngọt thanh thơm dịu, sánh mướt.",
+      "ingredients": [
+        {
+          "name": "Giò heo (móng giò, khúc khủyu cắt tròn)",
+          "amount": "1.2",
+          "unit": "kg"
+        },
+        {
+          "name": "Xì dầu (nước tương) đậm đặc",
+          "amount": "2",
+          "unit": "thìa canh"
+        },
+        {
+          "name": "Táo đỏ khô (loại nhỏ)",
+          "amount": "20",
+          "unit": "quả"
+        },
+        {
+          "name": "Đẳng sâm tươi",
+          "amount": "3",
+          "unit": "nhánh"
+        },
+        {
+          "name": "Ngọc trúc",
+          "amount": "30",
+          "unit": "g"
+        },
+        {
+          "name": "Nấm hương khô (ngâm nở, giữ nước ngâm)",
+          "amount": "6",
+          "unit": "cái"
+        },
+        {
+          "name": "Gừng tươi",
+          "amount": "20",
+          "unit": "g"
+        },
+        {
+          "name": "Hành tím (hành khô)",
+          "amount": "30",
+          "unit": "g"
+        },
+        {
+          "name": "Ớt khô (bỏ qua nếu không ăn cay)",
+          "amount": "6",
+          "unit": "quả"
+        },
+        {
+          "name": "Hạt tiêu nguyên hạt (giã dối)",
+          "amount": "1/3",
+          "unit": "thìa canh"
+        },
+        {
+          "name": "Hạt nêm",
+          "amount": "1/2",
+          "unit": "thìa canh"
+        },
+        {
+          "name": "Mì chính (bột ngọt)",
+          "amount": "1/3",
+          "unit": "thìa canh"
+        },
+        {
+          "name": "Bột năng / bột bắp / bột đao (hòa nước tạo sánh)",
+          "amount": "1",
+          "unit": "ít"
+        },
+        {
+          "name": "Dầu ăn (để chiên giò heo)",
+          "amount": "1",
+          "unit": "vừa đủ"
+        }
+      ],
+      "method": "Phết xì dầu rồi hong cho da giò heo thật khô trước khi chiên để da không bắn dầu và lên màu đẹp. Chiên (trao dầu) lửa lớn cho da săn vàng trước khi hầm. Có thể thay đẳng sâm và ngọc trúc bằng gói thuốc bắc bán sẵn. Món ăn vị ngọt thanh, thơm dịu nên không nêm quá mặn vì khi hầm nước cạn vị sẽ đậm lên. Hầm liu riu ít nhất 90 phút cho thịt mềm rục. Định lượng cho khoảng 2 lít nước hầm.",
+      "steps": [
+        "Sơ chế và tạo màu da giò heo\nGiò heo làm thật sạch. Dùng khoảng 1 thìa canh xì dầu đậm đặc phết đều lên khắp bề mặt, đặc biệt phần da để tạo màu.\nHong khô da: đặt giò heo trước quạt hoặc dùng máy sấy tóc sấy cho da hoàn toàn khô ráo (giúp khi chiên không bắn dầu và da lên màu đẹp).",
+        "Chiên (trao) giò heo\nChuẩn bị chảo sâu lòng, cho ngập dầu và đun nóng.\nThả khúc giò heo vào chiên ở lửa lớn, lật trở đều các mặt cho đến khi da và thịt vàng đều, săn lại thì vớt ra để ráo.",
+        "Hầm giò heo với thảo mộc\nCho giò heo đã chiên vào nồi lớn, đổ khoảng 2 lít nước sạch (xăm xắp mặt giò heo).\nCho toàn bộ nguyên liệu hầm vào: đẳng sâm, ngọc trúc, táo đỏ, gừng, hành tím, ớt khô, tiêu giã vỡ, cùng nấm hương và phần nước ngâm nấm lọc trong.\nNêm 1/2 thìa canh hạt nêm, 1/3 thìa canh mì chính và 1 thìa canh xì dầu đậm đặc (không nêm quá mặn vì hầm cạn nước vị sẽ đậm lên).\nĐun sôi rồi hạ nhỏ lửa, đậy vung hầm liu riu ít nhất 90 phút cho thịt mềm rục, phần thịt đầu xương co lại là đạt.",
+        "Làm nước sốt sánh và hoàn thành\nVớt khúc giò heo hầm mềm ra đĩa sâu lòng hoặc tô lớn.\nMúc một phần nước hầm (lọc bớt cặn nếu cần) sang chảo nhỏ để cô đặc, nếm lại cho vị ngọt thanh, thơm mùi táo đỏ thảo mộc.\nKhi nước sốt sôi, từ từ rót nước bột bắp/bột năng đã hòa tan vào, vừa rót vừa khuấy đều tay, đun sôi nhẹ cho bột chín, sốt sệt nhẹ mướt mượt (không để quá đặc keo) thì tắt bếp.\nRưới đều nước sốt lên khắp khúc giò heo, trang trí thêm vài quả táo đỏ, nấm hương và chút rau thơm, thưởng thức khi còn nóng."
+      ],
+      "category": "Món canh"
     }
   ]
 }
