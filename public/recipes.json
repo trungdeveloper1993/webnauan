@@ -1,5 +1,5 @@
 {
-  "updatedAt": 1777096756728,
+  "updatedAt": 1780910058230,
   "recipes": [
     {
       "id": "1",
@@ -253,6 +253,157 @@
         "Thành phẩm\nTrứng cút lộn xào me có mùi thơm và màu sắc hấp dẫn, cho tất cả ra dĩa cùng 1 ít rau răm. Vị chua chua ngọt ngọt của me và đường hòa với vị đậm đà vừa phải của nước mắm, đảm bảo ăn một lần là mê ngay.\n\nSốt me sền sệt quyện vào trứng cút lộn, tất cả tạo nên một hương vị tuyệt vời, vào bếp thử ngay nào!"
       ],
       "id": "cu86tuni8"
+    },
+    {
+      "id": "b7k2m9x4q",
+      "name": "Bún Thịt Nướng Mắm Nêm Bơ Lạc",
+      "thumbnail": "https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=800&q=80",
+      "description": "Bún thịt nướng trộn nước sốt mắm nêm bơ lạc béo ngậy, thơm nức mùi than hoa, ăn kèm đồ chua giòn mát.",
+      "ingredients": [
+        {
+          "name": "Thịt nạc vai (thái mỏng, có cả nạc lẫn mỡ)",
+          "amount": "500",
+          "unit": "g"
+        },
+        {
+          "name": "Bún tươi",
+          "amount": "1",
+          "unit": "kg"
+        },
+        {
+          "name": "Rau thơm ăn kèm",
+          "amount": "1",
+          "unit": "bó"
+        },
+        {
+          "name": "Lạc rang (xát vỏ, giã nhỏ)",
+          "amount": "100",
+          "unit": "g"
+        },
+        {
+          "name": "Sả, hành tím, tỏi, ớt (xay vắt lấy nước cốt ướp thịt)",
+          "amount": "1",
+          "unit": "bộ"
+        },
+        {
+          "name": "Dầu hào (ướp thịt)",
+          "amount": "1/2",
+          "unit": "thìa"
+        },
+        {
+          "name": "Nước mắm (ướp thịt)",
+          "amount": "1/2",
+          "unit": "thìa"
+        },
+        {
+          "name": "Bột nêm (ướp thịt)",
+          "amount": "1/2",
+          "unit": "thìa"
+        },
+        {
+          "name": "Đường (ướp thịt)",
+          "amount": "1/2",
+          "unit": "thìa"
+        },
+        {
+          "name": "Tiêu",
+          "amount": "1",
+          "unit": "xíu"
+        },
+        {
+          "name": "Ngũ vị hương",
+          "amount": "1",
+          "unit": "xíu"
+        },
+        {
+          "name": "Dầu điều (ướp thịt, tạo màu)",
+          "amount": "1",
+          "unit": "thìa"
+        },
+        {
+          "name": "Hành, tỏi, sả, ớt xay nhuyễn (làm sốt)",
+          "amount": "1",
+          "unit": "bộ"
+        },
+        {
+          "name": "Thịt băm (làm sốt)",
+          "amount": "100",
+          "unit": "g"
+        },
+        {
+          "name": "Mắm nêm",
+          "amount": "2/3",
+          "unit": "chén"
+        },
+        {
+          "name": "Bơ lạc (bơ đậu phộng)",
+          "amount": "40",
+          "unit": "g"
+        },
+        {
+          "name": "Lạc rang xay nhuyễn (làm sốt)",
+          "amount": "2",
+          "unit": "thìa"
+        },
+        {
+          "name": "Dầu điều (làm sốt)",
+          "amount": "2",
+          "unit": "thìa"
+        },
+        {
+          "name": "Đường (làm sốt)",
+          "amount": "1",
+          "unit": "thìa"
+        },
+        {
+          "name": "Bột nêm, tiêu (làm sốt)",
+          "amount": "1",
+          "unit": "xíu"
+        },
+        {
+          "name": "Dầu hào (làm sốt)",
+          "amount": "1/4",
+          "unit": "thìa"
+        },
+        {
+          "name": "Tương ớt",
+          "amount": "1",
+          "unit": "thìa"
+        },
+        {
+          "name": "Nước dùng",
+          "amount": "1.5",
+          "unit": "muôi"
+        },
+        {
+          "name": "Bột bắp (hòa tan với nước)",
+          "amount": "2",
+          "unit": "thìa"
+        },
+        {
+          "name": "Củ cải trắng, cà rốt, dưa chuột (làm đồ chua)",
+          "amount": "1",
+          "unit": "bộ"
+        },
+        {
+          "name": "Giấm (ngâm đồ chua)",
+          "amount": "2/3",
+          "unit": "muỗng"
+        },
+        {
+          "name": "Đường (ngâm đồ chua)",
+          "amount": "1/2",
+          "unit": "thìa"
+        }
+      ],
+      "method": "Chọn thịt nạc vai có cả nạc lẫn mỡ để nướng không bị khô. Nước sốt mắm nêm bơ lạc là linh hồn của món: dùng khoảng 2/3 lượng mắm nêm để lấy vị mặn và mùi thơm đặc trưng, thêm bột bắp hòa tan để sốt sánh quện, không bị tách nước khi trộn vào bún. Nướng bằng than hoa cho mùi thơm hấp dẫn nhất.",
+      "steps": [
+        "Ướp và nướng thịt\nCho thịt nạc vai thái mỏng vào bát, thêm nước cốt hành-tỏi-sả-ớt cùng dầu hào, nước mắm, bột nêm, đường, tiêu, ngũ vị hương và dầu điều. Trộn đều và ướp khoảng 30 phút (nếu làm kinh doanh có thể ướp qua đêm trong tủ mát).\nXếp đều thịt ra vỉ nướng, san mỏng để thịt chín đều. Nướng bằng bếp than hoa là ngon nhất, hoặc dùng nồi chiên không dầu. Nướng đến khi thịt chín vàng, thơm nức.",
+        "Làm nước sốt trộn béo ngậy\nPhi thơm hành, tỏi, sả, ớt xay với một ít dầu, cho thịt băm vào xào săn và dậy mùi.\nNêm mắm nêm, dầu điều, đường, bột nêm, tiêu, dầu hào, bơ lạc, lạc rang xay và tương ớt, đảo đều cho các gia vị hòa quyện và tan hết.\nĐổ 1,5 muôi nước dùng vào, om liu riu khoảng 3 phút cho nước sốt sánh quyện.\nTừ từ cho nước bột bắp đã hòa tan vào, khuấy đều tay và đun sôi trở lại để sốt đạt độ sệt, mịn, không bị tách nước khi trộn.",
+        "Làm đồ chua\nCủ cải, cà rốt và dưa chuột bào sợi. Trộn đều với giấm và đường, ngâm khoảng 15 phút cho ngấm vị chua ngọt nhẹ và giữ được độ giòn.",
+        "Trình bày và thưởng thức\nXếp bún tươi và các loại rau thơm xuống đáy tô, gắp đồ chua ngâm vào một góc, xếp thịt nướng vàng ươm lên trên.\nRưới đều phần nước sốt mắm nêm bơ lạc sánh mịn lên toàn bộ tô bún, rắc thêm một chút lạc rang giã nhỏ lên trên cùng, trộn đều và thưởng thức."
+      ],
+      "category": "Món nướng"
     }
   ]
 }
