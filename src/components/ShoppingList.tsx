@@ -1,176 +1,189 @@
 import React, { useState } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
+import { ArrowRight, Check, Copy, ShoppingBasket, Trash2 } from 'lucide-react';
+import { ShoppingItem } from '../types';
 import { useRecipes } from '../RecipeContext';
-import { motion, AnimatePresence } from 'motion/react';
-import { Trash2, CheckCircle2, Circle, UtensilsCrossed, Calendar, BookOpen, Trash, X } from 'lucide-react';
-import { Recipe } from '../types';
+import { href } from '../lib/router';
+import { formatIngredientAmount } from '../lib/recipe';
+import { cn, pad2 } from '../lib/utils';
+import { RecipeCover } from './ui';
+import { SectionTitle } from './HomePage';
 
-export const ShoppingList: React.FC<{ onViewRecipe?: (recipe: Recipe) => void }> = ({ onViewRecipe }) => {
-  const { shoppingList, removeFromShopping, toggleIngredient, removeAllFromShopping } = useRecipes();
-  const [expandedId, setExpandedId] = useState<string | null>(null);
+const toText = (list: ShoppingItem[]) =>
+  [
+    '🛒 Danh sách đi chợ',
+    ...list.flatMap((item) => [
+      '',
+      `Ngày ${item.day} · ${item.name}`,
+      ...item.ingredients.map((ing) => {
+        const amount = formatIngredientAmount(ing);
+        return `${ing.checked ? '☑' : '☐'} ${ing.name}${amount ? ` — ${amount}` : ''}`;
+      }),
+    ]),
+  ].join('\n');
+
+const copyText = async (text: string) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    // Trình duyệt cũ: dùng textarea tạm
+    const el = document.createElement('textarea');
+    el.value = text;
+    el.style.position = 'fixed';
+    el.style.opacity = '0';
+    document.body.appendChild(el);
+    el.select();
+    const ok = document.execCommand('copy');
+    document.body.removeChild(el);
+    return ok;
+  }
+};
+
+export const ShoppingList: React.FC = () => {
+  const { shoppingList, recipes, removeFromShopping, toggleIngredient, removeAllFromShopping } = useRecipes();
+  const [copied, setCopied] = useState(false);
+
+  const total = shoppingList.reduce((n, item) => n + item.ingredients.length, 0);
+  const bought = shoppingList.reduce((n, item) => n + item.ingredients.filter((i) => i.checked).length, 0);
 
   if (shoppingList.length === 0) {
+    const next = recipes[0];
     return (
-      <div className="flex flex-col items-center justify-center py-20 text-neutral-400">
-        <div className="p-6 bg-neutral-50 rounded-full mb-6">
-          <UtensilsCrossed size={48} className="opacity-20" />
+      <main className="max-w-xl mx-auto px-4 py-20 text-center">
+        <div className="w-24 h-24 mx-auto rounded-[2rem] bg-orange-100 text-orange-600 flex items-center justify-center">
+          <ShoppingBasket size={40} />
         </div>
-        <h3 className="text-xl font-bold text-neutral-600 mb-2">Chưa có món nào hôm nay</h3>
-        <p className="text-center max-w-xs">
-          Hãy chọn các món ăn bạn muốn nấu để tự động tạo danh sách đi chợ.
+        <h1 className="text-3xl font-black mt-6">Giỏ đi chợ đang trống</h1>
+        <p className="text-neutral-500 mt-2">
+          Mở một công thức và bấm "Thêm vào danh sách đi chợ", nguyên liệu sẽ xuất hiện ở đây để bạn tick khi mua.
         </p>
-      </div>
+        {next && (
+          <a
+            href={href.home}
+            className="mt-8 inline-flex items-center gap-2 bg-neutral-900 text-white h-12 px-6 rounded-2xl font-bold"
+          >
+            Chọn món để nấu <ArrowRight size={18} />
+          </a>
+        )}
+      </main>
     );
   }
 
   return (
-    <div className="space-y-12">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-        <div className="flex items-center gap-3">
-          <Calendar size={24} className="text-orange-600" />
-          <h2 className="text-3xl font-black text-neutral-900 tracking-tight">Thực đơn hôm nay</h2>
-        </div>
-        <button 
-          onClick={removeAllFromShopping}
-          className="flex items-center justify-center gap-2 px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-xl text-sm font-bold transition-all border border-red-100"
-        >
-          <Trash size={16} />
-          <span>Xóa tất cả</span>
-        </button>
+    <main className="max-w-6xl mx-auto px-4 pt-10 pb-10">
+      <SectionTitle
+        eyebrow="Đi chợ"
+        title="Danh sách đi chợ"
+        subtitle={`${bought}/${total} nguyên liệu đã mua · ${shoppingList.length} món`}
+        right={
+          <div className="flex gap-2">
+            <button
+              onClick={async () => {
+                if (await copyText(toText(shoppingList))) {
+                  setCopied(true);
+                  window.setTimeout(() => setCopied(false), 2000);
+                }
+              }}
+              className="inline-flex items-center gap-2 h-11 px-4 rounded-2xl bg-white border border-neutral-200 hover:border-neutral-400 font-bold text-sm"
+            >
+              {copied ? <Check size={16} className="text-emerald-600" /> : <Copy size={16} />}
+              {copied ? 'Đã sao chép' : 'Sao chép danh sách'}
+            </button>
+            <button
+              onClick={removeAllFromShopping}
+              className="inline-flex items-center gap-2 h-11 px-4 rounded-2xl bg-red-50 hover:bg-red-100 text-red-600 font-bold text-sm border border-red-100"
+            >
+              <Trash2 size={16} /> Xóa hết
+            </button>
+          </div>
+        }
+      />
+
+      <div className="h-2 rounded-full bg-orange-100 overflow-hidden mb-8">
+        <motion.div
+          className="h-full bg-orange-500 rounded-full"
+          animate={{ width: `${total ? (bought / total) * 100 : 0}%` }}
+          transition={{ duration: 0.4 }}
+        />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
         <AnimatePresence>
-          {shoppingList.map((item) => (
-            <motion.div
-              key={item.shoppingId}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white rounded-3xl overflow-hidden shadow-sm border border-neutral-100 flex flex-col"
-            >
-              <div className="flex h-32">
-                <img 
-                  src={item.thumbnail} 
-                  alt={item.name} 
-                  className="w-32 h-full object-cover"
-                />
-                <div className="flex-1 p-4 flex flex-col justify-between bg-neutral-900 text-white">
-                  <div>
-                    <h3 className="text-xl font-bold leading-tight">{item.name}</h3>
-                    <p className="text-xs text-neutral-400 mt-1 uppercase tracking-widest font-bold">
-                      {item.category}
-                    </p>
+          {shoppingList.map((item) => {
+            const done = item.ingredients.filter((i) => i.checked).length;
+            const complete = done === item.ingredients.length && done > 0;
+            return (
+              <motion.div
+                key={item.shoppingId}
+                layout
+                initial={{ opacity: 0, scale: 0.97 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.97 }}
+                className="bg-white rounded-3xl overflow-hidden border border-neutral-200/70 shadow-sm"
+              >
+                <div className="flex items-center gap-4 p-4 border-b border-neutral-100">
+                  <RecipeCover
+                    recipe={{ ...item, difficulty: recipes.find((r) => r.id === item.recipeId)?.difficulty ?? 1 }}
+                    size="sm"
+                    className="w-16 h-16 rounded-2xl shrink-0"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <div className="text-[11px] font-black uppercase tracking-widest text-orange-600">Ngày {pad2(item.day)}</div>
+                    <a href={href.recipe(item.day)} className="font-bold leading-snug hover:text-orange-600 line-clamp-2">
+                      {item.name}
+                    </a>
+                    <div className={cn('text-xs font-bold mt-1', complete ? 'text-emerald-600' : 'text-neutral-400')}>
+                      {complete ? '✓ Đã mua đủ' : `Đã mua ${done}/${item.ingredients.length}`}
+                    </div>
                   </div>
-                  <button 
+                  <button
                     onClick={() => removeFromShopping(item.shoppingId)}
-                    className="flex items-center gap-2 text-xs text-red-400 hover:text-red-300 transition-colors font-bold uppercase"
+                    className="w-10 h-10 rounded-xl text-neutral-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center shrink-0"
+                    aria-label={`Bỏ ${item.name} khỏi danh sách`}
                   >
-                    <Trash2 size={14} />
-                    <span>Xóa khỏi thực đơn</span>
+                    <Trash2 size={18} />
                   </button>
                 </div>
-                {item.ingredients.every(ing => ing.checked) && (
-                  <motion.button
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    onClick={() => setExpandedId(expandedId === item.shoppingId ? null : item.shoppingId)}
-                    className={`${
-                      expandedId === item.shoppingId ? 'bg-neutral-800' : 'bg-orange-600 hover:bg-orange-700'
-                    } text-white p-4 flex flex-col items-center justify-center gap-1 transition-colors min-w-[80px] shadow-inner`}
-                  >
-                    {expandedId === item.shoppingId ? (
-                      <>
-                        <X size={24} />
-                        <span className="text-[10px] font-black uppercase text-center">Đóng lại</span>
-                      </>
-                    ) : (
-                      <>
-                        <BookOpen size={24} />
-                        <span className="text-[10px] font-black uppercase text-center">Nấu ngay</span>
-                      </>
-                    )}
-                  </motion.button>
-                )}
-              </div>
-
-              <div className="p-6 bg-white">
-                <div className="flex items-center justify-between mb-4">
-                  <h4 className="text-sm font-bold uppercase tracking-widest text-neutral-400">
-                    Danh sách nguyên liệu
-                  </h4>
-                  <span className="text-xs font-bold text-orange-600 bg-orange-50 px-2 py-1 rounded">
-                    {item.ingredients.filter(ing => ing.checked).length}/{item.ingredients.length} Đã mua
-                  </span>
-                </div>
-                
-                <div className="space-y-2">
+                <ul className="p-3 space-y-1">
                   {item.ingredients.map((ing, idx) => (
-                    <button
-                      key={`${item.shoppingId}-${idx}`}
-                      onClick={() => toggleIngredient(item.shoppingId, ing.name)}
-                      className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all border ${
-                        ing.checked 
-                          ? 'bg-neutral-50 text-neutral-400 border-transparent italic' 
-                          : 'bg-white border-neutral-100 text-neutral-800 hover:border-orange-200'
-                      }`}
-                    >
-                      {ing.checked ? (
-                        <CheckCircle2 size={20} className="text-green-500 fill-green-500/10 shrink-0" />
-                      ) : (
-                        <Circle size={20} className="text-neutral-300 shrink-0" />
-                      )}
-                      <div className="flex-1 text-left flex justify-between items-center">
-                        <span className={ing.checked ? 'line-through' : 'font-medium'}>
-                          {ing.name}
-                        </span>
-                        <span className="text-xs opacity-60">
-                          {ing.amount} {ing.unit}
-                        </span>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-
-                <AnimatePresence>
-                  {expandedId === item.shoppingId && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="mt-8 pt-8 border-t border-neutral-100">
-                        <h4 className="text-sm font-bold uppercase tracking-widest text-neutral-400 mb-6">
-                          Hướng dẫn nấu
-                        </h4>
-                        <div className="space-y-6">
-                          {(item.steps || []).map((step, idx) => (
-                            <div key={idx} className="flex gap-4">
-                              <span className="flex-shrink-0 w-8 h-8 rounded-full bg-orange-600 text-white flex items-center justify-center font-bold text-sm">
-                                {idx + 1}
-                              </span>
-                              <p className="text-neutral-700 leading-relaxed pt-1">
-                                {step}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-                        <button
-                          onClick={() => onViewRecipe?.(item)}
-                          className="w-full mt-8 py-3 bg-neutral-100 hover:bg-neutral-200 text-neutral-900 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2"
+                    <li key={idx}>
+                      <button
+                        onClick={() => toggleIngredient(item.shoppingId, idx)}
+                        className={cn(
+                          'w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-colors',
+                          ing.checked ? 'bg-neutral-50' : 'hover:bg-orange-50/60'
+                        )}
+                      >
+                        <span
+                          className={cn(
+                            'w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0',
+                            ing.checked ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-neutral-300'
+                          )}
                         >
-                          <BookOpen size={16} />
-                          <span>Mở xem chi tiết đầy đủ</span>
-                        </button>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </motion.div>
-          ))}
+                          {ing.checked && <Check size={13} strokeWidth={3} />}
+                        </span>
+                        <span className={cn('flex-1 font-medium', ing.checked && 'line-through text-neutral-400')}>{ing.name}</span>
+                        <span className={cn('text-sm font-semibold', ing.checked ? 'text-neutral-300' : 'text-neutral-500')}>
+                          {formatIngredientAmount(ing)}
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+                {complete && (
+                  <a
+                    href={href.cook(item.day)}
+                    className="m-3 mt-0 h-11 rounded-2xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm flex items-center justify-center gap-2"
+                  >
+                    Đủ nguyên liệu rồi — bắt đầu nấu <ArrowRight size={16} />
+                  </a>
+                )}
+              </motion.div>
+            );
+          })}
         </AnimatePresence>
       </div>
-    </div>
+    </main>
   );
 };

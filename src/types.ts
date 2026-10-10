@@ -2,27 +2,46 @@ export interface Ingredient {
   name: string;
   amount: string;
   unit: string;
-  checked?: boolean;
+  note?: string; // Công dụng / ghi chú ngắn
+  checked?: boolean; // Dùng cho danh sách đi chợ
+}
+
+export interface RecipeSection {
+  title: string;
+  // Markdown rút gọn: "- gạch đầu dòng", "1. bước", "| bảng |", "> Bí quyết", "### Tiêu đề nhỏ", **in đậm**
+  content: string;
 }
 
 export interface Recipe {
   id: string;
+  day: number; // Ngày thứ mấy trong hành trình 100 ngày
   name: string;
-  thumbnail: string;
+  emoji?: string; // Dùng làm ảnh bìa khi chưa có ảnh
+  thumbnail?: string;
   description: string;
-  ingredients: Ingredient[];
-  steps: string[];
-  method: string;
+  style?: string; // Phong cách
+  time?: string; // Thời gian, vd "25–30 phút"
+  difficulty: number; // 1–5
+  servings?: string; // Khẩu phần, vd "1 người"
   category?: string;
   mealTime?: string;
-}
-
-export interface ShoppingItem extends Recipe {
-  shoppingId: string;
-  addedAt: number;
+  ingredients: Ingredient[];
+  sections: RecipeSection[];
 }
 
 export interface RecipeData {
+  version?: number;
   updatedAt: number;
   recipes: Recipe[];
+}
+
+export interface ShoppingItem {
+  shoppingId: string;
+  recipeId: string;
+  day: number;
+  name: string;
+  emoji?: string;
+  thumbnail?: string;
+  addedAt: number;
+  ingredients: Ingredient[];
 }

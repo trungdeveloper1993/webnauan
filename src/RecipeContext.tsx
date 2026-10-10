@@ -1,5 +1,7 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { Recipe, ShoppingItem, RecipeData } from './types';
+import { makeId, readStorage, writeStorage } from './lib/utils';
+import { normalizeRecipe, sortByDay } from './lib/recipe';
 
 interface RecipeContextType {
   recipes: Recipe[];
@@ -7,82 +9,66 @@ interface RecipeContextType {
   updatedAt: number;
   isLoading: boolean;
   hasLocalChanges: boolean;
-  addRecipe: (recipe: Omit<Recipe, 'id'>) => void;
+  addRecipe: (recipe: Omit<Recipe, 'id'>) => Recipe;
   updateRecipe: (id: string, recipe: Recipe) => void;
   deleteRecipe: (id: string) => void;
   addToShopping: (recipe: Recipe) => void;
   removeFromShopping: (shoppingId: string) => void;
   removeAllFromShopping: () => void;
-  toggleIngredient: (shoppingId: string, ingredientName: string) => void;
+  toggleIngredient: (shoppingId: string, index: number) => void;
   exportRecipes: () => void;
   reloadFromSource: () => Promise<void>;
 }
 
 const RecipeContext = createContext<RecipeContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'recipeData';
+// Đổi key khi đổi cấu trúc dữ liệu để bỏ qua dữ liệu kiểu cũ còn trong trình duyệt
+const STORAGE_KEY = 'nauan.recipes.v2';
+const SHOPPING_KEY = 'nauan.shopping.v2';
 const SOURCE_URL = `${import.meta.env.BASE_URL}recipes.json`;
 
-const readLocal = (): RecipeData | null => {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as RecipeData) : null;
-  } catch {
-    return null;
-  }
-};
-
-const writeLocal = (data: RecipeData) => {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+const toData = (raw: any): RecipeData | null => {
+  if (!raw || !Array.isArray(raw.recipes)) return null;
+  return {
+    version: 2,
+    updatedAt: Number(raw.updatedAt) || 0,
+    recipes: raw.recipes.map(normalizeRecipe),
+  };
 };
 
 const fetchSource = async (): Promise<RecipeData | null> => {
   try {
     const res = await fetch(SOURCE_URL, { cache: 'no-store' });
     if (!res.ok) return null;
-    return (await res.json()) as RecipeData;
+    return toData(await res.json());
   } catch {
     return null;
   }
 };
 
 export const RecipeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [rawRecipes, setRecipes] = useState<Recipe[]>([]);
   const [updatedAt, setUpdatedAt] = useState<number>(0);
   const [remoteUpdatedAt, setRemoteUpdatedAt] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isHydrated, setIsHydrated] = useState<boolean>(false);
-
-  const [shoppingList, setShoppingList] = useState<ShoppingItem[]>(() => {
-    try {
-      const saved = localStorage.getItem('shoppingList');
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
-  });
+  const [shoppingList, setShoppingList] = useState<ShoppingItem[]>(() => readStorage(SHOPPING_KEY, []));
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const local = readLocal();
+      const local = toData(readStorage(STORAGE_KEY, null));
       const remote = await fetchSource();
-
       if (cancelled) return;
 
       if (remote && (!local || remote.updatedAt > local.updatedAt)) {
         setRecipes(remote.recipes);
         setUpdatedAt(remote.updatedAt);
         setRemoteUpdatedAt(remote.updatedAt);
-        writeLocal(remote);
       } else if (local) {
         setRecipes(local.recipes);
         setUpdatedAt(local.updatedAt);
         setRemoteUpdatedAt(remote?.updatedAt ?? local.updatedAt);
-      } else {
-        setRecipes([]);
-        setUpdatedAt(0);
-        setRemoteUpdatedAt(0);
       }
 
       setIsHydrated(true);
@@ -96,26 +82,26 @@ export const RecipeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   useEffect(() => {
     if (!isHydrated) return;
-    writeLocal({ updatedAt, recipes });
-  }, [recipes, updatedAt, isHydrated]);
+    writeStorage(STORAGE_KEY, { version: 2, updatedAt, recipes: rawRecipes });
+  }, [rawRecipes, updatedAt, isHydrated]);
 
   useEffect(() => {
-    localStorage.setItem('shoppingList', JSON.stringify(shoppingList));
+    writeStorage(SHOPPING_KEY, shoppingList);
   }, [shoppingList]);
+
+  const recipes = useMemo(() => sortByDay(rawRecipes), [rawRecipes]);
 
   const bump = () => setUpdatedAt(Date.now());
 
   const addRecipe = (newRecipe: Omit<Recipe, 'id'>) => {
-    const recipe: Recipe = {
-      ...newRecipe,
-      id: Math.random().toString(36).substr(2, 9),
-    };
+    const recipe = normalizeRecipe({ ...newRecipe, id: makeId() });
     setRecipes((prev) => [...prev, recipe]);
     bump();
+    return recipe;
   };
 
   const updateRecipe = (id: string, updated: Recipe) => {
-    setRecipes((prev) => prev.map((r) => (r.id === id ? updated : r)));
+    setRecipes((prev) => prev.map((r) => (r.id === id ? normalizeRecipe(updated) : r)));
     bump();
   };
 
@@ -126,41 +112,41 @@ export const RecipeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const addToShopping = (recipe: Recipe) => {
     const item: ShoppingItem = {
-      ...recipe,
-      shoppingId: Math.random().toString(36).substr(2, 9),
+      shoppingId: makeId(),
+      recipeId: recipe.id,
+      day: recipe.day,
+      name: recipe.name,
+      emoji: recipe.emoji,
+      thumbnail: recipe.thumbnail,
       addedAt: Date.now(),
       ingredients: recipe.ingredients.map((ing) => ({ ...ing, checked: false })),
     };
-    setShoppingList((prev) => [...prev, item]);
+    // Mỗi món chỉ giữ một danh sách: thêm lại thì thay bằng danh sách mới
+    setShoppingList((prev) => [item, ...prev.filter((i) => i.recipeId !== recipe.id)]);
   };
 
   const removeFromShopping = (shoppingId: string) => {
     setShoppingList((prev) => prev.filter((item) => item.shoppingId !== shoppingId));
   };
 
-  const removeAllFromShopping = () => {
-    setShoppingList([]);
-  };
+  const removeAllFromShopping = () => setShoppingList([]);
 
-  const toggleIngredient = (shoppingId: string, ingredientName: string) => {
+  const toggleIngredient = (shoppingId: string, index: number) => {
     setShoppingList((prev) =>
-      prev.map((item) => {
-        if (item.shoppingId === shoppingId) {
-          return {
-            ...item,
-            ingredients: item.ingredients.map((ing) =>
-              ing.name === ingredientName ? { ...ing, checked: !ing.checked } : ing
-            ),
-          };
-        }
-        return item;
-      })
+      prev.map((item) =>
+        item.shoppingId === shoppingId
+          ? {
+              ...item,
+              ingredients: item.ingredients.map((ing, i) => (i === index ? { ...ing, checked: !ing.checked } : ing)),
+            }
+          : item
+      )
     );
   };
 
   const exportRecipes = () => {
-    const data: RecipeData = { updatedAt, recipes };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const data: RecipeData = { version: 2, updatedAt, recipes };
+    const blob = new Blob([JSON.stringify(data, null, 2) + '\n'], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -178,7 +164,6 @@ export const RecipeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       setRecipes(remote.recipes);
       setUpdatedAt(remote.updatedAt);
       setRemoteUpdatedAt(remote.updatedAt);
-      writeLocal(remote);
     }
     setIsLoading(false);
   };
