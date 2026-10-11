@@ -4,8 +4,9 @@ import { ArrowRight, Check, ChevronLeft, ChevronRight, Sun, X } from 'lucide-rea
 import { Recipe } from '../types';
 import { useJourney } from '../JourneyContext';
 import { href } from '../lib/router';
+import { displayTitle, stripDuration } from '../lib/recipe';
 import { cn, pad2 } from '../lib/utils';
-import { Markdown } from './Markdown';
+import { Inline, Markdown } from './Markdown';
 import { IngredientsPanel } from './IngredientsPanel';
 import { RatingInput } from './ui';
 
@@ -149,8 +150,10 @@ export const CookingMode: React.FC<CookingModeProps> = ({ recipe, nextRecipe, on
               <StepLabel>
                 Bước {i + 1}/{recipe.sections.length}
               </StepLabel>
-              <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-6">{section.title}</h2>
-              <Markdown content={section.content} large interactive timerLabel={section.title} />
+              <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-6 [&_button]:text-[0.5em] [&_button]:align-middle">
+                <Inline text={displayTitle(section.title)} timerLabel={stripDuration(section.title)} />
+              </h2>
+              <Markdown content={section.content} large interactive timerLabel={stripDuration(section.title)} />
             </div>
           ))}
 

@@ -23,10 +23,10 @@ import { Recipe } from '../types';
 import { useRecipes } from '../RecipeContext';
 import { useJourney } from '../JourneyContext';
 import { href, navigate, replaceRoute } from '../lib/router';
-import { DIFFICULTY_LABELS, STAGES } from '../lib/recipe';
+import { DIFFICULTY_LABELS, displayTitle, STAGES, stripDuration } from '../lib/recipe';
 import { cn, pad2 } from '../lib/utils';
 import { DifficultyMeter, Modal, RatingInput, RecipeCover, Tag } from './ui';
-import { Markdown } from './Markdown';
+import { Inline, Markdown } from './Markdown';
 import { IngredientsPanel } from './IngredientsPanel';
 import { CookingMode } from './CookingMode';
 
@@ -270,9 +270,12 @@ export const RecipePage: React.FC<RecipePageProps> = ({ day, cooking, onEdit }) 
                 <span className="w-11 h-11 rounded-2xl bg-orange-600 text-white font-black text-lg flex items-center justify-center shrink-0 shadow-lg shadow-orange-600/25">
                   {i + 1}
                 </span>
-                <h2 className="text-xl sm:text-2xl font-black tracking-tight text-neutral-900">{s.title}</h2>
+                {/* Thời gian trong tiêu đề ("Chiên thịt — 8–12 phút") cũng bấm để hẹn giờ */}
+                <h2 className="text-xl sm:text-2xl font-black tracking-tight text-neutral-900 [&_button]:text-[0.62em] [&_button]:align-middle">
+                  <Inline text={displayTitle(s.title)} timerLabel={stripDuration(s.title)} />
+                </h2>
               </div>
-              <Markdown content={s.content} interactive timerLabel={s.title} />
+              <Markdown content={s.content} interactive timerLabel={stripDuration(s.title)} />
             </section>
           ))}
 

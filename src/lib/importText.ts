@@ -22,6 +22,15 @@ export interface ParseResult {
 
 const TITLE_RE = /^ngày\s*(\d+)\s*[—–:.\-]+\s*(.+)$/i;
 const META_RE = /^(Phong cách|Thời gian|Độ khó|Khẩu phần|Bữa ăn|Phân loại|Emoji|Ảnh)\s*:\s*(.+)$/i;
+const META_LABEL_RE = /^(Phong cách|Thời gian|Độ khó|Khẩu phần|Bữa ăn|Phân loại)\s*:?$/i;
+const STEPS_RE = /^(cách làm|cách nấu|cách chế biến|thực hiện|các bước|hướng dẫn)/i;
+const DIFFICULTY_WORDS: [RegExp, number][] = [
+  [/rất dễ/i, 1],
+  [/thử thách|rất khó/i, 5],
+  [/trung bình|vừa/i, 3],
+  [/khó/i, 4],
+  [/dễ/i, 2],
+];
 const NUMBERED_RE = /^(\d+)[.)]\s+(.+)$/;
 const MD_HEADING_RE = /^(#{1,6})\s+(.+)$/;
 const KEYWORD_HEADER_RE =
@@ -76,12 +85,15 @@ const splitCells = (raw: string) =>
     : raw.split('\t').map((c) => c.trim());
 const isSeparatorRow = (cells: string[]) => cells.every((c) => /^:?-{2,}:?$/.test(c));
 
+const FRACTIONS: Record<string, string> = { '½': '1/2', '¼': '1/4', '¾': '3/4', '⅓': '1/3', '⅔': '2/3' };
 const QUALIFIER_RE = /\s+(nếu thích|nếu có|tùy thích|tùy khẩu vị|tùy ý)$/i;
 
 // "250–300 g phần ăn được, hoặc cá phi lê 180–200 g" → 250–300 · "g phần ăn được" · ghi chú "hoặc cá phi lê 180–200 g"
 // "100 g nếu thích" → 100 · "g" · ghi chú "nếu thích"; "khoảng 70–80 g" → 70–80 · "g"
 export const splitQuantity = (qty: string): Pick<Ingredient, 'amount' | 'unit' | 'note'> => {
-  const q = stripEndPunct(qty).replace(/^(khoảng|tầm|chừng|cỡ)\s+(?=\d)/i, '');
+  const q = stripEndPunct(qty)
+    .replace(/[½¼¾⅓⅔]/g, (c) => FRACTIONS[c])
+    .replace(/^(khoảng|tầm|chừng|cỡ)\s+(?=\d)/i, '');
   const m = q.match(QTY_RE);
   if (!m) return { amount: q, unit: '' };
   let unit = m[2].trim();
@@ -233,7 +245,7 @@ export const parseRecipeText = (input: string): ParseResult => {
   const lines = input
     .replace(/\r\n?/g, '\n')
     .replace(/\u00a0/g, ' ')
-    .replace(/[\u200b\u200c\ufeff]/g, '') // gi\u1eef \u200d v\u00ec emoji gh\u00e9p c\u1ea7n n\u00f3
+    .replace(/[\u200b\u200c\ufeff]/g, '') // giữ \u200d vì emoji ghép cần nó
     .split('\n')
     .map((l) => l.replace(/\s+$/, ''));
 
@@ -244,11 +256,12 @@ export const parseRecipeText = (input: string): ParseResult => {
   const titleIndex = lines.findIndex((l) => l.trim());
   if (titleIndex === -1) return { recipe, found, warnings: ['Chưa có nội dung để phân tích.'] };
 
-  // ----- Tiêu đề (có thể bắt đầu bằng emoji, vd "🍤 Ngày 2 — ...") -----
+  // ----- Tiêu đề: emoji có thể ở đầu ("🍤 Ngày 2 — ...") hoặc cuối ("Ngày 5: ... 🍖") -----
   const rawTitle = stripMd(lines[titleIndex]);
   const lead = rawTitle.match(/^[^\p{L}\p{N}]+/u)?.[0] ?? '';
-  const leadEmoji = /\p{Extended_Pictographic}/u.test(lead) ? lead.replace(/\s+/g, '') : '';
-  const title = rawTitle.slice(lead.length).trim();
+  const trail = rawTitle.slice(lead.length).match(/[\s\p{Extended_Pictographic}‍️]+$/u)?.[0] ?? '';
+  const titleEmoji = (lead + trail).replace(/[^\p{Extended_Pictographic}‍️]/gu, '');
+  const title = rawTitle.slice(lead.length, rawTitle.length - trail.length).trim();
   const titleMatch = title.match(TITLE_RE);
   if (titleMatch) {
     recipe.day = Number(titleMatch[1]);
@@ -261,22 +274,36 @@ export const parseRecipeText = (input: string): ParseResult => {
   const body = cleanLines(lines.slice(titleIndex + 1));
 
   // ----- Xác định cách đánh dấu các phần -----
+  const isKeywordHeader = (raw: string) => {
+    if (isTabRow(raw) || isPipeRow(raw)) return false;
+    const plain = stripMd(raw.trim());
+    return KEYWORD_HEADER_RE.test(plain) && plain.length <= 40 && !/[.!?]$/.test(plain) && !/:\s*\S/.test(plain);
+  };
+  // "1. Tiêu đề" ngắn, không kết thúc bằng dấu chấm (bước nấu thì có), có thể là câu hỏi
+  const numberedTitle = (raw: string, n: number, maxLength = 80) => {
+    const m = stripMd(raw.trim()).match(NUMBERED_RE);
+    if (!m || Number(m[1]) !== n) return null;
+    const t = m[2].trim();
+    return /[.!;,]$/.test(t) || t.length > maxLength ? null : t;
+  };
+
   const mdLevels = body
     .map((l) => l.trim().match(MD_HEADING_RE)?.[1].length)
     .filter((n): n is number => Boolean(n));
   const sectionLevel = mdLevels.length ? Math.min(...mdLevels) : 0;
-  // Có dòng "1. Tiêu đề" (ngắn, không kết thúc bằng dấu chấm) → các phần được đánh số
-  const hasNumbered =
-    !sectionLevel &&
-    body.some((l) => {
-      const m = stripMd(l.trim()).match(NUMBERED_RE);
-      return m?.[1] === '1' && !/[.!;,]$/.test(m[2].trim()) && m[2].trim().length <= 80;
-    });
+  const firstNumbered = body.findIndex((l) => numberedTitle(l, 1) !== null);
+  const firstKeyword = body.findIndex(isKeywordHeader);
+  // Kiểu "Nguyên liệu / Cách làm / Bí quyết" (không đánh số) nếu tiêu đề chữ xuất hiện trước "1. ..."
+  const keywordMode = !sectionLevel && firstKeyword !== -1 && (firstNumbered === -1 || firstKeyword < firstNumbered);
+  // Kiểu "1. Nguyên liệu / 2. Bước 1 — ... / 3. ..." (các phần được đánh số)
+  const hasNumbered = !sectionLevel && !keywordMode && firstNumbered !== -1;
 
   const sections: { title: string; lines: string[] }[] = [];
   const descLines: string[] = [];
   let expected = 1;
   let lastItem = 0;
+  let inSteps = false; // đang ở trong phần "Cách làm"
+  let expectedStep = 1;
 
   const headerTitle = (line: string): string | null => {
     const trimmed = line.trim();
@@ -288,19 +315,41 @@ export const parseRecipeText = (input: string): ParseResult => {
     }
     const plain = stripMd(trimmed);
     if (hasNumbered) {
-      const m = plain.match(NUMBERED_RE);
-      if (!m || Number(m[1]) !== expected) return null;
-      const t = m[2].trim();
       const continuesList = lastItem === expected - 1 && lastItem > 0;
-      // Bước nấu thường kết thúc bằng dấu chấm; tiêu đề thì không (có thể là câu hỏi)
-      if (/[.!;,]$/.test(t) || t.length > (continuesList ? 50 : 80)) return null;
-      return t;
+      return numberedTitle(line, expected, continuesList ? 50 : 80);
     }
-    if (KEYWORD_HEADER_RE.test(plain) && plain.length <= 40 && !/[.!?]$/.test(plain) && !/:\s*\S/.test(plain)) {
+    if (isKeywordHeader(line)) {
+      inSteps = STEPS_RE.test(plain);
+      expectedStep = 1;
       return plain.replace(/:$/, '');
+    }
+    // Trong "Cách làm", các dòng "1. Ướp thịt — 5 phút" thành từng phần riêng để chế độ nấu đi từng bước
+    if (keywordMode && inSteps) {
+      const t = numberedTitle(line, expectedStep, 60);
+      if (t !== null) {
+        expectedStep++;
+        return t;
+      }
     }
     return null;
   };
+
+  const applyMeta = (label: string, rawValue: string) => {
+    const key = label.toLocaleLowerCase('vi');
+    const value = stripEndPunct(rawValue);
+    if (key === 'phong cách') recipe.style = value;
+    else if (key === 'thời gian') recipe.time = value.replace(/^(khoảng|tầm|chừng)\s+/i, '');
+    else if (key === 'độ khó') {
+      const d = value.match(/\d/);
+      const level = d ? Number(d[0]) : DIFFICULTY_WORDS.find(([re]) => re.test(value))?.[1];
+      if (level) recipe.difficulty = Math.min(5, Math.max(1, level));
+    } else if (key === 'khẩu phần') recipe.servings = value.replace(/\s+ăn$/i, '');
+    else if (key === 'bữa ăn') recipe.mealTime = MEAL_ALIASES.find(([re]) => re.test(value))?.[1] ?? MEAL_TIMES[1];
+    else if (key === 'phân loại') recipe.category = value;
+    else if (key === 'emoji') recipe.emoji = value;
+    else if (key === 'ảnh') recipe.thumbnail = value;
+  };
+  let pendingMeta: string | null = null; // nhãn đứng một mình, giá trị ở dòng sau ("Thời gian" ↵ "30–40 phút")
 
   for (const raw of body) {
     const t = headerTitle(raw);
@@ -316,24 +365,25 @@ export const parseRecipeText = (input: string): ParseResult => {
     if (item) lastItem = Number(item[1]);
 
     if (!sections.length) {
-      const meta = stripMd(raw.trim().replace(/^[-*•]\s+/, '')).match(META_RE);
+      const text = stripMd(raw.trim().replace(/^[-*•]\s+/, ''));
+      if (!text) continue;
+      if (pendingMeta) {
+        applyMeta(pendingMeta, text);
+        pendingMeta = null;
+        continue;
+      }
+      const label = text.match(META_LABEL_RE);
+      if (label) {
+        pendingMeta = label[1];
+        continue;
+      }
+      const meta = text.match(META_RE);
       if (meta) {
-        const key = meta[1].toLocaleLowerCase('vi');
-        const value = stripEndPunct(meta[2]);
-        if (key === 'phong cách') recipe.style = value;
-        else if (key === 'thời gian') recipe.time = value.replace(/^(khoảng|tầm|chừng)\s+/i, '');
-        else if (key === 'độ khó') {
-          const d = value.match(/\d/);
-          if (d) recipe.difficulty = Math.min(5, Math.max(1, Number(d[0])));
-        } else if (key === 'khẩu phần') recipe.servings = value;
-        else if (key === 'bữa ăn') recipe.mealTime = MEAL_ALIASES.find(([re]) => re.test(value))?.[1] ?? MEAL_TIMES[1];
-        else if (key === 'phân loại') recipe.category = value;
-        else if (key === 'emoji') recipe.emoji = value;
-        else if (key === 'ảnh') recipe.thumbnail = value;
+        applyMeta(meta[1], meta[2]);
         continue;
       }
       // Dòng thông tin không có nhãn: "Dễ làm · 2/5", "25–35 phút", "1 người ăn"
-      const plain = stripEndPunct(stripMd(raw.trim()));
+      const plain = stripEndPunct(text);
       if (plain.length <= 30) {
         const difficulty = plain.match(/(\d)\s*\/\s*5\b/);
         if (difficulty) {
@@ -350,10 +400,15 @@ export const parseRecipeText = (input: string): ParseResult => {
           continue;
         }
       }
-      if (raw.trim()) descLines.push(stripMd(raw.trim()));
+      descLines.push(text);
       continue;
     }
     sections[sections.length - 1].lines.push(raw);
+  }
+
+  // Phần "Cách làm" chỉ còn là vỏ sau khi các bước đã tách riêng thì bỏ đi
+  for (let k = sections.length - 1; k >= 0; k--) {
+    if (STEPS_RE.test(sections[k].title) && !sections[k].lines.some((l) => l.trim())) sections.splice(k, 1);
   }
 
   if (descLines.length) recipe.description = descLines.join(' ');
@@ -363,6 +418,10 @@ export const parseRecipeText = (input: string): ParseResult => {
   if (ingIndex !== -1) {
     const { ingredients, rest } = parseIngredients(sections[ingIndex].lines);
     if (ingredients.length) {
+      // Dòng đầu chưa có nhóm nhưng phía sau có nhóm ("Phần sốt chua ngọt:") → đặt tên nhóm cho dễ nhìn
+      if (ingredients.some((i) => i.group) && ingredients.some((i) => !i.group)) {
+        ingredients.forEach((i) => (i.group ||= 'Nguyên liệu chính'));
+      }
       recipe.ingredients = ingredients;
       if (rest.some((l) => l.trim())) sections[ingIndex] = { ...sections[ingIndex], lines: rest };
       else sections.splice(ingIndex, 1);
@@ -379,7 +438,7 @@ export const parseRecipeText = (input: string): ParseResult => {
   if (!recipe.emoji) {
     // Ưu tiên emoji ở đầu tiêu đề, thêm vài emoji đoán từ tên món
     const guessed = splitGraphemes(guessEmoji(recipe.name ?? '')).filter((e) => e !== '🍳');
-    const lead = splitGraphemes(leadEmoji);
+    const lead = splitGraphemes(titleEmoji);
     recipe.emoji = [...lead, ...guessed.filter((e) => !lead.includes(e))].slice(0, 4).join('') || '🍳';
   }
 

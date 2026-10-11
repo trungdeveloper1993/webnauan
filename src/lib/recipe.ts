@@ -182,5 +182,13 @@ export const scaleAmount = (amount: string, factor: number) => {
   return n == null ? amount : formatNumber(n * factor);
 };
 
+// "Chiên thịt — 8–12 phút" → "Chiên thịt" (nhãn cho hộp hẹn giờ, tránh lặp thời gian)
+export const stripDuration = (title: string) =>
+  title.replace(/\s*[—–:-]\s*(khoảng\s+)?\d+(?:[.,]\d+)?(?:\s*[–-]\s*\d+(?:[.,]\d+)?)?\s*(phút|giây|tiếng|giờ)\s*$/i, '').trim() || title;
+
+// Bỏ dấu "—" trước thời gian ở cuối tiêu đề vì thời gian hiện thành nút hẹn giờ: "Chiên thịt [8–12 phút]"
+export const displayTitle = (title: string) =>
+  title.replace(/\s*[—–]\s*(?=(khoảng\s+)?\d[\d.,/–-]*\s*(phút|giây|tiếng|giờ)\s*$)/i, ' ');
+
 export const formatIngredientAmount = (ing: Ingredient, factor = 1) =>
   [scaleAmount(ing.amount, factor), ing.unit].filter(Boolean).join(' ');

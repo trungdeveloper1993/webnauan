@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": 1791707664458,
+  "updatedAt": 1791709071002,
   "recipes": [
     {
       "id": "ngay-1",
@@ -482,6 +482,116 @@
         {
           "title": "Checklist nấu món ngày 4",
           "content": "- Vo gạo và nấu cơm\n- Sơ chế cá, gừng và hành lá\n- Hấp cá đến khi chín\n- Nấu canh cà chua trứng\n- Bày cơm, cá và canh ra bàn"
+        }
+      ]
+    },
+    {
+      "id": "ngay-5",
+      "day": 5,
+      "name": "Thịt heo sốt chua ngọt kiểu Trung Hoa",
+      "emoji": "🍖🥓",
+      "thumbnail": "images/ngay-5.webp",
+      "description": "Vị chua nhẹ, ngọt đậm, thịt giòn bên ngoài mềm bên trong, ăn cùng cơm nóng rất bắt vị.",
+      "style": "Món Hoa",
+      "time": "30–40 phút",
+      "difficulty": 2,
+      "servings": "1 người",
+      "category": "Món chiên",
+      "mealTime": "Bữa tối",
+      "ingredients": [
+        {
+          "name": "Thịt nạc vai heo",
+          "amount": "200",
+          "unit": "g",
+          "group": "Nguyên liệu chính"
+        },
+        {
+          "name": "Ớt chuông",
+          "amount": "1/2",
+          "unit": "quả",
+          "group": "Nguyên liệu chính"
+        },
+        {
+          "name": "Hành tây",
+          "amount": "1/4",
+          "unit": "củ",
+          "group": "Nguyên liệu chính"
+        },
+        {
+          "name": "Dứa (thơm)",
+          "amount": "50",
+          "unit": "g",
+          "group": "Nguyên liệu chính"
+        },
+        {
+          "name": "Tỏi",
+          "amount": "2",
+          "unit": "tép",
+          "group": "Nguyên liệu chính"
+        },
+        {
+          "name": "Bột bắp",
+          "amount": "2",
+          "unit": "muỗng canh",
+          "group": "Nguyên liệu chính"
+        },
+        {
+          "name": "Dầu ăn, muối, tiêu",
+          "amount": "",
+          "unit": "",
+          "group": "Nguyên liệu chính"
+        },
+        {
+          "name": "Tương cà",
+          "amount": "2",
+          "unit": "muỗng canh",
+          "group": "Phần sốt chua ngọt"
+        },
+        {
+          "name": "Giấm gạo",
+          "amount": "1",
+          "unit": "muỗng canh",
+          "group": "Phần sốt chua ngọt"
+        },
+        {
+          "name": "Đường",
+          "amount": "1",
+          "unit": "muỗng canh",
+          "group": "Phần sốt chua ngọt"
+        },
+        {
+          "name": "Nước tương",
+          "amount": "1",
+          "unit": "muỗng cà phê",
+          "group": "Phần sốt chua ngọt"
+        },
+        {
+          "name": "Nước lọc",
+          "amount": "2",
+          "unit": "muỗng canh",
+          "group": "Phần sốt chua ngọt"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Ướp thịt — 5 phút",
+          "content": "Cắt thịt thành miếng vuông khoảng 2–3cm. Ướp với một ít muối, tiêu và 1 muỗng cà phê nước tương. Để nghỉ 5 phút, sau đó áo đều bằng bột bắp."
+        },
+        {
+          "title": "Chiên thịt — 8–12 phút",
+          "content": "Làm nóng dầu ở mức vừa cao, cho thịt vào chiên từng mẻ để không bị hấp hơi. Trở đều đến khi vàng và chín hoàn toàn. Vớt ra để ráo dầu."
+        },
+        {
+          "title": "Xào rau củ — 3 phút",
+          "content": "Chắt bớt dầu, giữ lại khoảng 1 muỗng canh. Phi tỏi thơm, cho hành tây, ớt chuông và dứa vào đảo trên lửa lớn khoảng 2–3 phút."
+        },
+        {
+          "title": "Hoàn thiện sốt — 3–4 phút",
+          "content": "Trộn toàn bộ nguyên liệu làm sốt, đổ vào chảo và đun đến khi hơi sánh. Cho thịt vào đảo nhanh 30–60 giây để sốt phủ đều. Tắt bếp khi thịt còn độ giòn."
+        },
+        {
+          "title": "Bí quyết để món ngon hơn",
+          "content": "- Muốn chua hơn: thêm ½ muỗng cà phê giấm.\n- Muốn đậm vị: thêm một ít nước tương, đừng thêm quá nhiều muối.\n- Muốn giòn lâu: chỉ trộn thịt với sốt ngay trước khi ăn.\n- Ăn kèm một bát cơm nóng; món này đã có rau củ nên không nhất thiết phải nấu thêm món rau."
         }
       ]
     }
