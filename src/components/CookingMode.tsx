@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, Check, ChevronLeft, ChevronRight, Sun, X } from 'lucide-react';
-import { Recipe } from '../types';
+import { Recipe, RecipeKind } from '../types';
 import { useJourney } from '../JourneyContext';
 import { href } from '../lib/router';
 import { displayTitle, stripDuration } from '../lib/recipe';
@@ -49,14 +49,17 @@ interface CookingModeProps {
   recipe: Recipe;
   nextRecipe?: Recipe;
   onClose: () => void;
+  kind?: RecipeKind;
 }
 
-export const CookingMode: React.FC<CookingModeProps> = ({ recipe, nextRecipe, onClose }) => {
+export const CookingMode: React.FC<CookingModeProps> = ({ recipe, nextRecipe, onClose, kind = 'recipe' }) => {
   const { isCooked, markCooked, notes, setNote, ratings, setRating } = useJourney();
   const [step, setStep] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
   const awake = useWakeLock();
-  const cooked = isCooked(recipe.id);
+  // Gia vị không tính vào hành trình nên màn cuối luôn là "xong", không đánh dấu hay chấm điểm
+  const isSauce = kind === 'sauce';
+  const cooked = isSauce || isCooked(recipe.id);
 
   const titles = ['Nguyên liệu', ...recipe.sections.map((s) => s.title), 'Hoàn thành'];
   const total = titles.length;
@@ -112,7 +115,7 @@ export const CookingMode: React.FC<CookingModeProps> = ({ recipe, nextRecipe, on
           </button>
           <div className="flex-1 min-w-0">
             <div className="text-[11px] font-black uppercase tracking-widest text-orange-600">
-              Đang nấu · Ngày {pad2(recipe.day)}
+              {isSauce ? 'Đang làm · Gia vị' : `Đang nấu · Ngày ${pad2(recipe.day)}`}
             </div>
             <div className="font-bold truncate text-neutral-900">{recipe.name}</div>
           </div>
@@ -169,14 +172,16 @@ export const CookingMode: React.FC<CookingModeProps> = ({ recipe, nextRecipe, on
               {cooked ? '🎉' : '🍽️'}
             </motion.div>
             <h2 className="text-3xl md:text-4xl font-black tracking-tight mt-5">
-              {cooked ? `Hoàn thành Ngày ${recipe.day}!` : 'Sắp xong rồi!'}
+              {isSauce ? 'Xong rồi!' : cooked ? `Hoàn thành Ngày ${recipe.day}!` : 'Sắp xong rồi!'}
             </h2>
             <p className="text-neutral-500 mt-2 text-lg">
-              {cooked
-                ? 'Tiến độ hành trình đã được cập nhật. Chúc ngon miệng!'
-                : 'Bày món ra đĩa, thưởng thức, rồi đánh dấu đã nấu nhé.'}
+              {isSauce
+                ? 'Nếm lại lần cuối rồi cho ra chén hoặc hũ sạch nhé.'
+                : cooked
+                  ? 'Tiến độ hành trình đã được cập nhật. Chúc ngon miệng!'
+                  : 'Bày món ra đĩa, thưởng thức, rồi đánh dấu đã nấu nhé.'}
             </p>
-            {cooked && (
+            {cooked && !isSauce && (
               <div className="text-left mt-8">
                 <p className="text-xs font-black uppercase tracking-widest text-neutral-400 mb-3">Món này được mấy điểm trên 10?</p>
                 <RatingInput value={ratings[recipe.id]} onChange={(score) => setRating(recipe.id, score)} />

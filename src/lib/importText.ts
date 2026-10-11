@@ -21,8 +21,8 @@ export interface ParseResult {
 }
 
 const TITLE_RE = /^ngày\s*(\d+)\s*[—–:.\-]+\s*(.+)$/i;
-const META_RE = /^(Phong cách|Thời gian|Độ khó|Khẩu phần|Bữa ăn|Phân loại|Emoji|Ảnh)\s*:\s*(.+)$/i;
-const META_LABEL_RE = /^(Phong cách|Thời gian|Độ khó|Khẩu phần|Bữa ăn|Phân loại)\s*:?$/i;
+const META_RE = /^(Phong cách|Thời gian|Độ khó|Khẩu phần|Bữa ăn|Phân loại|Dùng với|Dùng kèm|Emoji|Ảnh)\s*:\s*(.+)$/i;
+const META_LABEL_RE = /^(Phong cách|Thời gian|Độ khó|Khẩu phần|Bữa ăn|Phân loại|Dùng với|Dùng kèm)\s*:?$/i;
 const STEPS_RE = /^(cách làm|cách nấu|cách chế biến|thực hiện|các bước|hướng dẫn)/i;
 const DIFFICULTY_WORDS: [RegExp, number][] = [
   [/rất dễ/i, 1],
@@ -346,6 +346,7 @@ export const parseRecipeText = (input: string): ParseResult => {
     } else if (key === 'khẩu phần') recipe.servings = value.replace(/\s+ăn$/i, '');
     else if (key === 'bữa ăn') recipe.mealTime = MEAL_ALIASES.find(([re]) => re.test(value))?.[1] ?? MEAL_TIMES[1];
     else if (key === 'phân loại') recipe.category = value;
+    else if (key === 'dùng với' || key === 'dùng kèm') recipe.pairing = value;
     else if (key === 'emoji') recipe.emoji = value;
     else if (key === 'ảnh') recipe.thumbnail = value;
   };

@@ -1,6 +1,7 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import {
+  Amphora,
   ArrowRight,
   BookOpen,
   Clock,
@@ -32,7 +33,7 @@ const fadeUp = {
 };
 
 export const HomePage: React.FC<{ onRandom: () => void }> = ({ onRandom }) => {
-  const { recipes, isLoading } = useRecipes();
+  const { recipes, sauces, isLoading } = useRecipes();
   const { isCooked, streak, isAdmin } = useJourney();
   const mapRef = useRef<HTMLElement>(null);
 
@@ -180,6 +181,30 @@ export const HomePage: React.FC<{ onRandom: () => void }> = ({ onRandom }) => {
 
       {/* ---------- Thư viện ---------- */}
       <Library recipes={recipes} />
+
+      {/* ---------- Góc gia vị ---------- */}
+      {sauces.length > 0 && (
+        <motion.section {...fadeUp} className="max-w-6xl mx-auto px-4 pt-16">
+          <SectionTitle
+            eyebrow="Góc gia vị"
+            title="Gia vị & nước chấm"
+            subtitle="Muối chấm, nước chấm, sốt pha sẵn để dùng với nhiều món."
+            right={
+              <a
+                href={href.sauces}
+                className="inline-flex items-center gap-2 h-11 px-5 rounded-2xl bg-white border border-emerald-200 hover:border-emerald-400 text-emerald-800 font-bold text-sm"
+              >
+                <Amphora size={16} /> Xem tất cả ({sauces.length}) <ArrowRight size={16} />
+              </a>
+            }
+          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {sauces.slice(0, 3).map((s) => (
+              <RecipeCard key={s.id} recipe={s} kind="sauce" />
+            ))}
+          </div>
+        </motion.section>
+      )}
     </main>
   );
 };

@@ -3,7 +3,7 @@ import { ChefHat, Download, Heart, Lock, LockOpen, Plus, RefreshCw, ShieldCheck 
 import { useRecipes } from '../RecipeContext';
 import { useJourney } from '../JourneyContext';
 
-export const Footer: React.FC<{ onAdd: () => void }> = ({ onAdd }) => {
+export const Footer: React.FC<{ onAdd: () => void; onAddSauce: () => void }> = ({ onAdd, onAddSauce }) => {
   const { exportRecipes, reloadFromSource, hasLocalChanges, isLoading } = useRecipes();
   const { isAdmin, setAdmin } = useJourney();
 
@@ -61,6 +61,12 @@ export const Footer: React.FC<{ onAdd: () => void }> = ({ onAdd }) => {
                   className="flex items-center gap-2 h-10 px-4 bg-orange-600 hover:bg-orange-700 text-white rounded-xl text-sm font-bold transition-all active:scale-95"
                 >
                   <Plus size={15} /> Thêm món
+                </button>
+                <button
+                  onClick={onAddSauce}
+                  className="flex items-center gap-2 h-10 px-4 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-sm font-bold transition-all active:scale-95"
+                >
+                  <Plus size={15} /> Thêm gia vị
                 </button>
                 <button
                   onClick={exportRecipes}

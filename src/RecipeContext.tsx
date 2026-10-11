@@ -1,10 +1,11 @@
 import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
-import { Recipe, ShoppingItem, RecipeData } from './types';
+import { Recipe, RecipeKind, ShoppingItem, RecipeData } from './types';
 import { makeId, readStorage, writeStorage } from './lib/utils';
-import { normalizeRecipe, sortByDay } from './lib/recipe';
+import { normalizeRecipe, normalizeSauce, slugify, sortByDay, sortByName } from './lib/recipe';
 
 interface RecipeContextType {
   recipes: Recipe[];
+  sauces: Recipe[];
   shoppingList: ShoppingItem[];
   updatedAt: number;
   isLoading: boolean;
@@ -12,7 +13,10 @@ interface RecipeContextType {
   addRecipe: (recipe: Omit<Recipe, 'id'>) => Recipe;
   updateRecipe: (id: string, recipe: Recipe) => void;
   deleteRecipe: (id: string) => void;
-  addToShopping: (recipe: Recipe) => void;
+  addSauce: (sauce: Omit<Recipe, 'id'>) => Recipe;
+  updateSauce: (id: string, sauce: Recipe) => void;
+  deleteSauce: (id: string) => void;
+  addToShopping: (recipe: Recipe, kind?: RecipeKind) => void;
   removeFromShopping: (shoppingId: string) => void;
   removeAllFromShopping: () => void;
   toggleIngredient: (shoppingId: string, index: number) => void;
@@ -33,6 +37,7 @@ const toData = (raw: any): RecipeData | null => {
     version: 2,
     updatedAt: Number(raw.updatedAt) || 0,
     recipes: raw.recipes.map(normalizeRecipe),
+    sauces: Array.isArray(raw.sauces) ? raw.sauces.map(normalizeSauce) : [],
   };
 };
 
@@ -48,6 +53,7 @@ const fetchSource = async (): Promise<RecipeData | null> => {
 
 export const RecipeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [rawRecipes, setRecipes] = useState<Recipe[]>([]);
+  const [rawSauces, setSauces] = useState<Recipe[]>([]);
   const [updatedAt, setUpdatedAt] = useState<number>(0);
   const [remoteUpdatedAt, setRemoteUpdatedAt] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -63,10 +69,12 @@ export const RecipeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
       if (remote && (!local || remote.updatedAt > local.updatedAt)) {
         setRecipes(remote.recipes);
+        setSauces(remote.sauces ?? []);
         setUpdatedAt(remote.updatedAt);
         setRemoteUpdatedAt(remote.updatedAt);
       } else if (local) {
         setRecipes(local.recipes);
+        setSauces(local.sauces ?? []);
         setUpdatedAt(local.updatedAt);
         setRemoteUpdatedAt(remote?.updatedAt ?? local.updatedAt);
       }
@@ -82,14 +90,15 @@ export const RecipeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   useEffect(() => {
     if (!isHydrated) return;
-    writeStorage(STORAGE_KEY, { version: 2, updatedAt, recipes: rawRecipes });
-  }, [rawRecipes, updatedAt, isHydrated]);
+    writeStorage(STORAGE_KEY, { version: 2, updatedAt, recipes: rawRecipes, sauces: rawSauces });
+  }, [rawRecipes, rawSauces, updatedAt, isHydrated]);
 
   useEffect(() => {
     writeStorage(SHOPPING_KEY, shoppingList);
   }, [shoppingList]);
 
   const recipes = useMemo(() => sortByDay(rawRecipes), [rawRecipes]);
+  const sauces = useMemo(() => sortByName(rawSauces), [rawSauces]);
 
   const bump = () => setUpdatedAt(Date.now());
 
@@ -110,9 +119,32 @@ export const RecipeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     bump();
   };
 
-  const addToShopping = (recipe: Recipe) => {
+  // Gia vị dùng đường dẫn dễ đọc (#/gia-vi/muoi-ot-xanh), trùng tên thì thêm số
+  const addSauce = (newSauce: Omit<Recipe, 'id'>) => {
+    const base = slugify(newSauce.name);
+    const taken = new Set(rawSauces.map((s) => s.id));
+    let id = base;
+    for (let n = 2; taken.has(id); n++) id = `${base}-${n}`;
+    const sauce = normalizeSauce({ ...newSauce, id });
+    setSauces((prev) => [...prev, sauce]);
+    bump();
+    return sauce;
+  };
+
+  const updateSauce = (id: string, updated: Recipe) => {
+    setSauces((prev) => prev.map((s) => (s.id === id ? normalizeSauce(updated) : s)));
+    bump();
+  };
+
+  const deleteSauce = (id: string) => {
+    setSauces((prev) => prev.filter((s) => s.id !== id));
+    bump();
+  };
+
+  const addToShopping = (recipe: Recipe, kind: RecipeKind = 'recipe') => {
     const item: ShoppingItem = {
       shoppingId: makeId(),
+      kind,
       recipeId: recipe.id,
       day: recipe.day,
       name: recipe.name,
@@ -145,7 +177,7 @@ export const RecipeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   };
 
   const exportRecipes = () => {
-    const data: RecipeData = { version: 2, updatedAt, recipes };
+    const data: RecipeData = { version: 2, updatedAt, recipes, sauces };
     const blob = new Blob([JSON.stringify(data, null, 2) + '\n'], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -162,6 +194,7 @@ export const RecipeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     const remote = await fetchSource();
     if (remote) {
       setRecipes(remote.recipes);
+      setSauces(remote.sauces ?? []);
       setUpdatedAt(remote.updatedAt);
       setRemoteUpdatedAt(remote.updatedAt);
     }
@@ -174,6 +207,7 @@ export const RecipeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     <RecipeContext.Provider
       value={{
         recipes,
+        sauces,
         shoppingList,
         updatedAt,
         isLoading,
@@ -181,6 +215,9 @@ export const RecipeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         addRecipe,
         updateRecipe,
         deleteRecipe,
+        addSauce,
+        updateSauce,
+        deleteSauce,
         addToShopping,
         removeFromShopping,
         removeAllFromShopping,

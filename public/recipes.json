@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": 1791709071002,
+  "updatedAt": 1791713691738,
   "recipes": [
     {
       "id": "ngay-1",
@@ -245,8 +245,8 @@
           "name": "Đùi gà lọc xương",
           "amount": "180–200",
           "unit": "g",
-          "group": "Thịt gà",
-          "note": "Chọn đùi gà nếu muốn thịt mềm, mọng hơn ức gà"
+          "note": "Chọn đùi gà nếu muốn thịt mềm, mọng hơn ức gà",
+          "group": "Thịt gà"
         },
         {
           "name": "Sả",
@@ -318,8 +318,8 @@
           "name": "Chanh",
           "amount": "1",
           "unit": "ít",
-          "group": "Ăn kèm và làm sốt",
-          "note": "tùy khẩu vị"
+          "note": "tùy khẩu vị",
+          "group": "Ăn kèm và làm sốt"
         }
       ],
       "sections": [
@@ -592,6 +592,139 @@
         {
           "title": "Bí quyết để món ngon hơn",
           "content": "- Muốn chua hơn: thêm ½ muỗng cà phê giấm.\n- Muốn đậm vị: thêm một ít nước tương, đừng thêm quá nhiều muối.\n- Muốn giòn lâu: chỉ trộn thịt với sốt ngay trước khi ăn.\n- Ăn kèm một bát cơm nóng; món này đã có rau củ nên không nhất thiết phải nấu thêm món rau."
+        }
+      ]
+    }
+  ],
+  "sauces": [
+    {
+      "id": "muoi-ot-xanh",
+      "day": 0,
+      "name": "Muối ớt xanh",
+      "emoji": "🫑🍋🧂",
+      "description": "Chén muối chấm xanh mướt, cay thơm vị ớt và lá chanh, chua ngọt và béo nhẹ. Rất hợp với hải sản, gà luộc và trái cây chua.",
+      "time": "10 phút",
+      "difficulty": 1,
+      "servings": "1 chén nhỏ",
+      "category": "Muối chấm",
+      "pairing": "Hải sản, gà luộc, ốc, trái cây chua",
+      "ingredients": [
+        {
+          "name": "Ớt xanh",
+          "amount": "50",
+          "unit": "g",
+          "note": "Ớt hiểm xanh cho vị cay, ớt sừng xanh nếu muốn dịu hơn"
+        },
+        {
+          "name": "Lá chanh",
+          "amount": "5",
+          "unit": "lá",
+          "note": "Tạo mùi thơm đặc trưng"
+        },
+        {
+          "name": "Tỏi",
+          "amount": "1",
+          "unit": "tép",
+          "note": "Không bắt buộc"
+        },
+        {
+          "name": "Đường",
+          "amount": "1",
+          "unit": "muỗng canh"
+        },
+        {
+          "name": "Muối",
+          "amount": "1/2",
+          "unit": "muỗng cà phê"
+        },
+        {
+          "name": "Sữa đặc",
+          "amount": "1",
+          "unit": "muỗng canh",
+          "note": "Giúp muối ớt sánh mịn, béo nhẹ"
+        },
+        {
+          "name": "Nước cốt chanh",
+          "amount": "1",
+          "unit": "muỗng canh"
+        },
+        {
+          "name": "Nước lọc",
+          "amount": "1–2",
+          "unit": "muỗng canh",
+          "note": "Chỉ thêm nếu muốn loãng hơn"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Sơ chế",
+          "content": "- Ớt rửa sạch, bỏ cuống. Không ăn cay nhiều thì bổ đôi, bỏ bớt hạt.\n- Lá chanh rửa sạch, tước bỏ gân giữa, xé nhỏ.\n- Tỏi bóc vỏ nếu dùng.\n\n> **Lưu ý:** Nên đeo găng tay khi sơ chế ớt và tránh đưa tay lên mắt."
+        },
+        {
+          "title": "Xay muối ớt",
+          "content": "1. Cho ớt, lá chanh, tỏi, đường và muối vào máy xay nhỏ hoặc cối.\n2. Thêm sữa đặc và nước cốt chanh.\n3. Xay khoảng 30–60 giây đến khi mịn. Nếu quá đặc, thêm 1–2 muỗng canh nước lọc rồi xay tiếp.\n4. Nếm và chỉnh: thiếu ngọt thêm đường, thiếu chua thêm chanh, thiếu mặn thêm chút muối.\n\n> **Bí quyết:** Không xay quá lâu để muối ớt giữ màu xanh tươi và không bị đắng."
+        },
+        {
+          "title": "Bảo quản",
+          "content": "- Cho vào hũ thủy tinh sạch, đậy kín, để ngăn mát tủ lạnh.\n- Ngon nhất trong 3–5 ngày; màu sẽ sẫm dần theo thời gian.\n- Mỗi lần dùng lấy bằng muỗng khô, sạch."
+        }
+      ]
+    },
+    {
+      "id": "muoi-tieu-chanh",
+      "day": 0,
+      "name": "Muối tiêu chanh",
+      "emoji": "🧂🍋🌶️",
+      "description": "Chén chấm chỉ mất vài phút nhưng không thể thiếu trong bữa cơm Việt: mặn mà, cay nồng mùi tiêu, chua thơm vị chanh.",
+      "time": "5 phút",
+      "difficulty": 1,
+      "servings": "1 chén nhỏ",
+      "category": "Muối chấm",
+      "pairing": "Gà luộc, hải sản, trứng vịt lộn, thịt luộc",
+      "ingredients": [
+        {
+          "name": "Muối",
+          "amount": "1",
+          "unit": "muỗng cà phê",
+          "note": "Muối hạt rang giã nhỏ sẽ thơm hơn muối tinh"
+        },
+        {
+          "name": "Tiêu đen xay",
+          "amount": "1/2",
+          "unit": "muỗng cà phê",
+          "note": "Xay mới sẽ thơm hơn"
+        },
+        {
+          "name": "Chanh",
+          "amount": "1/2",
+          "unit": "quả",
+          "note": "Vắt ngay trước khi ăn"
+        },
+        {
+          "name": "Ớt tươi",
+          "amount": "1",
+          "unit": "quả",
+          "note": "Không bắt buộc"
+        },
+        {
+          "name": "Đường",
+          "amount": "1/4",
+          "unit": "muỗng cà phê",
+          "note": "Không bắt buộc, giúp vị tròn hơn"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Cách pha",
+          "content": "1. Cho muối, tiêu và đường (nếu dùng) vào chén, trộn đều.\n2. Ớt thái lát mỏng, xếp lên trên.\n3. Khi ăn mới vắt chanh vào, khuấy đều thành hỗn hợp sệt.\n\n> **Bí quyết:** Rang muối hạt trên chảo khô khoảng 1–2 phút rồi giã nhỏ. Muối sẽ khô, thơm và không bị vón."
+        },
+        {
+          "title": "Biến tấu",
+          "content": "- **Thêm lá chanh:** thái chỉ vài lá chanh trộn vào, rất hợp với gà luộc.\n- **Muối ớt chanh:** giã ớt với muối trước rồi mới vắt chanh, vị cay đậm hơn."
+        },
+        {
+          "title": "Bảo quản",
+          "content": "- Phần muối tiêu chưa vắt chanh để trong hũ kín, dùng được nhiều tuần.\n- Đã vắt chanh thì nên dùng hết trong ngày."
         }
       ]
     }

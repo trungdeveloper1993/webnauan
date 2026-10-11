@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChefHat, Plus, Route as RouteIcon, ShoppingBasket, Shuffle } from 'lucide-react';
+import { Amphora, ChefHat, Plus, Route as RouteIcon, ShoppingBasket, Shuffle } from 'lucide-react';
 import { useRecipes } from '../RecipeContext';
 import { useJourney } from '../JourneyContext';
 import { href, Route } from '../lib/router';
@@ -17,14 +17,15 @@ export const Header: React.FC<HeaderProps> = ({ route, onRandom, onAdd }) => {
 
   const tab = (active: boolean) =>
     cn(
-      'flex items-center gap-1.5 px-2.5 sm:px-4 h-9 rounded-xl text-sm font-bold whitespace-nowrap transition-all relative',
+      'flex items-center gap-1.5 px-2.5 sm:px-4 h-9 rounded-xl text-[13px] sm:text-sm font-bold whitespace-nowrap transition-all relative',
       active ? 'bg-white text-neutral-900 shadow-sm' : 'text-neutral-500 hover:text-neutral-800'
     );
 
   return (
     <header className="sticky top-0 z-40 bg-cream/90 backdrop-blur-xl border-b border-orange-950/5 print:hidden">
       <div className="max-w-6xl mx-auto px-3 sm:px-4 h-16 flex items-center justify-between gap-2">
-        <a href={href.home} className="flex items-center gap-2.5 shrink-0" aria-label="Trang chủ">
+        {/* Điện thoại: ẩn logo để đủ chỗ cho 3 tab */}
+        <a href={href.home} className="hidden sm:flex items-center gap-2.5 shrink-0" aria-label="Trang chủ">
           <div className="w-10 h-10 bg-orange-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-orange-600/25">
             <ChefHat size={22} />
           </div>
@@ -37,12 +38,16 @@ export const Header: React.FC<HeaderProps> = ({ route, onRandom, onAdd }) => {
         </a>
 
         <nav className="flex items-center bg-neutral-900/5 p-1 rounded-2xl" aria-label="Điều hướng chính">
-          <a href={href.home} className={tab(route.name !== 'shopping')}>
-            <RouteIcon size={17} />
+          <a href={href.home} className={tab(route.name === 'home' || route.name === 'recipe')}>
+            <RouteIcon size={16} className="hidden min-[360px]:block" />
             <span>Lộ trình</span>
           </a>
+          <a href={href.sauces} className={tab(route.name === 'sauces' || route.name === 'sauce')}>
+            <Amphora size={16} className="hidden min-[360px]:block" />
+            <span>Gia vị</span>
+          </a>
           <a href={href.shopping} className={tab(route.name === 'shopping')}>
-            <ShoppingBasket size={17} />
+            <ShoppingBasket size={16} className="hidden min-[360px]:block" />
             <span>Đi chợ</span>
             {shoppingList.length > 0 && (
               <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 bg-orange-600 text-white text-[10px] flex items-center justify-center rounded-full border-2 border-cream">

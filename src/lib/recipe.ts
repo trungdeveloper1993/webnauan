@@ -1,5 +1,5 @@
 import { Ingredient, Recipe, RecipeSection } from '../types';
-import { makeId } from './utils';
+import { makeId, removeAccents } from './utils';
 
 export const TOTAL_DAYS = 100;
 
@@ -21,6 +21,17 @@ export const CATEGORY_SUGGESTIONS = [
   'Món trộn',
   'Tráng miệng',
   'Món khác',
+];
+
+export const SAUCE_CATEGORIES = [
+  'Muối chấm',
+  'Nước chấm',
+  'Sốt',
+  'Tương & mắm',
+  'Dầu & mỡ hành',
+  'Gia vị ướp',
+  'Đồ chua',
+  'Khác',
 ];
 
 export const DIFFICULTY_LABELS = ['', 'Rất dễ', 'Dễ', 'Trung bình', 'Khó', 'Thử thách'];
@@ -82,12 +93,29 @@ export const normalizeRecipe = (raw: any, index = 0): Recipe => {
     servings: str(raw?.servings) || undefined,
     category: str(raw?.category) || undefined,
     mealTime: str(raw?.mealTime) || undefined,
+    pairing: str(raw?.pairing) || undefined,
     ingredients: Array.isArray(raw?.ingredients)
       ? raw.ingredients.map(normalizeIngredient).filter((i: Ingredient) => i.name)
       : [],
     sections,
   };
 };
+
+// "Muối ớt xanh" → "muoi-ot-xanh" (dùng làm đường dẫn #/gia-vi/muoi-ot-xanh)
+export const slugify = (text: string) =>
+  removeAccents(text)
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 60) || makeId();
+
+// Gia vị không thuộc lộ trình nên không có số ngày
+export const normalizeSauce = (raw: any): Recipe => ({
+  ...normalizeRecipe(raw),
+  id: str(raw?.id) || slugify(str(raw?.name)),
+  day: 0,
+});
+
+export const sortByName = (recipes: Recipe[]) => [...recipes].sort((a, b) => a.name.localeCompare(b.name, 'vi'));
 
 export const sortByDay = (recipes: Recipe[]) => [...recipes].sort((a, b) => a.day - b.day || a.name.localeCompare(b.name, 'vi'));
 
@@ -115,6 +143,11 @@ const EMOJI_RULES: [RegExp, string][] = [
   [word('đậu'), '🫘'],
   [word('nấm'), '🍄'],
   [word('chanh'), '🍋'],
+  [word('ớt'), '🌶️'],
+  [word('muối'), '🧂'],
+  [word('tỏi'), '🧄'],
+  [word('mật ong'), '🍯'],
+  [word('nước mắm|mắm'), '🐟'],
   [word('bánh mì'), '🥖'],
   [word('chè|kem'), '🍮'],
   [word('salad|gỏi|nộm'), '🥗'],
@@ -189,6 +222,14 @@ export const stripDuration = (title: string) =>
 // Bỏ dấu "—" trước thời gian ở cuối tiêu đề vì thời gian hiện thành nút hẹn giờ: "Chiên thịt [8–12 phút]"
 export const displayTitle = (title: string) =>
   title.replace(/\s*[—–]\s*(?=(khoảng\s+)?\d[\d.,/–-]*\s*(phút|giây|tiếng|giờ)\s*$)/i, ' ');
+
+// "Hải sản, gà luộc" → ["Hải sản", "Gà luộc"]
+export const splitPairing = (pairing?: string) =>
+  (pairing ?? '')
+    .split(/[,;]/)
+    .map((p) => p.trim())
+    .filter(Boolean)
+    .map((p) => p.charAt(0).toLocaleUpperCase('vi') + p.slice(1));
 
 export const formatIngredientAmount = (ing: Ingredient, factor = 1) =>
   [scaleAmount(ing.amount, factor), ing.unit].filter(Boolean).join(' ');

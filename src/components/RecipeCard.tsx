@@ -1,25 +1,35 @@
 import React, { useState } from 'react';
 import { Check, Clock, ShoppingBasket } from 'lucide-react';
-import { Recipe } from '../types';
+import { Recipe, RecipeKind } from '../types';
 import { useRecipes } from '../RecipeContext';
 import { useJourney } from '../JourneyContext';
 import { href } from '../lib/router';
+import { splitPairing } from '../lib/recipe';
 import { DifficultyMeter, RecipeCover, Tag } from './ui';
 
-export const RecipeCard: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
+export const RecipeCard: React.FC<{ recipe: Recipe; kind?: RecipeKind }> = ({ recipe, kind = 'recipe' }) => {
   const { addToShopping } = useRecipes();
   const { isCooked, ratings } = useJourney();
   const [added, setAdded] = useState(false);
-  const cooked = isCooked(recipe.id);
+  const isSauce = kind === 'sauce';
+  const cooked = !isSauce && isCooked(recipe.id);
   const score = ratings[recipe.id];
+  const pairing = splitPairing(recipe.pairing);
 
   return (
     <div className="group relative h-full">
       <a
-        href={href.recipe(recipe.day)}
+        href={isSauce ? href.sauce(recipe.id) : href.recipe(recipe.day)}
         className="flex flex-col h-full bg-white rounded-3xl overflow-hidden border border-neutral-200/70 shadow-sm hover:shadow-xl hover:shadow-orange-900/5 hover:-translate-y-1 transition-all duration-300"
       >
-        <RecipeCover recipe={recipe} size="md" showDay className="aspect-[4/3]" />
+        <RecipeCover
+          recipe={recipe}
+          size="md"
+          showDay={!isSauce}
+          badge={isSauce ? recipe.category || 'Gia vị' : undefined}
+          palette={isSauce ? 'sauce' : 'recipe'}
+          className="aspect-[4/3]"
+        />
         <div className="p-5 flex flex-col flex-1">
           <div className="flex items-center gap-3 text-xs font-semibold text-neutral-500 mb-2">
             <DifficultyMeter level={recipe.difficulty} showLabel />
@@ -35,8 +45,18 @@ export const RecipeCard: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
           </h3>
           {recipe.description && <p className="text-sm text-neutral-500 line-clamp-2 mt-1.5">{recipe.description}</p>}
           <div className="flex flex-wrap gap-1.5 mt-auto pt-4 pr-10">
-            {recipe.mealTime && <Tag tone="orange">{recipe.mealTime}</Tag>}
-            {recipe.category && <Tag>{recipe.category}</Tag>}
+            {isSauce ? (
+              pairing.slice(0, 3).map((p) => (
+                <Tag key={p} tone="green">
+                  {p}
+                </Tag>
+              ))
+            ) : (
+              <>
+                {recipe.mealTime && <Tag tone="orange">{recipe.mealTime}</Tag>}
+                {recipe.category && <Tag>{recipe.category}</Tag>}
+              </>
+            )}
           </div>
         </div>
       </a>
@@ -48,7 +68,7 @@ export const RecipeCard: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
       )}
       <button
         onClick={() => {
-          addToShopping(recipe);
+          addToShopping(recipe, kind);
           setAdded(true);
           window.setTimeout(() => setAdded(false), 1800);
         }}

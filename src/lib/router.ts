@@ -4,11 +4,16 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 export type Route =
   | { name: 'home' }
   | { name: 'recipe'; day: number; cook: boolean }
+  | { name: 'sauces' }
+  | { name: 'sauce'; id: string; cook: boolean }
   | { name: 'shopping' };
 
 export const parseHash = (hash: string): Route => {
   const recipe = hash.match(/^#\/ngay\/(\d+)(\/nau)?/);
   if (recipe) return { name: 'recipe', day: Number(recipe[1]), cook: Boolean(recipe[2]) };
+  const sauce = hash.match(/^#\/gia-vi\/([^/?#]+)(\/nau)?/);
+  if (sauce) return { name: 'sauce', id: decodeURIComponent(sauce[1]), cook: Boolean(sauce[2]) };
+  if (hash.startsWith('#/gia-vi')) return { name: 'sauces' };
   if (hash.startsWith('#/di-cho')) return { name: 'shopping' };
   return { name: 'home' };
 };
@@ -18,6 +23,9 @@ export const href = {
   recipe: (day: number) => `#/ngay/${day}`,
   cook: (day: number) => `#/ngay/${day}/nau`,
   shopping: '#/di-cho',
+  sauces: '#/gia-vi',
+  sauce: (id: string) => `#/gia-vi/${encodeURIComponent(id)}`,
+  sauceCook: (id: string) => `#/gia-vi/${encodeURIComponent(id)}/nau`,
 };
 
 export const navigate = (target: string) => {
@@ -29,7 +37,8 @@ export const replaceRoute = (target: string) => {
   if (window.location.hash !== target) window.location.replace(target);
 };
 
-export const pageKey = (route: Route) => (route.name === 'recipe' ? `recipe-${route.day}` : route.name);
+export const pageKey = (route: Route) =>
+  route.name === 'recipe' ? `recipe-${route.day}` : route.name === 'sauce' ? `sauce-${route.id}` : route.name;
 
 export const useRoute = () => {
   const [route, setRoute] = useState<Route>(() => parseHash(window.location.hash));

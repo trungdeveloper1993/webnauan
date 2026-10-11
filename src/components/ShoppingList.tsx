@@ -9,12 +9,16 @@ import { cn, pad2 } from '../lib/utils';
 import { RecipeCover } from './ui';
 import { SectionTitle } from './HomePage';
 
+const itemLabel = (item: ShoppingItem) => (item.kind === 'sauce' ? 'Gia vị' : `Ngày ${item.day}`);
+const itemHref = (item: ShoppingItem) => (item.kind === 'sauce' ? href.sauce(item.recipeId) : href.recipe(item.day));
+const itemCookHref = (item: ShoppingItem) => (item.kind === 'sauce' ? href.sauceCook(item.recipeId) : href.cook(item.day));
+
 const toText = (list: ShoppingItem[]) =>
   [
     '🛒 Danh sách đi chợ',
     ...list.flatMap((item) => [
       '',
-      `Ngày ${item.day} · ${item.name}`,
+      `${itemLabel(item)} · ${item.name}`,
       ...item.ingredients.flatMap((ing, i) => {
         const amount = formatIngredientAmount(ing) || 'vừa đủ';
         const line = `${ing.checked ? '☑' : '☐'} ${ing.name} — ${amount}`;
@@ -42,7 +46,7 @@ const copyText = async (text: string) => {
 };
 
 export const ShoppingList: React.FC = () => {
-  const { shoppingList, recipes, removeFromShopping, toggleIngredient, removeAllFromShopping } = useRecipes();
+  const { shoppingList, recipes, sauces, removeFromShopping, toggleIngredient, removeAllFromShopping } = useRecipes();
   const [copied, setCopied] = useState(false);
 
   const total = shoppingList.reduce((n, item) => n + item.ingredients.length, 0);
@@ -125,13 +129,16 @@ export const ShoppingList: React.FC = () => {
               >
                 <div className="flex items-center gap-4 p-4 border-b border-neutral-100">
                   <RecipeCover
-                    recipe={{ ...item, difficulty: recipes.find((r) => r.id === item.recipeId)?.difficulty ?? 1 }}
+                    recipe={{ ...item, difficulty: [...recipes, ...sauces].find((r) => r.id === item.recipeId)?.difficulty ?? 1 }}
+                    palette={item.kind === 'sauce' ? 'sauce' : 'recipe'}
                     size="sm"
                     className="w-16 h-16 rounded-2xl shrink-0"
                   />
                   <div className="flex-1 min-w-0">
-                    <div className="text-[11px] font-black uppercase tracking-widest text-orange-600">Ngày {pad2(item.day)}</div>
-                    <a href={href.recipe(item.day)} className="font-bold leading-snug hover:text-orange-600 line-clamp-2">
+                    <div className={cn('text-[11px] font-black uppercase tracking-widest', item.kind === 'sauce' ? 'text-emerald-700' : 'text-orange-600')}>
+                      {item.kind === 'sauce' ? 'Gia vị' : `Ngày ${pad2(item.day)}`}
+                    </div>
+                    <a href={itemHref(item)} className="font-bold leading-snug hover:text-orange-600 line-clamp-2">
                       {item.name}
                     </a>
                     <div className={cn('text-xs font-bold mt-1', complete ? 'text-emerald-600' : 'text-neutral-400')}>
@@ -179,7 +186,7 @@ export const ShoppingList: React.FC = () => {
                 </ul>
                 {complete && (
                   <a
-                    href={href.cook(item.day)}
+                    href={itemCookHref(item)}
                     className="m-3 mt-0 h-11 rounded-2xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm flex items-center justify-center gap-2"
                   >
                     Đủ nguyên liệu rồi — bắt đầu nấu <ArrowRight size={16} />

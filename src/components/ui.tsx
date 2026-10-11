@@ -39,6 +39,15 @@ const GRADIENTS = [
   'from-orange-200 via-rose-200 to-red-300',
 ];
 
+// Gia vị dùng tông xanh lá để khác với món trong lộ trình
+const SAUCE_GRADIENTS = [
+  'from-lime-100 via-emerald-100 to-teal-200',
+  'from-emerald-100 via-teal-100 to-cyan-200',
+  'from-yellow-100 via-lime-100 to-emerald-200',
+  'from-teal-100 via-emerald-100 to-lime-200',
+  'from-green-200 via-emerald-200 to-teal-300',
+];
+
 const EMOJI_SIZES = {
   sm: 'text-2xl',
   md: 'text-6xl',
@@ -53,7 +62,9 @@ export const RecipeCover: React.FC<{
   size?: keyof typeof EMOJI_SIZES;
   className?: string;
   showDay?: boolean;
-}> = ({ recipe, size = 'md', className, showDay = false }) => {
+  badge?: string; // Nhãn góc trên, thay cho "NGÀY 01"
+  palette?: 'recipe' | 'sauce';
+}> = ({ recipe, size = 'md', className, showDay = false, badge, palette = 'recipe' }) => {
   const [failed, setFailed] = useState(false);
   useEffect(() => setFailed(false), [recipe.thumbnail]);
 
@@ -64,7 +75,7 @@ export const RecipeCover: React.FC<{
     <div
       className={cn(
         'relative overflow-hidden bg-linear-to-br',
-        GRADIENTS[Math.min(4, Math.max(0, recipe.difficulty - 1))],
+        (palette === 'sauce' ? SAUCE_GRADIENTS : GRADIENTS)[Math.min(4, Math.max(0, recipe.difficulty - 1))],
         className
       )}
     >
@@ -101,9 +112,9 @@ export const RecipeCover: React.FC<{
           </div>
         </>
       )}
-      {showDay && recipe.day != null && (
-        <div className="absolute top-3 left-3 bg-white/90 backdrop-blur px-2.5 py-1 rounded-full text-[11px] font-black tracking-wider text-neutral-900 shadow-sm">
-          NGÀY {pad2(recipe.day)}
+      {(badge || (showDay && recipe.day != null)) && (
+        <div className="absolute top-3 left-3 bg-white/90 backdrop-blur px-2.5 py-1 rounded-full text-[11px] font-black tracking-wider text-neutral-900 shadow-sm uppercase">
+          {badge ?? `NGÀY ${pad2(recipe.day!)}`}
         </div>
       )}
     </div>

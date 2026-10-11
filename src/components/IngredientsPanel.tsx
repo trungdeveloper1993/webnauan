@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Check, Minus, Plus, ShoppingBasket } from 'lucide-react';
-import { Recipe } from '../types';
+import { Recipe, RecipeKind } from '../types';
 import { useRecipes } from '../RecipeContext';
 import { href } from '../lib/router';
 import { formatIngredientAmount, parseServings, scaleAmount } from '../lib/recipe';
@@ -10,9 +10,10 @@ interface IngredientsPanelProps {
   recipe: Recipe;
   large?: boolean;
   showShopping?: boolean;
+  kind?: RecipeKind;
 }
 
-export const IngredientsPanel: React.FC<IngredientsPanelProps> = ({ recipe, large = false, showShopping = true }) => {
+export const IngredientsPanel: React.FC<IngredientsPanelProps> = ({ recipe, large = false, showShopping = true, kind = 'recipe' }) => {
   const { addToShopping } = useRecipes();
   const [checked, setChecked] = useState<Set<number>>(() => new Set());
   const base = parseServings(recipe.servings);
@@ -30,10 +31,10 @@ export const IngredientsPanel: React.FC<IngredientsPanelProps> = ({ recipe, larg
     });
 
   const handleShopping = () => {
-    addToShopping({
-      ...recipe,
-      ingredients: recipe.ingredients.map((ing) => ({ ...ing, amount: scaleAmount(ing.amount, factor) })),
-    });
+    addToShopping(
+      { ...recipe, ingredients: recipe.ingredients.map((ing) => ({ ...ing, amount: scaleAmount(ing.amount, factor) })) },
+      kind
+    );
     setAdded(true);
   };
 

@@ -26,18 +26,24 @@ export interface Recipe {
   servings?: string; // Khẩu phần, vd "1 người"
   category?: string;
   mealTime?: string;
+  pairing?: string; // "Dùng với" (cho gia vị), vd "Hải sản, gà luộc"
   ingredients: Ingredient[];
   sections: RecipeSection[];
 }
+
+// "recipe" = món trong lộ trình 100 ngày, "sauce" = gia vị & nước chấm (không có số ngày)
+export type RecipeKind = 'recipe' | 'sauce';
 
 export interface RecipeData {
   version?: number;
   updatedAt: number;
   recipes: Recipe[];
+  sauces?: Recipe[];
 }
 
 export interface ShoppingItem {
   shoppingId: string;
+  kind?: RecipeKind;
   recipeId: string;
   day: number;
   name: string;

@@ -13,10 +13,10 @@ import {
   WandSparkles,
   X,
 } from 'lucide-react';
-import { Ingredient, Recipe, RecipeSection } from '../types';
+import { Ingredient, Recipe, RecipeKind, RecipeSection } from '../types';
 import { useRecipes } from '../RecipeContext';
 import { href, navigate } from '../lib/router';
-import { CATEGORY_SUGGESTIONS, DIFFICULTY_LABELS, guessEmoji, MEAL_TIMES } from '../lib/recipe';
+import { CATEGORY_SUGGESTIONS, DIFFICULTY_LABELS, guessEmoji, MEAL_TIMES, SAUCE_CATEGORIES } from '../lib/recipe';
 import { parseRecipeText, ParseResult } from '../lib/importText';
 import { cn } from '../lib/utils';
 import { Modal } from './ui';
@@ -26,7 +26,7 @@ type Draft = Omit<Recipe, 'id'>;
 const emptyIngredient = (group = ''): Ingredient => ({ name: '', amount: '', unit: '', note: '', group });
 const emptySection = (): RecipeSection => ({ title: '', content: '' });
 
-const toDraft = (recipe: Recipe | null, nextDay: number): Draft =>
+const toDraft = (recipe: Recipe | null, nextDay: number, kind: RecipeKind): Draft =>
   recipe
     ? {
         ...recipe,
@@ -34,7 +34,7 @@ const toDraft = (recipe: Recipe | null, nextDay: number): Draft =>
         sections: recipe.sections.length ? recipe.sections : [emptySection()],
       }
     : {
-        day: nextDay,
+        day: kind === 'sauce' ? 0 : nextDay,
         name: '',
         emoji: '',
         thumbnail: '',
@@ -42,9 +42,10 @@ const toDraft = (recipe: Recipe | null, nextDay: number): Draft =>
         style: '',
         time: '',
         difficulty: 1,
-        servings: '1 người',
-        category: '',
-        mealTime: 'Bữa trưa',
+        servings: kind === 'sauce' ? '1 chén nhỏ' : '1 người',
+        category: kind === 'sauce' ? 'Muối chấm' : '',
+        mealTime: kind === 'sauce' ? '' : 'Bữa trưa',
+        pairing: '',
         ingredients: [emptyIngredient()],
         sections: [emptySection()],
       };
@@ -55,20 +56,22 @@ const label = 'block text-[11px] font-black uppercase tracking-widest text-neutr
 
 interface RecipeFormProps {
   recipe: Recipe | null;
+  kind?: RecipeKind;
   onClose: () => void;
 }
 
-export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onClose }) => {
-  const { recipes, addRecipe, updateRecipe } = useRecipes();
+export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, kind = 'recipe', onClose }) => {
+  const { recipes, addRecipe, updateRecipe, addSauce, updateSauce } = useRecipes();
+  const isSauce = kind === 'sauce';
   const nextDay = recipes.reduce((max, r) => Math.max(max, r.day), 0) + 1;
-  const [draft, setDraft] = useState<Draft>(() => toDraft(recipe, nextDay));
+  const [draft, setDraft] = useState<Draft>(() => toDraft(recipe, nextDay, isSauce ? 'sauce' : 'recipe'));
   const [importOpen, setImportOpen] = useState(!recipe);
   const [importText, setImportText] = useState('');
   const [importResult, setImportResult] = useState<ParseResult | null>(null);
   const [error, setError] = useState('');
 
   const set = <K extends keyof Draft>(key: K, value: Draft[K]) => setDraft((d) => ({ ...d, [key]: value }));
-  const conflict = recipes.find((r) => r.day === draft.day && r.id !== recipe?.id);
+  const conflict = isSauce ? undefined : recipes.find((r) => r.day === draft.day && r.id !== recipe?.id);
 
   // ----- Nguyên liệu -----
   const setIngredient = (i: number, field: keyof Ingredient, value: string) =>
@@ -92,7 +95,15 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onClose }) => {
   };
 
   const runImport = () => {
-    const result = parseRecipeText(importText);
+    const parsed = parseRecipeText(importText);
+    const result = isSauce
+      ? {
+          ...parsed,
+          recipe: { ...parsed.recipe, day: undefined },
+          found: parsed.found.filter((x) => !x.startsWith('Ngày')),
+          warnings: parsed.warnings.filter((w) => !w.includes('NGÀY')),
+        }
+      : parsed;
     setImportResult(result);
     const p = result.recipe;
     setDraft((d) => ({
@@ -105,8 +116,8 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onClose }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!draft.name.trim()) return setError('Hãy nhập tên món.');
-    if (!(draft.day >= 1)) return setError('Số ngày phải từ 1 trở lên.');
+    if (!draft.name.trim()) return setError(isSauce ? 'Hãy nhập tên gia vị.' : 'Hãy nhập tên món.');
+    if (!isSauce && !(draft.day >= 1)) return setError('Số ngày phải từ 1 trở lên.');
     if (conflict) return setError(`Ngày ${draft.day} đã có món "${conflict.name}". Hãy đổi số ngày.`);
 
     const data: Draft = {
@@ -125,6 +136,13 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onClose }) => {
       sections: draft.sections.filter((s) => s.title.trim() || s.content.trim()),
     };
 
+    if (isSauce) {
+      const saved = recipe ? { ...data, id: recipe.id } : addSauce(data);
+      if (recipe) updateSauce(recipe.id, saved);
+      onClose();
+      navigate(href.sauce(saved.id));
+      return;
+    }
     if (recipe) updateRecipe(recipe.id, { ...data, id: recipe.id });
     else addRecipe(data);
     onClose();
@@ -132,11 +150,17 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onClose }) => {
   };
 
   return (
-    <Modal onClose={onClose} label={recipe ? 'Sửa món' : 'Thêm món mới'} className="sm:max-w-3xl">
+    <Modal
+      onClose={onClose}
+      label={isSauce ? (recipe ? 'Sửa gia vị' : 'Thêm gia vị mới') : recipe ? 'Sửa món' : 'Thêm món mới'}
+      className="sm:max-w-3xl"
+    >
       <div className="px-6 py-4 border-b border-neutral-100 flex justify-between items-center shrink-0">
         <div>
           <div className="text-[11px] font-black uppercase tracking-widest text-orange-600">Quản trị</div>
-          <h2 className="text-xl font-black tracking-tight">{recipe ? `Sửa Ngày ${recipe.day}` : 'Thêm món mới'}</h2>
+          <h2 className="text-xl font-black tracking-tight">
+            {isSauce ? (recipe ? `Sửa: ${recipe.name}` : 'Thêm gia vị mới') : recipe ? `Sửa Ngày ${recipe.day}` : 'Thêm món mới'}
+          </h2>
         </div>
         <button onClick={onClose} className="w-10 h-10 hover:bg-neutral-100 rounded-xl flex items-center justify-center" aria-label="Đóng">
           <X size={20} />
@@ -155,7 +179,9 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onClose }) => {
               <ClipboardPaste size={18} className="text-orange-600 shrink-0" />
               <span className="flex-1">
                 <span className="block font-bold text-orange-950">Nhập nhanh từ văn bản</span>
-                <span className="block text-xs text-orange-900/60">Dán nguyên bài "NGÀY X — ..." để tự điền toàn bộ form</span>
+                <span className="block text-xs text-orange-900/60">
+                  {isSauce ? 'Dán nguyên bài công thức để tự điền toàn bộ form' : 'Dán nguyên bài "NGÀY X — ..." để tự điền toàn bộ form'}
+                </span>
               </span>
               <ChevronDown size={18} className={cn('text-orange-600 transition-transform', importOpen && 'rotate-180')} />
             </button>
@@ -165,7 +191,11 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onClose }) => {
                   value={importText}
                   onChange={(e) => setImportText(e.target.value)}
                   rows={7}
-                  placeholder={'NGÀY 2 — TÊN MÓN\nGiới thiệu ngắn...\nPhong cách: ...\nThời gian: 20 phút\nĐộ khó: 1/5\nKhẩu phần: 1 người\n1. Danh sách nguyên liệu\n...\n2. Chuẩn bị\n...'}
+                  placeholder={
+                    isSauce
+                      ? 'MUỐI ỚT XANH\nGiới thiệu ngắn...\nThời gian: 10 phút\nDùng với: hải sản, gà luộc\nNguyên liệu\n- Ớt xanh: 50 g\n...\nCách làm\n1. ...'
+                      : 'NGÀY 2 — TÊN MÓN\nGiới thiệu ngắn...\nPhong cách: ...\nThời gian: 20 phút\nĐộ khó: 1/5\nKhẩu phần: 1 người\n1. Danh sách nguyên liệu\n...\n2. Chuẩn bị\n...'
+                  }
                   className="w-full p-3 bg-white border border-orange-200 rounded-xl outline-none focus:ring-2 focus:ring-orange-500 text-sm font-mono"
                 />
                 <div className="flex flex-wrap items-center gap-3">
@@ -192,8 +222,8 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onClose }) => {
 
           {/* ----- Thông tin chung ----- */}
           <fieldset className="space-y-4">
-            <div className="grid grid-cols-2 sm:grid-cols-[5.5rem_6.5rem_1fr] gap-3">
-              <div>
+            <div className={cn('grid grid-cols-2 gap-3', isSauce ? 'grid-cols-[6.5rem_1fr]' : 'sm:grid-cols-[5.5rem_6.5rem_1fr]')}>
+              <div className={isSauce ? 'hidden' : undefined}>
                 <label className={label} htmlFor="f-day">
                   Ngày
                 </label>
@@ -201,7 +231,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onClose }) => {
                   id="f-day"
                   type="number"
                   min={1}
-                  required
+                  required={!isSauce}
                   value={draft.day || ''}
                   onChange={(e) => set('day', Number(e.target.value))}
                   className={cn(input, conflict && 'border-red-400 focus:ring-red-400')}
@@ -230,9 +260,9 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onClose }) => {
                   </button>
                 </div>
               </div>
-              <div className="col-span-2 sm:col-span-1">
+              <div className={isSauce ? 'col-span-1' : 'col-span-2 sm:col-span-1'}>
                 <label className={label} htmlFor="f-name">
-                  Tên món
+                  {isSauce ? 'Tên gia vị' : 'Tên món'}
                 </label>
                 <input
                   id="f-name"
@@ -240,7 +270,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onClose }) => {
                   value={draft.name}
                   onChange={(e) => set('name', e.target.value)}
                   className={input}
-                  placeholder="VD: Trứng chiên cà chua"
+                  placeholder={isSauce ? 'VD: Muối ớt xanh' : 'VD: Trứng chiên cà chua'}
                 />
               </div>
             </div>
@@ -273,27 +303,42 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onClose }) => {
               </div>
               <div>
                 <label className={label} htmlFor="f-servings">
-                  Khẩu phần
+                  {isSauce ? 'Lượng làm ra' : 'Khẩu phần'}
                 </label>
                 <input
                   id="f-servings"
                   value={draft.servings ?? ''}
                   onChange={(e) => set('servings', e.target.value)}
                   className={input}
-                  placeholder="1 người"
+                  placeholder={isSauce ? '1 chén nhỏ' : '1 người'}
                 />
               </div>
-              <div>
-                <label className={label} htmlFor="f-meal">
-                  Bữa ăn
-                </label>
-                <select id="f-meal" value={draft.mealTime ?? ''} onChange={(e) => set('mealTime', e.target.value)} className={input}>
-                  <option value="">— Không chọn —</option>
-                  {MEAL_TIMES.map((m) => (
-                    <option key={m}>{m}</option>
-                  ))}
-                </select>
-              </div>
+              {isSauce ? (
+                <div>
+                  <label className={label} htmlFor="f-pairing">
+                    Dùng với
+                  </label>
+                  <input
+                    id="f-pairing"
+                    value={draft.pairing ?? ''}
+                    onChange={(e) => set('pairing', e.target.value)}
+                    className={input}
+                    placeholder="Hải sản, gà luộc"
+                  />
+                </div>
+              ) : (
+                <div>
+                  <label className={label} htmlFor="f-meal">
+                    Bữa ăn
+                  </label>
+                  <select id="f-meal" value={draft.mealTime ?? ''} onChange={(e) => set('mealTime', e.target.value)} className={input}>
+                    <option value="">— Không chọn —</option>
+                    {MEAL_TIMES.map((m) => (
+                      <option key={m}>{m}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
               <div>
                 <label className={label} htmlFor="f-cat">
                   Phân loại
@@ -304,10 +349,10 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onClose }) => {
                   value={draft.category ?? ''}
                   onChange={(e) => set('category', e.target.value)}
                   className={input}
-                  placeholder="Món luộc"
+                  placeholder={isSauce ? 'Muối chấm' : 'Món luộc'}
                 />
                 <datalist id="category-suggestions">
-                  {CATEGORY_SUGGESTIONS.map((c) => (
+                  {(isSauce ? SAUCE_CATEGORIES : CATEGORY_SUGGESTIONS).map((c) => (
                     <option key={c} value={c} />
                   ))}
                 </datalist>
@@ -530,7 +575,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onClose }) => {
             type="submit"
             className="h-12 px-6 rounded-2xl bg-neutral-900 hover:bg-black text-white font-bold flex items-center gap-2 shadow-lg active:scale-95 transition-all"
           >
-            <Save size={18} /> Lưu món
+            <Save size={18} /> {isSauce ? 'Lưu gia vị' : 'Lưu món'}
           </button>
         </div>
       </form>
