@@ -7,6 +7,7 @@ export const MEAL_TIMES = ['Bữa sáng', 'Bữa trưa', 'Bữa tối', 'Đồ �
 
 export const CATEGORY_SUGGESTIONS = [
   'Món luộc',
+  'Món áp chảo',
   'Món mặn',
   'Món xào',
   'Món chiên',
@@ -42,6 +43,7 @@ const normalizeIngredient = (raw: any): Ingredient => ({
   amount: str(raw?.amount),
   unit: str(raw?.unit),
   ...(str(raw?.note) ? { note: str(raw.note) } : {}),
+  ...(str(raw?.group) ? { group: str(raw.group) } : {}),
 });
 
 // Dữ liệu kiểu cũ (steps + method) vẫn hiển thị được dưới dạng các phần hướng dẫn

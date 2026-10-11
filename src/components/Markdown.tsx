@@ -21,8 +21,9 @@ const HEADING = /^#{1,6}\s+(.+)$/;
 const OL = /^(\d+)[.)]\s+(.+)$/;
 const UL = /^[-*•+]\s+(.+)$/;
 const QUOTE = /^>\s?(.*)$/;
-// "Bí quyết: ...", "**Bí quyết:** ...", "**Bí quyết**: ..."
-const TIP_LABEL = /^(?:\*\*)?(Bí quyết|Mẹo nhỏ|Mẹo|Lưu ý|Chú ý)\s*(?:\*\*)?\s*:\s*(?:\*\*)?\s*/i;
+// "Bí quyết: ...", "**Bí quyết đầu bếp:** ...", "**Điểm quan trọng nhất**: ..."
+const TIP_LABEL = /^(?:\*\*)?((?:Bí quyết|Mẹo|Lưu ý|Chú ý|Điểm quan trọng)[^:*\n]{0,30}?)\s*(?:\*\*)?\s*:\s*(?:\*\*)?\s*/i;
+const CHECKBOX = /^\[[ xX✓✔]?\]\s*/;
 
 const isTableLine = (raw: string) =>
   raw.trim().startsWith('|') || raw.split('\t').filter((c) => c.trim()).length >= 2;
@@ -95,7 +96,7 @@ export const parseBlocks = (content: string): Block[] => {
         const m = l.match(re);
         if (m && ordered && Number(m[1]) === 1 && items.length) break; // danh sách mới
         if (m) {
-          items.push(ordered ? { n: Number(m[1]), text: m[2] } : { text: m[1] });
+          items.push(ordered ? { n: Number(m[1]), text: m[2] } : { text: m[1].replace(CHECKBOX, '') });
           i++;
           continue;
         }

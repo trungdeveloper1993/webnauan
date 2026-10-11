@@ -184,6 +184,53 @@ export const Tag: React.FC<{ children: React.ReactNode; tone?: 'orange' | 'neutr
   </span>
 );
 
+// ---------- Chấm điểm 1–10 sau khi nấu ----------
+
+const SCORE_LABELS = ['', 'Chưa ổn', 'Chưa ổn', 'Chưa ổn', 'Tạm được', 'Tạm được', 'Ngon', 'Ngon', 'Rất ngon', 'Rất ngon', 'Tuyệt vời!'];
+
+export const scoreLabel = (score: number) => SCORE_LABELS[score] ?? '';
+
+export const RatingInput: React.FC<{
+  value?: number;
+  onChange: (score: number | null) => void;
+  dark?: boolean;
+}> = ({ value, onChange, dark = false }) => (
+  <div>
+    <div className="grid grid-cols-10 gap-1 sm:gap-1.5 max-w-md" role="radiogroup" aria-label="Chấm điểm món ăn trên thang 10">
+      {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => {
+        const active = value === n;
+        const below = Boolean(value && n < value);
+        return (
+          <button
+            key={n}
+            type="button"
+            role="radio"
+            aria-checked={active}
+            onClick={() => onChange(active ? null : n)}
+            className={cn(
+              'aspect-square rounded-full font-black text-sm tabular-nums transition-all active:scale-90',
+              active
+                ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/30 scale-110'
+                : below
+                  ? dark
+                    ? 'bg-orange-500/30 text-orange-100'
+                    : 'bg-orange-100 text-orange-700'
+                  : dark
+                    ? 'bg-white/10 text-white/70 hover:bg-white/20'
+                    : 'bg-neutral-100 text-neutral-500 hover:bg-neutral-200'
+            )}
+          >
+            {n}
+          </button>
+        );
+      })}
+    </div>
+    <p className={cn('text-sm font-bold mt-2.5 min-h-5', dark ? 'text-orange-300' : 'text-orange-700')}>
+      {value ? `${value}/10 · ${scoreLabel(value)}` : ''}
+    </p>
+  </div>
+);
+
 // ---------- Vòng tiến độ ----------
 
 export const ProgressRing: React.FC<{ value: number; total: number; size?: number; stroke?: number; children?: React.ReactNode }> = ({

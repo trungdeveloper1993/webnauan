@@ -15,9 +15,10 @@ const toText = (list: ShoppingItem[]) =>
     ...list.flatMap((item) => [
       '',
       `Ngày ${item.day} · ${item.name}`,
-      ...item.ingredients.map((ing) => {
-        const amount = formatIngredientAmount(ing);
-        return `${ing.checked ? '☑' : '☐'} ${ing.name}${amount ? ` — ${amount}` : ''}`;
+      ...item.ingredients.flatMap((ing, i) => {
+        const amount = formatIngredientAmount(ing) || 'vừa đủ';
+        const line = `${ing.checked ? '☑' : '☐'} ${ing.name} — ${amount}`;
+        return ing.group && ing.group !== item.ingredients[i - 1]?.group ? [`  ${ing.group}:`, line] : [line];
       }),
     ]),
   ].join('\n');
@@ -148,6 +149,11 @@ export const ShoppingList: React.FC = () => {
                 <ul className="p-3 space-y-1">
                   {item.ingredients.map((ing, idx) => (
                     <li key={idx}>
+                      {ing.group && ing.group !== item.ingredients[idx - 1]?.group && (
+                        <div className={cn('px-3 pb-1 text-[11px] font-black uppercase tracking-widest text-orange-600', idx > 0 && 'pt-3')}>
+                          {ing.group}
+                        </div>
+                      )}
                       <button
                         onClick={() => toggleIngredient(item.shoppingId, idx)}
                         className={cn(
@@ -165,7 +171,7 @@ export const ShoppingList: React.FC = () => {
                         </span>
                         <span className={cn('flex-1 font-medium', ing.checked && 'line-through text-neutral-400')}>{ing.name}</span>
                         <span className={cn('text-sm font-semibold', ing.checked ? 'text-neutral-300' : 'text-neutral-500')}>
-                          {formatIngredientAmount(ing)}
+                          {formatIngredientAmount(ing) || 'vừa đủ'}
                         </span>
                       </button>
                     </li>

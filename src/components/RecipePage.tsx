@@ -25,7 +25,7 @@ import { useJourney } from '../JourneyContext';
 import { href, navigate, replaceRoute } from '../lib/router';
 import { DIFFICULTY_LABELS, STAGES } from '../lib/recipe';
 import { cn, pad2 } from '../lib/utils';
-import { DifficultyMeter, Modal, RecipeCover, Tag } from './ui';
+import { DifficultyMeter, Modal, RatingInput, RecipeCover, Tag } from './ui';
 import { Markdown } from './Markdown';
 import { IngredientsPanel } from './IngredientsPanel';
 import { CookingMode } from './CookingMode';
@@ -41,7 +41,7 @@ const formatDate = (ts: number) =>
 
 export const RecipePage: React.FC<RecipePageProps> = ({ day, cooking, onEdit }) => {
   const { recipes, isLoading, deleteRecipe } = useRecipes();
-  const { cooked, toggleCooked, notes, setNote, isAdmin } = useJourney();
+  const { cooked, toggleCooked, notes, setNote, ratings, setRating, isAdmin } = useJourney();
   const openedHere = useRef(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [shared, setShared] = useState(false);
@@ -157,6 +157,7 @@ export const RecipePage: React.FC<RecipePageProps> = ({ day, cooking, onEdit }) 
               {cookedAt && (
                 <Tag tone="green">
                   <Check size={12} strokeWidth={3} /> Đã nấu {formatDate(cookedAt)}
+                  {ratings[recipe.id] ? ` · ${ratings[recipe.id]}/10` : ''}
                 </Tag>
               )}
             </div>
@@ -291,28 +292,36 @@ export const RecipePage: React.FC<RecipePageProps> = ({ day, cooking, onEdit }) 
             />
           </section>
 
-          {/* Đánh dấu hoàn thành */}
-          <section className="rounded-3xl bg-neutral-900 text-white p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left print:hidden">
-            <div className="text-5xl" aria-hidden>
-              {cookedAt ? '🏆' : '🍽️'}
+          {/* Đánh dấu hoàn thành + chấm điểm */}
+          <section className="rounded-3xl bg-neutral-900 text-white p-6 sm:p-8 print:hidden">
+            <div className="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
+              <div className="text-5xl" aria-hidden>
+                {cookedAt ? '🏆' : '🍽️'}
+              </div>
+              <div className="flex-1">
+                <h2 className="text-xl font-black">{cookedAt ? `Bạn đã hoàn thành Ngày ${recipe.day}!` : 'Nấu xong rồi?'}</h2>
+                <p className="text-neutral-400 text-sm mt-1">
+                  {cookedAt
+                    ? `Đánh dấu ngày ${formatDate(cookedAt)}. Hãy tiếp tục với món tiếp theo nhé.`
+                    : 'Đánh dấu để cập nhật tiến độ hành trình 100 ngày của bạn.'}
+                </p>
+              </div>
+              <button
+                onClick={() => toggleCooked(recipe.id)}
+                className={cn(
+                  'h-12 px-6 rounded-2xl font-bold transition-all active:scale-95 shrink-0',
+                  cookedAt ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-emerald-500 hover:bg-emerald-400 text-white'
+                )}
+              >
+                {cookedAt ? 'Bỏ đánh dấu' : 'Đánh dấu đã nấu'}
+              </button>
             </div>
-            <div className="flex-1">
-              <h2 className="text-xl font-black">{cookedAt ? `Bạn đã hoàn thành Ngày ${recipe.day}!` : 'Nấu xong rồi?'}</h2>
-              <p className="text-neutral-400 text-sm mt-1">
-                {cookedAt
-                  ? `Đánh dấu ngày ${formatDate(cookedAt)}. Hãy tiếp tục với món tiếp theo nhé.`
-                  : 'Đánh dấu để cập nhật tiến độ hành trình 100 ngày của bạn.'}
-              </p>
-            </div>
-            <button
-              onClick={() => toggleCooked(recipe.id)}
-              className={cn(
-                'h-12 px-6 rounded-2xl font-bold transition-all active:scale-95 shrink-0',
-                cookedAt ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-emerald-500 hover:bg-emerald-400 text-white'
-              )}
-            >
-              {cookedAt ? 'Bỏ đánh dấu' : 'Đánh dấu đã nấu'}
-            </button>
+            {cookedAt && (
+              <div className="mt-6 pt-6 border-t border-white/10">
+                <p className="font-bold mb-3">Món này được mấy điểm trên 10?</p>
+                <RatingInput dark value={ratings[recipe.id]} onChange={(score) => setRating(recipe.id, score)} />
+              </div>
+            )}
           </section>
 
           {/* Món trước / sau */}

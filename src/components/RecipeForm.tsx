@@ -23,7 +23,7 @@ import { Modal } from './ui';
 
 type Draft = Omit<Recipe, 'id'>;
 
-const emptyIngredient = (): Ingredient => ({ name: '', amount: '', unit: '', note: '' });
+const emptyIngredient = (group = ''): Ingredient => ({ name: '', amount: '', unit: '', note: '', group });
 const emptySection = (): RecipeSection => ({ title: '', content: '' });
 
 const toDraft = (recipe: Recipe | null, nextDay: number): Draft =>
@@ -98,7 +98,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onClose }) => {
     setDraft((d) => ({
       ...d,
       ...Object.fromEntries(Object.entries(p).filter(([, v]) => v !== undefined && v !== '')),
-      ingredients: p.ingredients?.length ? p.ingredients.map((i) => ({ note: '', ...i })) : d.ingredients,
+      ingredients: p.ingredients?.length ? p.ingredients.map((i) => ({ note: '', group: '', ...i })) : d.ingredients,
       sections: p.sections?.length ? p.sections : d.sections,
     }));
   };
@@ -115,7 +115,13 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onClose }) => {
       emoji: draft.emoji?.trim() || guessEmoji(draft.name),
       ingredients: draft.ingredients
         .filter((i) => i.name.trim())
-        .map((i) => ({ name: i.name.trim(), amount: i.amount.trim(), unit: i.unit.trim(), ...(i.note?.trim() ? { note: i.note.trim() } : {}) })),
+        .map((i) => ({
+          name: i.name.trim(),
+          amount: i.amount.trim(),
+          unit: i.unit.trim(),
+          ...(i.note?.trim() ? { note: i.note.trim() } : {}),
+          ...(i.group?.trim() ? { group: i.group.trim() } : {}),
+        })),
       sections: draft.sections.filter((s) => s.title.trim() || s.content.trim()),
     };
 
@@ -370,7 +376,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onClose }) => {
               <h3 className="font-black text-neutral-900">Nguyên liệu</h3>
               <button
                 type="button"
-                onClick={() => set('ingredients', [...draft.ingredients, emptyIngredient()])}
+                onClick={() => set('ingredients', [...draft.ingredients, emptyIngredient(draft.ingredients[draft.ingredients.length - 1]?.group)])}
                 className="text-sm font-bold text-orange-600 flex items-center gap-1 hover:underline"
               >
                 <Plus size={15} /> Thêm dòng
@@ -378,32 +384,47 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onClose }) => {
             </div>
             <div className="space-y-2">
               {draft.ingredients.map((ing, i) => (
-                <div key={i} className="grid grid-cols-[1fr_4.5rem_6.5rem_2.5rem] sm:grid-cols-[1.4fr_4.5rem_7rem_1.4fr_2.5rem] gap-2 items-center">
+                // Điện thoại: hàng 1 = tên · SL · đơn vị · xóa, hàng 2 = nhóm · công dụng. Máy tính: một hàng.
+                <div
+                  key={i}
+                  className="grid grid-cols-[1fr_4.5rem_6.5rem_2.5rem] sm:grid-cols-[7rem_1.3fr_4.5rem_6.5rem_1.2fr_2.5rem] gap-2 items-center"
+                >
+                  <input
+                    value={ing.group ?? ''}
+                    onChange={(e) => setIngredient(i, 'group', e.target.value)}
+                    list="ingredient-groups"
+                    className={cn(input, 'h-10 text-sm px-2.5 row-start-2 col-start-1 sm:row-start-auto sm:col-start-auto')}
+                    placeholder="Nhóm"
+                    aria-label="Nhóm nguyên liệu"
+                  />
                   <input
                     value={ing.name}
                     onChange={(e) => setIngredient(i, 'name', e.target.value)}
-                    className={cn(input, 'h-10 text-sm')}
+                    className={cn(input, 'h-10 text-sm row-start-1 col-start-1 sm:row-start-auto sm:col-start-auto')}
                     placeholder="Tên"
                     aria-label="Tên nguyên liệu"
                   />
                   <input
                     value={ing.amount}
                     onChange={(e) => setIngredient(i, 'amount', e.target.value)}
-                    className={cn(input, 'h-10 text-sm px-2.5')}
+                    className={cn(input, 'h-10 text-sm px-2.5 row-start-1 col-start-2 sm:row-start-auto sm:col-start-auto')}
                     placeholder="SL"
                     aria-label="Số lượng"
                   />
                   <input
                     value={ing.unit}
                     onChange={(e) => setIngredient(i, 'unit', e.target.value)}
-                    className={cn(input, 'h-10 text-sm px-2.5')}
+                    className={cn(input, 'h-10 text-sm px-2.5 row-start-1 col-start-3 sm:row-start-auto sm:col-start-auto')}
                     placeholder="Đơn vị"
                     aria-label="Đơn vị"
                   />
                   <input
                     value={ing.note ?? ''}
                     onChange={(e) => setIngredient(i, 'note', e.target.value)}
-                    className={cn(input, 'h-10 text-sm col-span-3 sm:col-span-1 row-start-2 sm:row-start-auto')}
+                    className={cn(
+                      input,
+                      'h-10 text-sm row-start-2 col-start-2 col-span-3 sm:row-start-auto sm:col-start-auto sm:col-span-1'
+                    )}
                     placeholder="Công dụng / ghi chú"
                     aria-label="Công dụng"
                   />
@@ -411,7 +432,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onClose }) => {
                     type="button"
                     onClick={() => set('ingredients', draft.ingredients.filter((_, idx) => idx !== i))}
                     disabled={draft.ingredients.length === 1}
-                    className="w-10 h-10 rounded-xl text-neutral-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center disabled:opacity-30 row-start-1 col-start-4 sm:col-start-auto"
+                    className="w-10 h-10 rounded-xl text-neutral-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center disabled:opacity-30 row-start-1 col-start-4 sm:row-start-auto sm:col-start-auto"
                     aria-label="Xóa nguyên liệu"
                   >
                     <Trash2 size={16} />
@@ -419,6 +440,11 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onClose }) => {
                 </div>
               ))}
             </div>
+            <datalist id="ingredient-groups">
+              {Array.from(new Set(draft.ingredients.map((i) => i.group?.trim()).filter(Boolean))).map((g) => (
+                <option key={g} value={g} />
+              ))}
+            </datalist>
           </fieldset>
 
           {/* ----- Các phần hướng dẫn ----- */}

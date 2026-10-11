@@ -1,12 +1,16 @@
 import { Ingredient, Recipe, RecipeSection } from '../types';
 import { guessEmoji, MEAL_TIMES } from './recipe';
+import { splitGraphemes } from './utils';
 
 // Đọc công thức dán vào dạng văn bản, ví dụ:
-//   NGÀY 1 — KHOAI TÂY LUỘC ...
+//   NGÀY 1 — KHOAI TÂY LUỘC ...            (hoặc "🍤 Ngày 2 — Tôm bơ tỏi ...")
 //   Phong cách: ... / Thời gian: ... / Độ khó: 1/5 / Khẩu phần: 1 người
-//   1. Danh sách nguyên liệu   (bảng: Tên <Tab> Khối lượng <Tab> Công dụng)
-//   2. Chuẩn bị ...            (các phần đánh số 1, 2, 3...)
+//   (hoặc các dòng không nhãn: "Dễ làm · 2/5", "25–35 phút", "1 người ăn")
+//   1. Danh sách nguyên liệu   (bảng: Tên <Tab> Khối lượng <Tab> Công dụng,
+//                               hoặc nhóm "Tôm bơ tỏi" + các dòng "- Tôm tươi: 200 g")
+//   2. Bước 1 — Chuẩn bị ...   (các phần đánh số 1, 2, 3...)
 // Hỗ trợ cả bản copy dạng markdown (## tiêu đề, bảng | ... |, **Bí quyết:**).
+// Bỏ qua các dòng thừa khi copy từ trang chat: tên miền nguồn ảnh, số đếm ảnh, "0/5"...
 
 export type ParsedRecipe = Partial<Omit<Recipe, 'id'>>;
 
@@ -22,8 +26,34 @@ const NUMBERED_RE = /^(\d+)[.)]\s+(.+)$/;
 const MD_HEADING_RE = /^(#{1,6})\s+(.+)$/;
 const KEYWORD_HEADER_RE =
   /^(danh sách nguyên liệu|nguyên liệu|chuẩn bị|sơ chế|cách làm|cách nấu|thực hiện|các bước|hướng dẫn|trình bày|thành phẩm|bí quyết|mẹo|lưu ý)\b/i;
-const TIP_RE = /^(Bí quyết|Mẹo nhỏ|Mẹo|Lưu ý|Chú ý)\s*:\s*(.+)$/i;
+// "Bí quyết: ...", "Bí quyết đầu bếp: ...", "Điểm quan trọng nhất: ..."
+const TIP_RE = /^((?:Bí quyết|Mẹo|Lưu ý|Chú ý|Điểm quan trọng)[^:]{0,30}?)\s*:\s*(.+)$/i;
 const QTY_RE = /^(\d+(?:[.,/]\d+)?(?:\s*[–-]\s*\d+(?:[.,/]\d+)?)?)\s*(.*)$/;
+const CHECKBOX_RE = /^(?:[-*•]\s*)?\[[ xX✓✔]?\]\s*(.+)$/;
+const DOMAIN_RE = /^(?:https?:\/\/)?(?:[a-z0-9-]+\.)+[a-z]{2,}(?:\/\S*)?$/i;
+const PROGRESS_RE = /^\d+\s*\/\s*\d+$/;
+// Lời nhắn của trợ lý trong khung chat, không phải nội dung công thức
+const CHAT_RE = /cho (tôi|mình) biết/i;
+
+// Dòng rác khi copy: tên miền nguồn ảnh, số đếm ảnh ("6"), tiến độ "0/5", lời nhắn chat
+const cleanLines = (lines: string[]) => {
+  const out: string[] = [];
+  for (const raw of lines) {
+    const line = raw.trim();
+    if (DOMAIN_RE.test(line) || /^\d+$/.test(line) || CHAT_RE.test(line)) continue;
+    if (PROGRESS_RE.test(line)) {
+      // bỏ luôn dòng "Tiến độ ..." đi kèm ngay trước đó
+      for (let j = out.length - 1; j >= 0; j--) {
+        if (!out[j].trim()) continue;
+        if (/^tiến độ/i.test(out[j].trim())) out.splice(j, 1);
+        break;
+      }
+      continue;
+    }
+    out.push(raw);
+  }
+  return out;
+};
 
 const stripMd = (s: string) => s.replace(/\*\*/g, '').replace(/^#+\s*/, '').trim();
 const stripEndPunct = (s: string) => s.replace(/[.;,\s]+$/, '').trim();
@@ -56,6 +86,8 @@ const parseIngredients = (lines: string[]): { ingredients: Ingredient[]; rest: s
   const ingredients: Ingredient[] = [];
   const rest: string[] = [];
   let headerSkipped = false;
+  let group = '';
+  const withGroup = (ing: Ingredient): Ingredient => (group ? { ...ing, group } : ing);
 
   for (const raw of lines) {
     const line = raw.trim();
@@ -68,14 +100,20 @@ const parseIngredients = (lines: string[]): { ingredients: Ingredient[]; rest: s
         continue;
       }
       const [name, qty = '', note = ''] = cells;
-      if (name) ingredients.push({ name, ...splitQuantity(qty), ...(note ? { note: stripEndPunct(note) } : {}) });
+      if (name) ingredients.push(withGroup({ name, ...splitQuantity(qty), ...(note ? { note: stripEndPunct(note) } : {}) }));
       continue;
     }
     const bullet = line.match(/^[-*•+]\s+(.+)$/);
     if (bullet) {
       // "- Khoai tây: 250 g" hoặc "- Khoai tây – 250 g"
       const [name, qty = ''] = stripMd(bullet[1]).split(/\s*(?::|\s[–-]\s)\s*/, 2);
-      ingredients.push({ name: stripEndPunct(name), ...splitQuantity(qty) });
+      ingredients.push(withGroup({ name: stripEndPunct(name), ...splitQuantity(qty) }));
+      continue;
+    }
+    // Dòng ngắn không có dấu câu (vd "Tôm bơ tỏi", "Sốt chanh:") là tên nhóm nguyên liệu
+    const plain = stripMd(line);
+    if (plain.length <= 40 && !/[.!?;,]$/.test(plain)) {
+      group = plain.replace(/:$/, '').trim();
       continue;
     }
     rest.push(raw);
@@ -130,7 +168,8 @@ const toMarkdown = (lines: string[]): string => {
       return push('ol', `${numbered[1]}. ${numbered[2]}`, prev === 'ol' && !restart);
     }
 
-    const bullet = line.match(/^[-*•+]\s+(.+)$/);
+    // "[ ] việc cần làm" (checklist) → gạch đầu dòng, trên web vẫn tick được
+    const bullet = line.match(CHECKBOX_RE) ?? line.match(/^[-*•+]\s+(.+)$/);
     if (bullet) return push('ul', `- ${bullet[1]}`, prev === 'ul');
 
     const plain = stripMd(line);
@@ -161,8 +200,8 @@ const MEAL_ALIASES: [RegExp, string][] = [
 export const parseRecipeText = (input: string): ParseResult => {
   const lines = input
     .replace(/\r\n?/g, '\n')
-    .replace(/ /g, ' ')
-    .replace(/[​-‍﻿]/g, '')
+    .replace(/\u00a0/g, ' ')
+    .replace(/[\u200b\u200c\ufeff]/g, '') // gi\u1eef \u200d v\u00ec emoji gh\u00e9p c\u1ea7n n\u00f3
     .split('\n')
     .map((l) => l.replace(/\s+$/, ''));
 
@@ -173,8 +212,11 @@ export const parseRecipeText = (input: string): ParseResult => {
   const titleIndex = lines.findIndex((l) => l.trim());
   if (titleIndex === -1) return { recipe, found, warnings: ['Chưa có nội dung để phân tích.'] };
 
-  // ----- Tiêu đề -----
-  const title = stripMd(lines[titleIndex]);
+  // ----- Tiêu đề (có thể bắt đầu bằng emoji, vd "🍤 Ngày 2 — ...") -----
+  const rawTitle = stripMd(lines[titleIndex]);
+  const lead = rawTitle.match(/^[^\p{L}\p{N}]+/u)?.[0] ?? '';
+  const leadEmoji = /\p{Extended_Pictographic}/u.test(lead) ? lead.replace(/\s+/g, '') : '';
+  const title = rawTitle.slice(lead.length).trim();
   const titleMatch = title.match(TITLE_RE);
   if (titleMatch) {
     recipe.day = Number(titleMatch[1]);
@@ -184,7 +226,7 @@ export const parseRecipeText = (input: string): ParseResult => {
     warnings.push('Không thấy "NGÀY X — ..." ở dòng đầu, hãy tự điền số ngày.');
   }
 
-  const body = lines.slice(titleIndex + 1);
+  const body = cleanLines(lines.slice(titleIndex + 1));
 
   // ----- Xác định cách đánh dấu các phần -----
   const mdLevels = body
@@ -230,7 +272,8 @@ export const parseRecipeText = (input: string): ParseResult => {
   for (const raw of body) {
     const t = headerTitle(raw);
     if (t !== null) {
-      sections.push({ title: sentenceCase(t), lines: [] });
+      // "Bước 1 — Làm khoai tây nghiền" → "Làm khoai tây nghiền" (web đã tự đánh số)
+      sections.push({ title: sentenceCase(t.replace(/^Bước\s*\d+\s*[—–:.\-]+\s*/i, '')), lines: [] });
       expected++;
       lastItem = 0;
       continue;
@@ -255,6 +298,24 @@ export const parseRecipeText = (input: string): ParseResult => {
         else if (key === 'emoji') recipe.emoji = value;
         else if (key === 'ảnh') recipe.thumbnail = value;
         continue;
+      }
+      // Dòng thông tin không có nhãn: "Dễ làm · 2/5", "25–35 phút", "1 người ăn"
+      const plain = stripEndPunct(stripMd(raw.trim()));
+      if (plain.length <= 30) {
+        const difficulty = plain.match(/(\d)\s*\/\s*5\b/);
+        if (difficulty) {
+          recipe.difficulty = Math.min(5, Math.max(1, Number(difficulty[1])));
+          continue;
+        }
+        if (/^(khoảng\s+)?\d+(?:[.,]\d+)?(?:\s*[–-]\s*\d+(?:[.,]\d+)?)?\s*(phút|giờ|tiếng)$/i.test(plain)) {
+          recipe.time = plain.replace(/^khoảng\s+/i, '');
+          continue;
+        }
+        const servings = plain.match(/^(\d+(?:\s*[–-]\s*\d+)?)\s*người(?:\s*ăn)?$/i);
+        if (servings) {
+          recipe.servings = `${servings[1]} người`;
+          continue;
+        }
       }
       if (raw.trim()) descLines.push(stripMd(raw.trim()));
       continue;
@@ -282,7 +343,12 @@ export const parseRecipeText = (input: string): ParseResult => {
   if (parsedSections.length) recipe.sections = parsedSections;
   else warnings.push('Chưa tách được các bước, nội dung sẽ cần nhập tay.');
 
-  recipe.emoji = recipe.emoji || guessEmoji(recipe.name ?? '');
+  if (!recipe.emoji) {
+    // Ưu tiên emoji ở đầu tiêu đề, thêm vài emoji đoán từ tên món
+    const guessed = splitGraphemes(guessEmoji(recipe.name ?? '')).filter((e) => e !== '🍳');
+    const lead = splitGraphemes(leadEmoji);
+    recipe.emoji = [...lead, ...guessed.filter((e) => !lead.includes(e))].slice(0, 4).join('') || '🍳';
+  }
 
   if (recipe.day) found.push(`Ngày ${recipe.day}`);
   if (recipe.difficulty) found.push(`Độ khó ${recipe.difficulty}/5`);

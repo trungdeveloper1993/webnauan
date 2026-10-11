@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": 1791647021646,
+  "updatedAt": 1791682732622,
   "recipes": [
     {
       "id": "ngay-1",
@@ -104,6 +104,126 @@
         {
           "title": "Bí quyết nâng cấp món ăn",
           "content": "Nếu bạn muốn món này ngon hơn nữa, lần sau hãy thử một trong hai cách:\n\n### Cách A — Giữ nguyên vị Việt Nam\n\nThêm một chút tiêu xay vào sốt mắm chanh. Vị cay thơm nhẹ sẽ làm tôm và khoai hấp dẫn hơn.\n\n### Cách B — Chuyển sang phong cách Âu\n\nThay sốt mắm bằng sốt sữa chua tỏi:\n\n- 2 thìa canh sữa chua không đường.\n- 1 thìa cà phê nước cốt chanh.\n- Một ít tỏi băm.\n- Muối và tiêu.\n\nTrộn đều rồi chấm cùng khoai, tôm và rau củ.\n\nCùng một bộ nguyên liệu, bạn đã có hai trải nghiệm hương vị khác nhau."
+        }
+      ]
+    },
+    {
+      "id": "ngay-2",
+      "day": 2,
+      "name": "Tôm bơ tỏi áp chảo + khoai tây nghiền + sốt chanh",
+      "emoji": "🍤🥔🍋",
+      "thumbnail": "images/ngay-2.webp",
+      "description": "Hôm nay chúng ta chuyển từ món luộc thanh nhẹ sang phong cách Âu: tôm thơm bơ tỏi, khoai tây mềm mịn và sốt chanh chua dịu. Nguyên liệu vẫn đơn giản nhưng hương vị sẽ khác hẳn ngày đầu.",
+      "style": "Món Âu",
+      "time": "25–35 phút",
+      "difficulty": 2,
+      "servings": "1 người",
+      "category": "Món áp chảo",
+      "mealTime": "Bữa tối",
+      "ingredients": [
+        {
+          "name": "Tôm tươi",
+          "amount": "180–200",
+          "unit": "g",
+          "group": "Tôm bơ tỏi"
+        },
+        {
+          "name": "Bơ lạt",
+          "amount": "10",
+          "unit": "g",
+          "group": "Tôm bơ tỏi"
+        },
+        {
+          "name": "Tỏi",
+          "amount": "2",
+          "unit": "tép",
+          "group": "Tôm bơ tỏi"
+        },
+        {
+          "name": "Dầu ăn",
+          "amount": "1",
+          "unit": "thìa cà phê",
+          "group": "Tôm bơ tỏi"
+        },
+        {
+          "name": "Muối, tiêu",
+          "amount": "",
+          "unit": "",
+          "group": "Tôm bơ tỏi"
+        },
+        {
+          "name": "Khoai tây",
+          "amount": "250",
+          "unit": "g",
+          "group": "Khoai tây nghiền"
+        },
+        {
+          "name": "Sữa tươi không đường",
+          "amount": "30–50",
+          "unit": "ml",
+          "group": "Khoai tây nghiền"
+        },
+        {
+          "name": "Bơ lạt",
+          "amount": "5",
+          "unit": "g",
+          "group": "Khoai tây nghiền"
+        },
+        {
+          "name": "Muối",
+          "amount": "một nhúm nhỏ",
+          "unit": "",
+          "group": "Khoai tây nghiền"
+        },
+        {
+          "name": "Nước cốt chanh",
+          "amount": "1–2",
+          "unit": "thìa cà phê",
+          "group": "Sốt chanh"
+        },
+        {
+          "name": "Nước lọc",
+          "amount": "2",
+          "unit": "thìa canh",
+          "group": "Sốt chanh"
+        },
+        {
+          "name": "Bơ",
+          "amount": "3–5",
+          "unit": "g",
+          "group": "Sốt chanh"
+        },
+        {
+          "name": "Tiêu và muối",
+          "amount": "",
+          "unit": "",
+          "group": "Sốt chanh"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Làm khoai tây nghiền thật mịn",
+          "content": "1. Gọt vỏ khoai, cắt thành miếng khoảng 3 cm.\n2. Cho vào nồi nước lạnh, thêm chút muối.\n3. Đun sôi nhẹ khoảng 12–18 phút, đến khi nĩa xuyên qua khoai dễ dàng.\n4. Chắt hết nước, để khoai ráo khoảng 1 phút.\n5. Nghiền khi khoai còn nóng.\n6. Thêm 5 g bơ và sữa tươi đã làm ấm nhẹ, từng ít một. Trộn đến khi đạt độ mềm mịn mong muốn.\n\n> **Bí quyết đầu bếp:** Đừng dùng máy xay sinh tố để nghiền khoai. Tinh bột bị tác động quá mạnh có thể khiến khoai trở nên dẻo, dính như keo. Nếu khoai còn lợn cợn, dùng nĩa hoặc dụng cụ nghiền khoai sẽ tốt hơn."
+        },
+        {
+          "title": "Áp chảo tôm bơ tỏi",
+          "content": "1. Bóc vỏ tôm, bỏ chỉ lưng nếu cần, sau đó thấm thật khô.\n2. Ướp tôm với một nhúm muối và tiêu trong khoảng 5 phút.\n3. Làm nóng chảo ở lửa vừa cao, thêm 1 thìa cà phê dầu ăn.\n4. Cho tôm vào, trải thành một lớp. Áp chảo khoảng 1–2 phút mỗi mặt tùy kích thước.\n5. Khi tôm gần chín, hạ lửa vừa nhỏ, thêm 10 g bơ và tỏi băm.\n6. Đảo thêm khoảng 30–60 giây, đến khi tỏi thơm và tôm chín hoàn toàn.\n\n> **Điểm quan trọng nhất:** Không cho tỏi vào ngay từ đầu vì tỏi dễ cháy, gây vị đắng. Tôm chín khi thịt chuyển đục hoàn toàn; tránh nấu quá lâu vì tôm sẽ dai."
+        },
+        {
+          "title": "Làm sốt chanh từ chính chiếc chảo vừa nấu tôm",
+          "content": "Đây là phần giúp món ăn có vị giống nhà hàng hơn.\n\n1. Gắp tôm ra đĩa.\n2. Giữ lại phần bơ tỏi thơm trong chảo, hạ lửa nhỏ.\n3. Thêm 2 thìa canh nước và khuấy nhẹ để hòa tan phần gia vị bám dưới đáy chảo.\n4. Thêm 3–5 g bơ, khuấy đến khi sốt hơi sánh.\n5. Tắt bếp rồi mới thêm nước cốt chanh.\n6. Nếm thử, thêm chút muối hoặc tiêu nếu cần.\n\nSốt cần có vị béo nhẹ, chua dịu và thơm tỏi. Nếu quá chua, thêm một ít nước hoặc bơ; nếu quá béo, thêm vài giọt chanh."
+        },
+        {
+          "title": "Bày đĩa như nhà hàng",
+          "content": "- Đặt khoai tây nghiền ở một bên đĩa.\n- Xếp tôm thành cụm bên cạnh.\n- Rưới sốt chanh vừa đủ lên tôm.\n- Nếu có rau mùi tây, rắc một ít lên trên.\n- Có thể ăn cùng 100–150 g bông cải xanh hấp để bữa ăn cân bằng hơn.\n\nKhông cần trang trí cầu kỳ. Chỉ cần tôm còn nóng, khoai mềm và sốt không quá nhiều là món đã hấp dẫn."
+        },
+        {
+          "title": "Những lỗi dễ làm món kém ngon",
+          "content": "| Lỗi | Cách khắc phục |\n|---|---|\n| Khoai bị nhão, loãng | Để khoai ráo trước khi nghiền; thêm sữa từ từ |\n| Tôm dai | Không áp chảo quá lâu |\n| Tỏi đắng | Chỉ thêm tỏi khi tôm gần chín, hạ lửa |\n| Sốt quá chua | Giảm chanh, tăng chút nước và bơ |\n| Món ăn ngấy | Giảm bơ, thêm rau xanh và chanh |"
+        },
+        {
+          "title": "Checklist nấu ăn hôm nay",
+          "content": "- Chuẩn bị và sơ chế tôm, khoai tây, tỏi, chanh\n- Luộc và nghiền khoai tây\n- Áp chảo tôm bơ tỏi\n- Làm sốt chanh\n- Bày đĩa và thưởng thức"
         }
       ]
     }

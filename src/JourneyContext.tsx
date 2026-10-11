@@ -4,6 +4,7 @@ import { localDateKey, readStorage, writeStorage } from './lib/utils';
 interface JourneyState {
   cooked: Record<string, number>; // id món -> thời điểm đánh dấu đã nấu
   notes: Record<string, string>; // id món -> ghi chú riêng
+  ratings: Record<string, number>; // id món -> điểm 1–10 sau khi nấu
 }
 
 interface JourneyContextType {
@@ -13,6 +14,8 @@ interface JourneyContextType {
   toggleCooked: (id: string) => void;
   markCooked: (id: string) => void;
   setNote: (id: string, note: string) => void;
+  ratings: Record<string, number>;
+  setRating: (id: string, score: number | null) => void;
   streak: number;
   isAdmin: boolean;
   setAdmin: (value: boolean) => void;
@@ -39,7 +42,7 @@ const computeStreak = (cooked: Record<string, number>) => {
 export const JourneyProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, setState] = useState<JourneyState>(() => {
     const saved = readStorage<Partial<JourneyState>>(PROGRESS_KEY, {});
-    return { cooked: saved.cooked ?? {}, notes: saved.notes ?? {} };
+    return { cooked: saved.cooked ?? {}, notes: saved.notes ?? {}, ratings: saved.ratings ?? {} };
   });
   const [isAdmin, setIsAdmin] = useState<boolean>(() => readStorage(ADMIN_KEY, false));
 
@@ -67,6 +70,14 @@ export const JourneyProvider: React.FC<{ children: React.ReactNode }> = ({ child
       return { ...prev, notes };
     });
 
+  const setRating = (id: string, score: number | null) =>
+    setState((prev) => {
+      const ratings = { ...prev.ratings };
+      if (score) ratings[id] = Math.min(10, Math.max(1, Math.round(score)));
+      else delete ratings[id];
+      return { ...prev, ratings };
+    });
+
   return (
     <JourneyContext.Provider
       value={{
@@ -76,6 +87,8 @@ export const JourneyProvider: React.FC<{ children: React.ReactNode }> = ({ child
         toggleCooked,
         markCooked,
         setNote,
+        ratings: state.ratings,
+        setRating,
         streak,
         isAdmin,
         setAdmin: setIsAdmin,

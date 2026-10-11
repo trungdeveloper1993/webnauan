@@ -79,8 +79,21 @@ export const IngredientsPanel: React.FC<IngredientsPanelProps> = ({ recipe, larg
       <ul className="space-y-1.5">
         {recipe.ingredients.map((ing, i) => {
           const isChecked = checked.has(i);
+          const groupStart = ing.group && ing.group !== recipe.ingredients[i - 1]?.group;
           return (
             <li key={i}>
+              {groupStart && (
+                <div
+                  className={cn(
+                    'flex items-center gap-2 font-black uppercase tracking-widest text-orange-600 px-1 pb-1.5',
+                    large ? 'text-sm' : 'text-[11px]',
+                    i > 0 && 'pt-3'
+                  )}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
+                  {ing.group}
+                </div>
+              )}
               <button
                 onClick={() => toggle(i)}
                 className={cn(
@@ -117,10 +130,14 @@ export const IngredientsPanel: React.FC<IngredientsPanelProps> = ({ recipe, larg
                   className={cn(
                     'shrink-0 font-bold rounded-lg px-2 py-1 whitespace-nowrap',
                     large ? 'text-base' : 'text-xs',
-                    isChecked ? 'text-neutral-400 bg-neutral-100' : 'text-orange-700 bg-orange-50'
+                    isChecked
+                      ? 'text-neutral-400 bg-neutral-100'
+                      : ing.amount
+                        ? 'text-orange-700 bg-orange-50'
+                        : 'text-neutral-500 bg-neutral-100 font-semibold'
                   )}
                 >
-                  {formatIngredientAmount(ing, factor) || '—'}
+                  {formatIngredientAmount(ing, factor) || 'vừa đủ'}
                 </span>
               </button>
             </li>

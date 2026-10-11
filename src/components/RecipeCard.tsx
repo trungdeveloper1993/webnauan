@@ -8,9 +8,10 @@ import { DifficultyMeter, RecipeCover, Tag } from './ui';
 
 export const RecipeCard: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
   const { addToShopping } = useRecipes();
-  const { isCooked } = useJourney();
+  const { isCooked, ratings } = useJourney();
   const [added, setAdded] = useState(false);
   const cooked = isCooked(recipe.id);
+  const score = ratings[recipe.id];
 
   return (
     <div className="group relative h-full">
@@ -42,7 +43,7 @@ export const RecipeCard: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
 
       {cooked && (
         <div className="absolute top-3 right-3 bg-emerald-500 text-white rounded-full pl-2 pr-2.5 py-1 text-[11px] font-bold flex items-center gap-1 shadow-sm pointer-events-none">
-          <Check size={13} strokeWidth={3} /> Đã nấu
+          <Check size={13} strokeWidth={3} /> Đã nấu{score ? ` · ${score}/10` : ''}
         </div>
       )}
       <button

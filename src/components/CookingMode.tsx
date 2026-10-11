@@ -7,6 +7,7 @@ import { href } from '../lib/router';
 import { cn, pad2 } from '../lib/utils';
 import { Markdown } from './Markdown';
 import { IngredientsPanel } from './IngredientsPanel';
+import { RatingInput } from './ui';
 
 // Giữ màn hình luôn sáng khi đang nấu (trình duyệt không hỗ trợ thì bỏ qua)
 const useWakeLock = () => {
@@ -50,7 +51,7 @@ interface CookingModeProps {
 }
 
 export const CookingMode: React.FC<CookingModeProps> = ({ recipe, nextRecipe, onClose }) => {
-  const { isCooked, markCooked, notes, setNote } = useJourney();
+  const { isCooked, markCooked, notes, setNote, ratings, setRating } = useJourney();
   const [step, setStep] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
   const awake = useWakeLock();
@@ -172,7 +173,13 @@ export const CookingMode: React.FC<CookingModeProps> = ({ recipe, nextRecipe, on
                 ? 'Tiến độ hành trình đã được cập nhật. Chúc ngon miệng!'
                 : 'Bày món ra đĩa, thưởng thức, rồi đánh dấu đã nấu nhé.'}
             </p>
-            <div className="text-left mt-8">
+            {cooked && (
+              <div className="text-left mt-8">
+                <p className="text-xs font-black uppercase tracking-widest text-neutral-400 mb-3">Món này được mấy điểm trên 10?</p>
+                <RatingInput value={ratings[recipe.id]} onChange={(score) => setRating(recipe.id, score)} />
+              </div>
+            )}
+            <div className="text-left mt-6">
               <label htmlFor="cook-note" className="text-xs font-black uppercase tracking-widest text-neutral-400">
                 Ghi chú cho lần sau
               </label>

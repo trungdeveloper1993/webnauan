@@ -3,6 +3,7 @@ export interface Ingredient {
   amount: string;
   unit: string;
   note?: string; // Công dụng / ghi chú ngắn
+  group?: string; // Nhóm nguyên liệu, vd "Tôm bơ tỏi", "Sốt chanh"
   checked?: boolean; // Dùng cho danh sách đi chợ
 }
 
