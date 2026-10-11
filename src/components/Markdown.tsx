@@ -5,7 +5,8 @@ import { cn } from '../lib/utils';
 
 // Trình hiển thị markdown rút gọn cho phần hướng dẫn nấu:
 // "### Tiêu đề", "- gạch đầu dòng", "1. bước", "| bảng |" (hoặc dòng cách nhau bằng Tab),
-// "> trích dẫn / Bí quyết", "Bí quyết: ...", **in đậm**. Thời lượng như "12–18 phút" thành nút hẹn giờ.
+// "> trích dẫn / Bí quyết", "Bí quyết: ...", **in đậm**, "![mô tả](images/anh.jpg)" để chèn ảnh.
+// Thời lượng như "12–18 phút" thành nút hẹn giờ.
 
 type ListItem = { n?: number; text: string };
 
@@ -15,9 +16,11 @@ export type Block =
   | { type: 'tip'; label?: string; lines: string[] }
   | { type: 'ol'; items: ListItem[] }
   | { type: 'ul'; items: ListItem[] }
-  | { type: 'table'; header: string[]; rows: string[][] };
+  | { type: 'table'; header: string[]; rows: string[][] }
+  | { type: 'image'; alt: string; src: string };
 
 const HEADING = /^#{1,6}\s+(.+)$/;
+const IMAGE = /^!\[([^\]]*)\]\(([^)\s]+)\)$/;
 const OL = /^(\d+)[.)]\s+(.+)$/;
 const UL = /^[-*•+]\s+(.+)$/;
 const QUOTE = /^>\s?(.*)$/;
@@ -67,6 +70,13 @@ export const parseBlocks = (content: string): Block[] => {
       }
       const [header = [], ...body] = rows;
       blocks.push({ type: 'table', header, rows: body });
+      continue;
+    }
+
+    const image = line.match(IMAGE);
+    if (image) {
+      blocks.push({ type: 'image', alt: image[1], src: image[2] });
+      i++;
       continue;
     }
 
@@ -274,6 +284,13 @@ export const Markdown: React.FC<MarkdownProps> = ({ content, timerLabel = '', in
     <div className={cn('space-y-4 text-neutral-700', text)}>
       {blocks.map((block, bi) => {
         switch (block.type) {
+          case 'image':
+            return (
+              <figure key={bi} className="overflow-hidden rounded-2xl bg-neutral-100">
+                <img src={block.src} alt={block.alt} loading="lazy" className="w-full max-h-96 object-cover" />
+                {block.alt && <figcaption className="px-4 py-2 text-sm text-neutral-500 bg-white">{block.alt}</figcaption>}
+              </figure>
+            );
           case 'heading':
             return (
               <h4 key={bi} className="flex items-center gap-2 font-bold text-neutral-900 pt-2">

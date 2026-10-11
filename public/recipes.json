@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": 1791684028939,
+  "updatedAt": 1791707664458,
   "recipes": [
     {
       "id": "ngay-1",
@@ -317,8 +317,9 @@
         {
           "name": "Chanh",
           "amount": "1",
-          "unit": "ít, tùy khẩu vị",
-          "group": "Ăn kèm và làm sốt"
+          "unit": "ít",
+          "group": "Ăn kèm và làm sốt",
+          "note": "tùy khẩu vị"
         }
       ],
       "sections": [
@@ -345,6 +346,142 @@
         {
           "title": "Checklist nấu món ngày 3",
           "content": "- Sơ chế và ướp gà\n- Chuẩn bị cơm, dưa leo và rau ăn kèm\n- Áp chảo gà vàng đều, nấu chín hoàn toàn\n- Nấu sốt mắm mật ong\n- Bày đĩa và thưởng thức"
+        }
+      ]
+    },
+    {
+      "id": "ngay-4",
+      "day": 4,
+      "name": "Cá hấp gừng hành + cơm nóng + canh cà chua trứng",
+      "emoji": "🐟🍚🥣🍅",
+      "thumbnail": "images/ngay-4.webp",
+      "description": "Hôm nay chúng ta đổi khẩu vị: không chiên nhiều dầu, không dùng sốt béo. Món chính có thịt cá mềm ngọt, gừng thơm, hành lá và nước sốt mặn dịu; ăn cùng cơm nóng và canh cà chua trứng chua thanh. Đây là một bữa cơm gia đình Việt Nam rất đáng học, vì khi biết cách xử lý cá và nấu canh đúng lúc, nguyên liệu bình dân cũng có thể ngon như ngoài quán.",
+      "style": "Món Việt",
+      "time": "30–40 phút",
+      "difficulty": 2,
+      "servings": "1 người",
+      "category": "Món hấp",
+      "mealTime": "Bữa tối",
+      "ingredients": [
+        {
+          "name": "Cá diêu hồng",
+          "amount": "250–300",
+          "unit": "g phần ăn được",
+          "note": "hoặc cá phi lê 180–200 g",
+          "group": "Món chính: cá hấp gừng hành"
+        },
+        {
+          "name": "Gừng",
+          "amount": "15",
+          "unit": "g",
+          "group": "Món chính: cá hấp gừng hành"
+        },
+        {
+          "name": "Hành lá",
+          "amount": "2",
+          "unit": "nhánh",
+          "group": "Món chính: cá hấp gừng hành"
+        },
+        {
+          "name": "Nước tương",
+          "amount": "2",
+          "unit": "thìa cà phê",
+          "group": "Món chính: cá hấp gừng hành"
+        },
+        {
+          "name": "Nước mắm",
+          "amount": "1",
+          "unit": "thìa cà phê",
+          "group": "Món chính: cá hấp gừng hành"
+        },
+        {
+          "name": "Dầu ăn",
+          "amount": "1",
+          "unit": "thìa cà phê",
+          "group": "Món chính: cá hấp gừng hành"
+        },
+        {
+          "name": "Tiêu, chanh tùy khẩu vị",
+          "amount": "",
+          "unit": "",
+          "group": "Món chính: cá hấp gừng hành"
+        },
+        {
+          "name": "Cà chua",
+          "amount": "2",
+          "unit": "quả nhỏ",
+          "note": "khoảng 180 g",
+          "group": "Canh cà chua trứng"
+        },
+        {
+          "name": "Trứng gà",
+          "amount": "1",
+          "unit": "quả",
+          "group": "Canh cà chua trứng"
+        },
+        {
+          "name": "Nước",
+          "amount": "350–400",
+          "unit": "ml",
+          "group": "Canh cà chua trứng"
+        },
+        {
+          "name": "Hành tím",
+          "amount": "1",
+          "unit": "củ nhỏ",
+          "group": "Canh cà chua trứng"
+        },
+        {
+          "name": "Hành lá",
+          "amount": "một ít",
+          "unit": "",
+          "group": "Canh cà chua trứng"
+        },
+        {
+          "name": "Nước mắm, muối",
+          "amount": "",
+          "unit": "",
+          "group": "Canh cà chua trứng"
+        },
+        {
+          "name": "Gạo khô",
+          "amount": "70–80",
+          "unit": "g",
+          "note": "hoặc 180–220 g cơm chín",
+          "group": "Ăn kèm"
+        },
+        {
+          "name": "Dưa leo",
+          "amount": "100",
+          "unit": "g",
+          "note": "nếu thích",
+          "group": "Ăn kèm"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Khử mùi tanh và chuẩn bị cá",
+          "content": "1. Rửa cá nhanh, kiểm tra và loại bỏ phần máu hoặc màng sẫm màu nếu có.\n2. Thấm khô bằng giấy bếp.\n3. Nếu cá có mùi tanh rõ, xoa nhẹ một ít muối, rửa nhanh rồi thấm khô lại. Không cần ngâm cá lâu trong chanh hoặc giấm vì có thể làm thay đổi kết cấu thịt.\n4. Gừng thái sợi; hành lá cắt khúc hoặc thái sợi.\n5. Trộn nước tương, nước mắm và 1–2 thìa cà phê nước lọc để làm nước rưới cá.\n\n> **Bí quyết:** Cá càng tươi thì càng ít cần gia vị để át mùi. Thấm khô cá cũng giúp nước sốt bám tốt hơn."
+        },
+        {
+          "title": "Hấp cá mềm, không khô",
+          "content": "1. Đặt vài lát gừng xuống đĩa chịu nhiệt, đặt cá lên trên.\n2. Rải thêm gừng lên mặt cá.\n3. Đun nước trong nồi hấp cho sôi rồi mới đặt đĩa cá vào.\n4. Hấp khoảng 8–12 phút với phi lê mỏng; cá nguyên con hoặc miếng dày sẽ cần lâu hơn.\n5. Kiểm tra phần dày nhất: thịt cá phải đục, dễ tách thành thớ và đạt khoảng 63°C.\n6. Khi cá chín, chắt bớt nước tiết ra nếu có mùi tanh rõ.\n7. Rưới hỗn hợp nước tương và nước mắm đã pha lên cá, rắc hành lá.\n\nNếu muốn hương vị thơm hơn, làm nóng 1 thìa cà phê dầu ăn rồi rưới nhẹ lên phần gừng hành. Hãy cẩn thận vì dầu nóng có thể bắn.\n\n> **Mẹo quan trọng:** Đừng hấp cá quá lâu. Thời gian chỉ là ước lượng; độ dày của cá và lượng hơi nước mới quyết định thời điểm cá chín."
+        },
+        {
+          "title": "Nấu canh cà chua trứng ngon ngọt",
+          "content": "![Canh cà chua trứng](images/ngay-4-canh.webp)\n\nĐây là món canh rẻ, nhanh nhưng nếu nấu đúng cách thì nước rất thơm và có vị chua dịu.\n\n1. Cắt cà chua thành múi cau.\n2. Phi thơm hành tím với khoảng 1 thìa cà phê dầu ăn.\n3. Cho cà chua vào xào 2–3 phút, đến khi mềm và bắt đầu tiết nước.\n4. Thêm 350–400 ml nước, đun sôi nhẹ khoảng 3–5 phút.\n5. Nêm chút muối và nước mắm.\n6. Đánh tan trứng trong bát.\n7. Khi nước canh sôi nhẹ, rót trứng thành dòng mảnh, chờ vài giây rồi khuấy nhẹ để tạo vân trứng.\n8. Nấu đến khi trứng chín hoàn toàn, thêm hành lá rồi tắt bếp.\n\n> **Bí quyết đầu bếp:** Xào cà chua trước khi thêm nước giúp vị cà chua đậm và thơm hơn. Nếu cà chua chua nhiều, bạn có thể thêm một chút đường, nhưng không nên làm canh ngọt."
+        },
+        {
+          "title": "Hoàn thiện bữa ăn",
+          "content": "Bày cá ra đĩa, để phần gừng hành trên mặt. Múc canh vào bát, ăn cùng cơm nóng và dưa leo.\n\nKhi ăn, bạn có thể gắp một miếng cá, thêm ít gừng hành và chan một thìa nước sốt lên cơm. Vị ngọt của cá, hương thơm của gừng và vị mặn nhẹ của nước tương kết hợp rất hài hòa."
+        },
+        {
+          "title": "Nếu muốn món ngon hơn nữa",
+          "content": "| Vấn đề | Cách điều chỉnh |\n|---|---|\n| Cá còn tanh | Chọn cá tươi, thấm khô, thêm gừng và không hấp quá lâu |\n| Cá nhạt | Pha nước tương, nước mắm và chút nước lọc để rưới sau khi hấp |\n| Cá bị khô | Kiểm tra sớm, đặc biệt khi dùng phi lê mỏng |\n| Canh thiếu vị | Xào cà chua kỹ hơn trước khi thêm nước |\n| Canh quá chua | Thêm chút nước và một lượng đường rất nhỏ nếu cần |"
+        },
+        {
+          "title": "Checklist nấu món ngày 4",
+          "content": "- Vo gạo và nấu cơm\n- Sơ chế cá, gừng và hành lá\n- Hấp cá đến khi chín\n- Nấu canh cà chua trứng\n- Bày cơm, cá và canh ra bàn"
         }
       ]
     }

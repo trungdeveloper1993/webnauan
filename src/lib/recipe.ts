@@ -120,13 +120,20 @@ const EMOJI_RULES: [RegExp, string][] = [
   [word('salad|gỏi|nộm'), '🥗'],
 ];
 
+// Xếp theo vị trí xuất hiện trong tên: món chính thường đứng đầu ("Cá hấp... + cơm + canh...")
 export const guessEmoji = (text: string) => {
-  const found: string[] = [];
+  const found: { emoji: string; at: number }[] = [];
   for (const [re, emoji] of EMOJI_RULES) {
-    if (re.test(text) && !found.includes(emoji)) found.push(emoji);
-    if (found.length === 4) break;
+    const m = re.exec(text);
+    if (m && !found.some((f) => f.emoji === emoji)) found.push({ emoji, at: m.index });
   }
-  return found.join('') || '🍳';
+  return (
+    found
+      .sort((a, b) => a.at - b.at)
+      .slice(0, 4)
+      .map((f) => f.emoji)
+      .join('') || '🍳'
+  );
 };
 
 // ---------- Khẩu phần & định lượng ----------

@@ -128,7 +128,7 @@ export const IngredientsPanel: React.FC<IngredientsPanelProps> = ({ recipe, larg
                 </span>
                 <span
                   className={cn(
-                    'shrink-0 font-bold rounded-lg px-2 py-1 whitespace-nowrap',
+                    'shrink-0 max-w-[45%] text-right font-bold rounded-lg px-2 py-1 leading-snug',
                     large ? 'text-base' : 'text-xs',
                     isChecked
                       ? 'text-neutral-400 bg-neutral-100'

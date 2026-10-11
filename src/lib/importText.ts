@@ -76,10 +76,28 @@ const splitCells = (raw: string) =>
     : raw.split('\t').map((c) => c.trim());
 const isSeparatorRow = (cells: string[]) => cells.every((c) => /^:?-{2,}:?$/.test(c));
 
-export const splitQuantity = (qty: string): Pick<Ingredient, 'amount' | 'unit'> => {
-  const q = stripEndPunct(qty);
+const QUALIFIER_RE = /\s+(nếu thích|nếu có|tùy thích|tùy khẩu vị|tùy ý)$/i;
+
+// "250–300 g phần ăn được, hoặc cá phi lê 180–200 g" → 250–300 · "g phần ăn được" · ghi chú "hoặc cá phi lê 180–200 g"
+// "100 g nếu thích" → 100 · "g" · ghi chú "nếu thích"; "khoảng 70–80 g" → 70–80 · "g"
+export const splitQuantity = (qty: string): Pick<Ingredient, 'amount' | 'unit' | 'note'> => {
+  const q = stripEndPunct(qty).replace(/^(khoảng|tầm|chừng|cỡ)\s+(?=\d)/i, '');
   const m = q.match(QTY_RE);
-  return m ? { amount: m[1].replace(/\s+/g, ''), unit: m[2].trim() } : { amount: q, unit: '' };
+  if (!m) return { amount: q, unit: '' };
+  let unit = m[2].trim();
+  const notes: string[] = [];
+  const comma = unit.indexOf(',');
+  if (comma !== -1) {
+    notes.push(unit.slice(comma + 1).trim());
+    unit = unit.slice(0, comma).trim();
+  }
+  const qualifier = unit.match(QUALIFIER_RE);
+  if (qualifier) {
+    notes.unshift(qualifier[1]);
+    unit = unit.slice(0, qualifier.index).trim();
+  }
+  const note = notes.filter(Boolean).join(', ');
+  return { amount: m[1].replace(/\s+/g, ''), unit, ...(note ? { note } : {}) };
 };
 
 const parseIngredients = (lines: string[]): { ingredients: Ingredient[]; rest: string[] } => {
@@ -100,7 +118,11 @@ const parseIngredients = (lines: string[]): { ingredients: Ingredient[]; rest: s
         continue;
       }
       const [name, qty = '', note = ''] = cells;
-      if (name) ingredients.push(withGroup({ name, ...splitQuantity(qty), ...(note ? { note: stripEndPunct(note) } : {}) }));
+      if (name) {
+        const quantity = splitQuantity(qty);
+        const notes = [stripEndPunct(note), quantity.note].filter(Boolean).join('. ');
+        ingredients.push(withGroup({ name, amount: quantity.amount, unit: quantity.unit, ...(notes ? { note: notes } : {}) }));
+      }
       continue;
     }
     const bullet = line.match(/^[-*•+]\s+(.+)$/);

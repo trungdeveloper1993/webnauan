@@ -461,7 +461,8 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onClose }) => {
             </div>
             <p className="text-xs text-neutral-400 mb-3 leading-relaxed">
               Mỗi dòng là một đoạn. <code>- </code> gạch đầu dòng · <code>1. </code> bước đánh số · <code>### </code> tiêu đề nhỏ ·{' '}
-              <code>&gt; </code> hoặc <code>Bí quyết:</code> để làm nổi bật · <code>| A | B |</code> bảng · <code>**chữ đậm**</code>. Ghi thời
+              <code>&gt; </code> hoặc <code>Bí quyết:</code> để làm nổi bật · <code>| A | B |</code> bảng · <code>**chữ đậm**</code> ·{' '}
+              <code>![mô tả](images/anh.jpg)</code> chèn ảnh. Ghi thời
               gian như "12–18 phút" sẽ thành nút hẹn giờ.
             </p>
             <div className="space-y-3">
