@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": 1791682732622,
+  "updatedAt": 1791684028939,
   "recipes": [
     {
       "id": "ngay-1",
@@ -224,6 +224,127 @@
         {
           "title": "Checklist nấu ăn hôm nay",
           "content": "- Chuẩn bị và sơ chế tôm, khoai tây, tỏi, chanh\n- Luộc và nghiền khoai tây\n- Áp chảo tôm bơ tỏi\n- Làm sốt chanh\n- Bày đĩa và thưởng thức"
+        }
+      ]
+    },
+    {
+      "id": "ngay-3",
+      "day": 3,
+      "name": "Cơm gà sả tỏi áp chảo, sốt mắm mật ong",
+      "emoji": "🍗🍚",
+      "thumbnail": "images/ngay-3.webp",
+      "description": "Hôm nay chúng ta học một món Việt Nam rất đáng để đưa vào thực đơn hằng tuần: gà vàng thơm mùi sả tỏi, thịt mềm mọng, nước sốt mặn ngọt rưới lên cơm nóng, ăn kèm dưa leo để cân bằng vị béo. Điểm đặc biệt của món này là nguyên liệu dễ mua, cách nấu không khó nhưng nếu ướp và áp chảo đúng cách thì hương vị rất hấp dẫn.",
+      "style": "Món Việt",
+      "time": "30–35 phút",
+      "difficulty": 2,
+      "servings": "1 người",
+      "category": "Món cơm",
+      "mealTime": "Bữa trưa",
+      "ingredients": [
+        {
+          "name": "Đùi gà lọc xương",
+          "amount": "180–200",
+          "unit": "g",
+          "group": "Thịt gà",
+          "note": "Chọn đùi gà nếu muốn thịt mềm, mọng hơn ức gà"
+        },
+        {
+          "name": "Sả",
+          "amount": "1",
+          "unit": "cây",
+          "group": "Gia vị ướp"
+        },
+        {
+          "name": "Tỏi",
+          "amount": "2",
+          "unit": "tép",
+          "group": "Gia vị ướp"
+        },
+        {
+          "name": "Hành tím",
+          "amount": "1",
+          "unit": "củ nhỏ",
+          "group": "Gia vị ướp"
+        },
+        {
+          "name": "Nước mắm",
+          "amount": "2",
+          "unit": "thìa cà phê",
+          "group": "Gia vị ướp"
+        },
+        {
+          "name": "Dầu ăn",
+          "amount": "1",
+          "unit": "thìa cà phê",
+          "group": "Gia vị ướp"
+        },
+        {
+          "name": "Tiêu",
+          "amount": "một ít",
+          "unit": "",
+          "group": "Gia vị ướp"
+        },
+        {
+          "name": "Cơm chín",
+          "amount": "180–200",
+          "unit": "g",
+          "group": "Ăn kèm và làm sốt"
+        },
+        {
+          "name": "Dưa leo",
+          "amount": "100",
+          "unit": "g",
+          "group": "Ăn kèm và làm sốt"
+        },
+        {
+          "name": "Nước lọc",
+          "amount": "2",
+          "unit": "thìa canh",
+          "group": "Ăn kèm và làm sốt"
+        },
+        {
+          "name": "Mật ong",
+          "amount": "1",
+          "unit": "thìa cà phê",
+          "group": "Ăn kèm và làm sốt"
+        },
+        {
+          "name": "Nước mắm",
+          "amount": "1",
+          "unit": "thìa cà phê",
+          "group": "Ăn kèm và làm sốt"
+        },
+        {
+          "name": "Chanh",
+          "amount": "1",
+          "unit": "ít, tùy khẩu vị",
+          "group": "Ăn kèm và làm sốt"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Ướp gà cho thấm vị",
+          "content": "1. Sả bóc bỏ lớp già, băm thật nhỏ phần non.\n2. Tỏi và hành tím băm nhuyễn.\n3. Thịt gà thấm khô bằng giấy bếp. Nếu miếng gà quá dày, khía nhẹ hoặc dàn cho độ dày đồng đều.\n4. Trộn gà với sả, tỏi, hành tím, 2 thìa cà phê nước mắm, tiêu và 1 thìa cà phê dầu ăn.\n5. Ướp khoảng 15–20 phút trong tủ lạnh nếu chưa nấu ngay.\n\n> **Bí quyết đầu bếp:** Sả băm nhỏ giúp hương thơm bám vào thịt tốt hơn. Trước khi áp chảo, gạt bớt những mảng sả và tỏi bám quá dày bên ngoài để chúng không cháy trước khi gà chín."
+        },
+        {
+          "title": "Áp chảo để gà vàng đẹp",
+          "content": "1. Làm nóng chảo ở lửa vừa, thêm một ít dầu nếu chảo quá khô.\n2. Đặt gà vào chảo, để mặt thịt tiếp xúc với chảo khoảng 4–6 phút tùy độ dày.\n3. Khi mặt dưới vàng đẹp, lật gà và nấu tiếp khoảng 4–6 phút.\n4. Nếu gà dày, hạ lửa và đậy nắp thêm vài phút để nhiệt vào bên trong.\n5. Kiểm tra phần dày nhất của thịt đạt 74°C trước khi ăn. Nếu chưa đạt, tiếp tục nấu.\n\nKhông nên lật gà liên tục. Để thịt tiếp xúc với chảo đủ lâu sẽ giúp bề mặt vàng thơm hơn.\n\nSau khi chín, để gà nghỉ khoảng 3 phút rồi mới thái. Cách này giúp thịt giữ nước tốt hơn."
+        },
+        {
+          "title": "Làm sốt mắm mật ong",
+          "content": "Đây là phần làm món cơm gà trở nên hấp dẫn.\n\n### Pha sốt\n\n- 1 thìa cà phê nước mắm.\n- 1 thìa cà phê mật ong.\n- 2 thìa canh nước lọc.\n- 1/2 tép tỏi băm nếu thích.\n- Vài giọt chanh sau khi nấu, tùy khẩu vị.\n\n### Cách làm\n\n1. Sau khi lấy gà ra, giữ lại phần nước và gia vị thơm trong chảo.\n2. Hạ lửa nhỏ, thêm nước, nước mắm và mật ong.\n3. Khuấy nhẹ khoảng 1–2 phút đến khi sốt hơi sánh.\n4. Tắt bếp rồi nếm lại. Nếu thích vị thanh hơn, thêm vài giọt chanh.\n\nSốt đạt chuẩn khi có vị mặn ngọt cân bằng, thơm mùi gà và sả, không quá đặc hoặc quá ngọt.\n\n> Lưu ý không đun mật ong quá lâu ở lửa lớn vì sốt dễ cháy và chuyển sang vị đắng."
+        },
+        {
+          "title": "Bày đĩa cơm gà",
+          "content": "- Xới cơm nóng thành một phần gọn ở bên đĩa.\n- Thái gà thành lát vừa ăn, xếp cạnh cơm.\n- Thêm dưa leo và rau thơm.\n- Rưới một ít sốt lên gà và cơm; phần còn lại để trong chén riêng.\n\nNếu thích vị đậm hơn, bạn có thể chấm gà với một ít nước mắm chanh ớt. Tuy nhiên, hãy thử sốt đã pha trước để tránh món ăn bị quá mặn."
+        },
+        {
+          "title": "Làm sao để món này ngon hơn?",
+          "content": "| Nếu gặp tình trạng này | Cách cải thiện |\n|---|---|\n| Gà khô, dai | Ưu tiên đùi gà, tránh nấu quá lâu |\n| Sả và tỏi bị đắng | Gạt bớt gia vị bám ngoài trước khi áp chảo |\n| Gà chưa vàng | Thấm khô thịt và không xếp chật chảo |\n| Sốt quá ngọt | Giảm mật ong, thêm nước và vài giọt chanh |\n| Cơm hơi khô | Rưới một ít sốt lên cơm ngay trước khi ăn |"
+        },
+        {
+          "title": "Checklist nấu món ngày 3",
+          "content": "- Sơ chế và ướp gà\n- Chuẩn bị cơm, dưa leo và rau ăn kèm\n- Áp chảo gà vàng đều, nấu chín hoàn toàn\n- Nấu sốt mắm mật ong\n- Bày đĩa và thưởng thức"
         }
       ]
     }

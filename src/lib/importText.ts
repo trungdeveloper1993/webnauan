@@ -105,8 +105,16 @@ const parseIngredients = (lines: string[]): { ingredients: Ingredient[]; rest: s
     }
     const bullet = line.match(/^[-*•+]\s+(.+)$/);
     if (bullet) {
+      const text = stripMd(bullet[1]);
       // "- Khoai tây: 250 g" hoặc "- Khoai tây – 250 g"
-      const [name, qty = ''] = stripMd(bullet[1]).split(/\s*(?::|\s[–-]\s)\s*/, 2);
+      const parts = text.split(/\s*(?::|\s[–-]\s)\s*/, 2);
+      const prev = ingredients[ingredients.length - 1];
+      // Câu giải thích không có lượng (vd "- Chọn đùi gà nếu muốn thịt mềm hơn.") là ghi chú của nguyên liệu ngay trên
+      if (parts.length === 1 && prev && (prev.group ?? '') === group && (/[.!?]$/.test(text) || wordCount(text) >= 6)) {
+        prev.note = [prev.note, stripEndPunct(text)].filter(Boolean).join('. ');
+        continue;
+      }
+      const [name, qty = ''] = parts;
       ingredients.push(withGroup({ name: stripEndPunct(name), ...splitQuantity(qty) }));
       continue;
     }
@@ -175,6 +183,8 @@ const toMarkdown = (lines: string[]): string => {
     const plain = stripMd(line);
     const tip = plain.match(TIP_RE);
     if (tip) return push('quote', `> **${tip[1]}:** ${tip[2]}`);
+    // "Lưu ý không đun mật ong quá lâu..." (không có dấu hai chấm) → khung lưu ý
+    if (/^(Lưu ý|Chú ý)\s+\S/i.test(plain) && plain.length > 20) return push('quote', `> ${plain}`);
 
     // "Tôm:", "Cách pha:", "Thời gian tham khảo:" → tiêu đề nhỏ
     if (/:$/.test(plain) && wordCount(plain) <= 4) return push('heading', `### ${plain.replace(/:$/, '')}`);
@@ -238,7 +248,7 @@ export const parseRecipeText = (input: string): ParseResult => {
     !sectionLevel &&
     body.some((l) => {
       const m = stripMd(l.trim()).match(NUMBERED_RE);
-      return m?.[1] === '1' && !/[.!?;,]$/.test(m[2].trim()) && m[2].trim().length <= 80;
+      return m?.[1] === '1' && !/[.!;,]$/.test(m[2].trim()) && m[2].trim().length <= 80;
     });
 
   const sections: { title: string; lines: string[] }[] = [];
@@ -260,7 +270,8 @@ export const parseRecipeText = (input: string): ParseResult => {
       if (!m || Number(m[1]) !== expected) return null;
       const t = m[2].trim();
       const continuesList = lastItem === expected - 1 && lastItem > 0;
-      if (/[.!?;,]$/.test(t) || t.length > (continuesList ? 50 : 80)) return null;
+      // Bước nấu thường kết thúc bằng dấu chấm; tiêu đề thì không (có thể là câu hỏi)
+      if (/[.!;,]$/.test(t) || t.length > (continuesList ? 50 : 80)) return null;
       return t;
     }
     if (KEYWORD_HEADER_RE.test(plain) && plain.length <= 40 && !/[.!?]$/.test(plain) && !/:\s*\S/.test(plain)) {
