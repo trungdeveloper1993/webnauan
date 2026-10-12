@@ -98,6 +98,12 @@ export const splitQuantity = (qty: string): Pick<Ingredient, 'amount' | 'unit' |
   if (!m) return { amount: q, unit: '' };
   let unit = m[2].trim();
   const notes: string[] = [];
+  // "200 g (thăn ngoại hoặc thăn nội)" → "g" + ghi chú
+  const paren = unit.match(/^(.*?)\s*\(([^)]*)\)\s*(.*)$/);
+  if (paren) {
+    notes.push(paren[2].trim());
+    unit = [paren[1], paren[3]].filter(Boolean).join(' ').trim();
+  }
   const comma = unit.indexOf(',');
   if (comma !== -1) {
     notes.push(unit.slice(comma + 1).trim());
@@ -305,33 +311,46 @@ export const parseRecipeText = (input: string): ParseResult => {
   let inSteps = false; // đang ở trong phần "Cách làm"
   let expectedStep = 1;
 
-  const headerTitle = (line: string): string | null => {
+  // Trong "Cách làm", các dòng "1. Ướp thịt — 5 phút" hoặc "Bước 1 — Ướp bò (10 phút)" thành từng phần
+  // riêng để chế độ nấu đi từng bước
+  const stepTitle = (line: string): string | null => {
+    if (!inSteps) return null;
+    const buoc = stripMd(line.trim()).match(/^Bước\s*(\d+)\s*[—–:.\-]+\s*(.+)$/i);
+    let t: string | null = null;
+    if (buoc && Number(buoc[1]) === expectedStep && !/[.!;,]$/.test(buoc[2].trim()) && buoc[2].trim().length <= 60) {
+      t = buoc[2].trim();
+    } else if (keywordMode) {
+      t = numberedTitle(line, expectedStep, 60);
+    }
+    if (t !== null) expectedStep++;
+    return t;
+  };
+
+  // step = bước con trong "Cách làm" (không tính vào số thứ tự các phần chính)
+  const headerTitle = (line: string): { title: string; step: boolean } | null => {
     const trimmed = line.trim();
     if (!trimmed) return null;
     if (sectionLevel) {
       const m = trimmed.match(MD_HEADING_RE);
-      if (m && m[1].length === sectionLevel) return stripMd(m[2]).replace(/^\d+[.)]\s+/, '');
+      if (m && m[1].length === sectionLevel) return { title: stripMd(m[2]).replace(/^\d+[.)]\s+/, ''), step: false };
       return null;
     }
     const plain = stripMd(trimmed);
     if (hasNumbered) {
       const continuesList = lastItem === expected - 1 && lastItem > 0;
-      return numberedTitle(line, expected, continuesList ? 50 : 80);
-    }
-    if (isKeywordHeader(line)) {
+      const t = numberedTitle(line, expected, continuesList ? 50 : 80);
+      if (t !== null) {
+        inSteps = STEPS_RE.test(t);
+        expectedStep = 1;
+        return { title: t, step: false };
+      }
+    } else if (isKeywordHeader(line)) {
       inSteps = STEPS_RE.test(plain);
       expectedStep = 1;
-      return plain.replace(/:$/, '');
+      return { title: plain.replace(/:$/, ''), step: false };
     }
-    // Trong "Cách làm", các dòng "1. Ướp thịt — 5 phút" thành từng phần riêng để chế độ nấu đi từng bước
-    if (keywordMode && inSteps) {
-      const t = numberedTitle(line, expectedStep, 60);
-      if (t !== null) {
-        expectedStep++;
-        return t;
-      }
-    }
-    return null;
+    const step = stepTitle(line);
+    return step !== null ? { title: step, step: true } : null;
   };
 
   const applyMeta = (label: string, rawValue: string) => {
@@ -353,11 +372,15 @@ export const parseRecipeText = (input: string): ParseResult => {
   let pendingMeta: string | null = null; // nhãn đứng một mình, giá trị ở dòng sau ("Thời gian" ↵ "30–40 phút")
 
   for (const raw of body) {
-    const t = headerTitle(raw);
-    if (t !== null) {
-      // "Bước 1 — Làm khoai tây nghiền" → "Làm khoai tây nghiền" (web đã tự đánh số)
-      sections.push({ title: sentenceCase(t.replace(/^Bước\s*\d+\s*[—–:.\-]+\s*/i, '')), lines: [] });
-      expected++;
+    const header = headerTitle(raw);
+    if (header) {
+      const title = sentenceCase(header.title)
+        // "Bước 1 — Làm khoai tây nghiền" → "Làm khoai tây nghiền" (web đã tự đánh số)
+        .replace(/^Bước\s*\d+\s*[—–:.\-]+\s*/i, '')
+        // "Ướp bò (10 phút)" → "Ướp bò — 10 phút" để thời gian thành nút hẹn giờ
+        .replace(/\s*\(([^()]*\d[^()]*?(phút|giây|tiếng|giờ))\)\s*$/i, ' — $1');
+      sections.push({ title, lines: [] });
+      if (!header.step) expected++;
       lastItem = 0;
       continue;
     }

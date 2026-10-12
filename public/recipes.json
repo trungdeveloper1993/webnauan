@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": 1791713691738,
+  "updatedAt": 1791811713566,
   "recipes": [
     {
       "id": "ngay-1",
@@ -592,6 +592,114 @@
         {
           "title": "Bí quyết để món ngon hơn",
           "content": "- Muốn chua hơn: thêm ½ muỗng cà phê giấm.\n- Muốn đậm vị: thêm một ít nước tương, đừng thêm quá nhiều muối.\n- Muốn giòn lâu: chỉ trộn thịt với sốt ngay trước khi ăn.\n- Ăn kèm một bát cơm nóng; món này đã có rau củ nên không nhất thiết phải nấu thêm món rau."
+        }
+      ]
+    },
+    {
+      "id": "ngay-6",
+      "day": 6,
+      "name": "Bò lúc lắc khoai tây chiên",
+      "emoji": "🥩🥔",
+      "thumbnail": "images/ngay-6.webp",
+      "description": "Thịt bò mềm, thơm mùi tỏi, sốt mặn ngọt hơi sánh, ăn kèm khoai tây vàng giòn. Món này vừa hợp ăn cơm vừa có thể ăn riêng.",
+      "style": "Món Việt",
+      "time": "30 phút",
+      "difficulty": 2,
+      "servings": "1 người",
+      "category": "Món xào",
+      "mealTime": "Bữa tối",
+      "ingredients": [
+        {
+          "name": "Thịt bò mềm",
+          "amount": "200",
+          "unit": "g",
+          "note": "thăn ngoại hoặc thăn nội",
+          "group": "Nguyên liệu chính"
+        },
+        {
+          "name": "Khoai tây",
+          "amount": "1",
+          "unit": "củ lớn",
+          "note": "khoảng 200 g",
+          "group": "Nguyên liệu chính"
+        },
+        {
+          "name": "Hành tây",
+          "amount": "1/4",
+          "unit": "củ",
+          "group": "Nguyên liệu chính"
+        },
+        {
+          "name": "Ớt chuông",
+          "amount": "1/2",
+          "unit": "quả",
+          "note": "tùy thích",
+          "group": "Nguyên liệu chính"
+        },
+        {
+          "name": "Tỏi",
+          "amount": "3",
+          "unit": "tép",
+          "group": "Nguyên liệu chính"
+        },
+        {
+          "name": "Dầu ăn, tiêu đen",
+          "amount": "",
+          "unit": "",
+          "group": "Nguyên liệu chính"
+        },
+        {
+          "name": "Nước tương",
+          "amount": "1",
+          "unit": "muỗng canh",
+          "group": "Nước sốt bò lúc lắc"
+        },
+        {
+          "name": "Dầu hào",
+          "amount": "1",
+          "unit": "muỗng canh",
+          "group": "Nước sốt bò lúc lắc"
+        },
+        {
+          "name": "Đường",
+          "amount": "1/2",
+          "unit": "muỗng cà phê",
+          "group": "Nước sốt bò lúc lắc"
+        },
+        {
+          "name": "Nước lọc",
+          "amount": "1",
+          "unit": "muỗng canh",
+          "group": "Nước sốt bò lúc lắc"
+        },
+        {
+          "name": "Bơ lạt",
+          "amount": "5–10",
+          "unit": "g",
+          "note": "tùy thích",
+          "group": "Nước sốt bò lúc lắc"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Ướp bò — 10 phút",
+          "content": "Cắt thịt bò thành khối vuông khoảng 2–3 cm. Ướp với ½ lượng tỏi băm, 1 thìa cà phê nước tương và một ít tiêu. Để nghỉ khoảng 10 phút."
+        },
+        {
+          "title": "Chiên khoai — 10–15 phút",
+          "content": "Cắt khoai thành miếng vừa ăn, thấm khô rồi chiên trong dầu nóng đến khi vàng. Vớt ra để ráo và rắc chút muối. Nếu muốn ít dầu, có thể dùng nồi chiên không dầu."
+        },
+        {
+          "title": "Áp chảo bò — 2–4 phút",
+          "content": "Làm nóng chảo thật nóng, thêm chút dầu. Cho bò vào thành một lớp, áp chảo khoảng 1–2 phút mỗi mặt tùy kích thước. Không đảo liên tục để thịt có màu nâu đẹp."
+        },
+        {
+          "title": "Đảo sốt — 2 phút",
+          "content": "Hạ lửa vừa, thêm phần tỏi còn lại, hành tây và ớt chuông. Trộn nước tương, dầu hào, đường và nước lọc rồi đổ vào chảo. Thêm bơ, đảo nhanh cho sốt áo đều thịt. Nấu bò đến độ chín mong muốn; nếu cần an toàn hơn, đặc biệt với người có nguy cơ cao, hãy nấu kỹ."
+        },
+        {
+          "title": "Mẹo để món ngon như ngoài quán",
+          "content": "- Bò mềm: chọn thịt thăn, cắt ngang thớ và không ướp nước tương quá lâu.\n- Bò thơm: chảo phải nóng trước khi cho thịt vào; đừng cho quá nhiều bò cùng lúc.\n- Sốt ngon: nếm trước khi thêm muối vì nước tương và dầu hào đã mặn.\n- Ăn ngon nhất: dọn bò ra đĩa ngay sau khi đảo sốt; để khoai tây riêng để giữ độ giòn."
         }
       ]
     }
